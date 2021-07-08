@@ -61,8 +61,7 @@ async function run_test() {
 		}, {});
 	await eel.accept_data_py(data);
 	let FASTA_num = await eel.FASTA_num_py()();
-	$progress = $('.ui.progress');
-	$progress
+	$('.ui.progress')
 		.progress({
 			total: FASTA_num,
 			precision: 0.1,
