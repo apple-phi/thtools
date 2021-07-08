@@ -1,6 +1,6 @@
 import os
 import itertools
-from typing import Collection, Iterable
+from typing import Collection, Iterable, Optional
 
 import numpy as np
 import nupack
@@ -13,11 +13,12 @@ def autoconfig(
     rbs: str,
     triggers: Collection[str],
     set_size: int = 1,
-    const_rna: Iterable[str] = [],
-    names: Collection[str] = [],
+    const_rna: Optional[Iterable[str]] = None,
+    names: Optional[Collection[str]] = None,
     model: nupack.Model = nupack.Model(),
 ) -> ToeholdTest:
-    """Quick configuration of ToeholdTests, assuming every RNA has the same concentration
+    """
+    Quick configuration of ToeholdTests, assuming every RNA has the same concentration.
 
     Args:
         ths (str): the toehold switch
@@ -54,6 +55,7 @@ def autoconfig(
 def combs(a: Collection, r: int) -> np.ndarray:
     """
     Return successive r-length combinations of elements in the array a.
+    
     Should produce the same output as array(list(combinations(a, r))), but
     faster.
     ^ from https://stackoverflow.com/questions/16003217/n-d-version-of-itertools-combinations-in-numpy
@@ -65,7 +67,8 @@ def combs(a: Collection, r: int) -> np.ndarray:
 
 
 class FASTA(object):
-    """A basic FASTA parser which holds the data in RAM to be easily passed to ToeholdTest instances"""
+    
+    """A basic FASTA parser which holds the data in RAM to be easily passed to ToeholdTest instances."""
 
     specieslist = sorted(
         [
@@ -77,6 +80,7 @@ class FASTA(object):
     _linelength = 70
 
     def __init__(self, txt: str):
+        """Parse FASTA from text"""
         txt_lines = [line for line in txt.splitlines() if len(line) > 0]
         self.headers = [line for line in txt_lines if ">" in line]
         self.seqs = "".join(
@@ -105,13 +109,15 @@ class FASTA(object):
         self.source = set()
 
     def __repr__(self):
+        """Edit __repr__ to include # of seqs."""
         return f"<{self.__module__}.{type(self).__qualname__} of {self.num} seqs at {hex(id(self))}>"
 
     def __str__(self):
+        """Access original text."""
         return self.txt
 
     def __getitem__(self, key: str):
-        """Index by ID, header or sequence to obtain sequence (or ID if indexing by sequence)"""
+        """Index by ID, header or sequence to obtain sequence (or ID if indexing by sequence)."""
         if key in self.IDs:
             return self.seqs[self.IDs.index(key)]
         elif key in self.seqs:
@@ -121,7 +127,7 @@ class FASTA(object):
         raise KeyError(f"key '{key}' not found in IDs, headers or sequences")
 
     def __setitem__(self, key: str, value: str):
-        """Index by ID, header or sequence to set sequence (or ID if indexing by sequence)"""
+        """Index by ID, header or sequence to set sequence (or ID if indexing by sequence)."""
         if key in self.IDs:
             self.seqs[self.IDs.index(key)] = value
         elif key in self.seqs:
@@ -131,8 +137,8 @@ class FASTA(object):
         raise KeyError(f"key '{key}' not found in IDs, headers or sequences")
 
     def __add__(self, other):
+        """FASTA summation."""
         new = self.__new__(type(self))
-
         new.headers = self.headers + other.headers
         new.seqs = self.seqs + other.seqs
         new.IDs = self.IDs + other.IDs
@@ -146,7 +152,7 @@ class FASTA(object):
         return new
 
     def format(self, linelength: int = _linelength) -> str:
-        """Format the text of a FASTA to be a certain line length in each sequence"""
+        """Format the text of a FASTA to be a certain line length in each sequence."""
         return "".join(
             [
                 f">{self.IDs[i]} {self.descriptions[i]}\n{self.seq_format(self.seqs[i], linelength)}\n"
@@ -156,7 +162,7 @@ class FASTA(object):
 
     @classmethod
     def fromfile(cls, filename: str):
-        """Parse a FASTA file into a FASTA object"""
+        """Parse a FASTA file into a FASTA object."""
         with open(filename, "r") as f:
             new = cls(f.read())
         new.source.add(filename)
@@ -164,7 +170,8 @@ class FASTA(object):
 
     @classmethod
     def fromspecies(cls, species: str):
-        """Create a FASTA instance based on the MiRNAs in the database.
+        """
+        Create a FASTA instance based on the MiRNAs in the database.
 
         Full species list available via FASTA.specieslist
         """
@@ -172,7 +179,7 @@ class FASTA(object):
 
     @staticmethod
     def seq_format(seq, seq_width: int = 70) -> str:
-        """Internal sequence formatter to a certain length"""
+        """Internal sequence formatter to a certain length."""
         return "".join(
             [
                 seq[i]
@@ -184,7 +191,7 @@ class FASTA(object):
 
 
 def find_rbs(ths: str, rbs: str, mult_check: bool = False) -> slice:
-    """Get the location of a rbs sequence in a long ths sequence"""
+    """Get the slice location of a rbs sequence in a long ths sequence."""
     ths = ths.upper()
     rbs = rbs.upper()
     if mult_check:

@@ -1,3 +1,5 @@
+"""pkg initialisation"""
+
 from . import _meta
 
 import os

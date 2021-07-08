@@ -1,4 +1,4 @@
-from typing import Collection
+from typing import Collection, Optional
 
 import nupack
 
@@ -8,7 +8,7 @@ from . import autoconfig, FASTA
 def basic(
     ths: str,
     rbs: str = "AGAGGAGA",
-    const_rna: Collection[str] = [],
+    const_rna: Optional[Collection[str]] = None,
     max_size: int = 3,
     n_samples: int = 100,
     celsius: float = 37.0,

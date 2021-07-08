@@ -8,20 +8,23 @@ from . import HOME, FASTA, autoconfig
 from . import analysis
 
 analysis.USE_TIMER = False
-
 eel.init(f"{HOME}/web")
-
 
 class ErrorHandler:
     def __enter__(self):
+        """Create ErrorHandler context manager"""
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        """Report exception to JS"""
         if exc_type is not None:
             msg = f"{type(exc_val).__name__}: {str(exc_val)}"
             eel.report_error_js(msg)
             print(msg)
             sys.exit()
+            
+# globals
+data, ths, rbs, temperature, max_size, n_samples, fasta, model, test, result_generator = [None] * 10
 
 
 @eel.expose
@@ -38,7 +41,7 @@ def species_options_py():
 def accept_data_py(x: dict):
     with ErrorHandler():
         global data
-        global ths, rbs, species, temperature, max_size, n_samples
+        global ths, rbs, temperature, max_size, n_samples
         global fasta, model
 
         data = x
