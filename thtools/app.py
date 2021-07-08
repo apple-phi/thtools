@@ -22,7 +22,7 @@ class ErrorHandler:
             eel.report_error_js(msg)
             print(msg)
             sys.exit()
-            
+ 
 # globals
 data, ths, rbs, temperature, max_size, n_samples, fasta, model, test, result_generator = [None] * 10
 
@@ -104,7 +104,7 @@ def send_results_py():
     with ErrorHandler():
         table = test.results.tabulate()
         for col in ["RBS exposure %", "AUG exposure %", "Post-AUG exposure %", "Standard error %"]:
-            table.del_column(col) 
+            table.del_column(col)
         table.float_format = ".4"
         table_html = table.get_html_string(
             attributes={"class": "ui celled striped table", "id": "results_table"}

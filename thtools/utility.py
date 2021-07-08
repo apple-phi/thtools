@@ -55,7 +55,7 @@ def autoconfig(
 def combs(a: Collection, r: int) -> np.ndarray:
     """
     Return successive r-length combinations of elements in the array a.
-    
+
     Should produce the same output as array(list(combinations(a, r))), but
     faster.
     ^ from https://stackoverflow.com/questions/16003217/n-d-version-of-itertools-combinations-in-numpy
@@ -67,7 +67,7 @@ def combs(a: Collection, r: int) -> np.ndarray:
 
 
 class FASTA(object):
-    
+
     """A basic FASTA parser which holds the data in RAM to be easily passed to ToeholdTest instances."""
 
     specieslist = sorted(

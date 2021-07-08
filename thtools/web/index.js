@@ -17,12 +17,12 @@ async function add_species() {
 	$('#species_options_html').append(html_to_insert).dropdown();
 }
 
-async function update_FASTA_text() {
+async function update_FASTA_text() { // for displaying the FASTA selected from miRBase
 	let text = await eel.get_FASTA_text_py($('#species_options_html').val())();
 	$('textarea').val(text);
 }
 
-function set_dropdown_to_custom() {
+function set_dropdown_to_custom() { // for custom FASTA input
 	$('#species_options_html')
 		.dropdown('restore defaults', true)
 		.dropdown('set text', 'Custom');
@@ -45,6 +45,16 @@ function setup_form_rules() {
 			n_samples: 'integer',
 		},
 	});
+}
+
+async function update_pbar() {
+	let chunk_len = await eel.next_chunk_len_py()();
+	if (chunk_len !== 'StopIteration') {
+		window.setTimeout(function () {
+			$('.ui.progress').progress('increment', chunk_len);
+		});
+		await update_pbar();
+	}
 }
 
 async function run_test() {
@@ -77,16 +87,6 @@ async function run_test() {
 	eel.send_results_py();
 }
 
-async function update_pbar() {
-	let chunk_len = await eel.next_chunk_len_py()();
-	if (chunk_len !== 'StopIteration') {
-		window.setTimeout(function () {
-			$('.ui.progress').progress('increment', chunk_len);
-		});
-		await update_pbar();
-	}
-}
-
 ////////////////////////////////////////////////////////////////
 function scrollToElement(element, duration) { //https://stackoverflow.com/a/39494245/13712044
 	function getElementY(query) {
@@ -99,14 +99,18 @@ function scrollToElement(element, duration) { //https://stackoverflow.com/a/3949
 	let diff = targetY - startingY;
 	// Easing function: easeInOutCubic
 	// From: https://gist.github.com/gre/1650294
-	let easing = t => { return t<0.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 };
+	let easing = t => { t<0.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 };
 	let start;
   
-	if (!diff) {return};
+	if (!diff) {
+		return;
+	}
   
 	// Bootstrap our animation - it will get called right before next frame shall be rendered.
 	window.requestAnimationFrame(function step(timestamp) {
-		if (!start) start = timestamp;
+		if (!start) {
+			start = timestamp;
+		}
 		// Elapsed miliseconds since start of scrolling.
 		let time = timestamp - start;
 			// Get percent of completion in range [0, 1].
@@ -128,8 +132,8 @@ function scrollToElement(element, duration) { //https://stackoverflow.com/a/3949
 eel.expose(create_table_js);
 function create_table_js(table_html, specificity) {
 	// $('.ui.progress').progress('complete');
-	document.getElementById('results_table').outerHTML = table_html;
-	document.getElementById('speci_sub_header').innerHTML = specificity;
+	$('#results_table').replaceWith(table_html);
+	$('#speci_sub_header').html(specificity);
 	if (document.getElementById('table_section').style.display === 'none') {
 		$('#table_section').transition('fade', '2s');
 	}

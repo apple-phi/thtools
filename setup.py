@@ -11,7 +11,7 @@ with open("README.md", "r") as f:
 meta = {}
 with open("thtools/_meta.py") as f:
     exec(f.read(), meta)
-    
+
 try:
     from Cython.Build import cythonize, build_ext
     ext_modules=cythonize(["./thtools/*.pyx"])
