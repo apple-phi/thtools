@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Toehold Switch Analysis</title>
+		<link rel="icon" href="favicon.png" type="image/x-icon" />
+
+		<!-- You MUST include jQuery before Fomantic -->
+		<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="https://cdn.jsdelivr.net/npm/fomantic-ui@nightly/dist/semantic.min.css"
+		/>
+		<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@nightly/dist/semantic.min.js"></script>
+
+		<!-- Eel must be included before files containing the functions to be eel exposed -->
+		<script type="text/javascript" src="/eel.js"></script>
+		<script src="index.js"></script>
+	</head>
+	<body>
+		<div class="ui container">
+			<div class="ui hidden divider"></div>
+			<h1 class="ui massive floated header">Toehold Switch Analysis</h1>
+			<div class="ui section clearing divider"></div>
+			<div class="ui very padded raised segment">
+				<div class="ui top left attached label">Settings</div>
+
+				<form class="ui form" id="main_form">
+					<div class="fields">
+						<div class="fourteen wide field">
+							<label>Toehold switch</label>
+							<div class="ui fluid input">
+								<input
+									type="text"
+									name="ths"
+									value="UUAGCCGCUGUCACACGCACAGGGAUUUACAAAAAGAGGAGAGUAAAAUGCUGUGCGUGCACCAUAAAACGAACAUAGAC"
+								/>
+							</div>
+						</div>
+						<div class="two wide field">
+							<label>RBS</label>
+							<div class="ui fluid input">
+								<input type="text" name="rbs" value="AGAGGAGA" />
+							</div>
+						</div>
+					</div>
+
+					<div class="field">
+						<label>RNAs to test</label>
+						<div>
+							<select
+								class="ui fluid search dropdown top attached segment"
+								id="species_options_html"
+								onchange="update_FASTA_text()"
+							>
+								<option value="">Search miRBase...</option>
+							</select>
+							<textarea
+								class="ui bottom attached segment field"
+								name="FASTA_txt"
+								placeholder="Or paste a FASTA string"
+								oninput="set_dropdown_to_custom()"
+							></textarea>
+						</div>
+					</div>
+
+					<div class="three fields">
+						<div class="field">
+							<label>Temperature</label>
+							<div class="ui right labeled input">
+								<input type="text" name="temperature" value="37.0" />
+								<div class="ui basic label">°C</div>
+							</div>
+						</div>
+						<div class="field">
+							<label>Maximum complex size</label>
+							<div class="ui fluid input">
+								<input type="text" name="max_size" value="3" />
+							</div>
+						</div>
+						<div class="field">
+							<label># of Boltzmann samples per complex</label>
+							<div class="ui fluid input">
+								<input type="text" name="n_samples" value="100" />
+							</div>
+						</div>
+					</div>
+					<button
+						class="ui fluid green button"
+						type="submit"
+						id="submit_button"
+					>
+						Test
+					</button>
+				</form>
+			</div>
+			<div id="pbar_section" style="display: none">
+				<div class="ui section divider"></div>
+				<div class="ui very padded raised segment" id="pbar_segment">
+					<div class="ui top left attached label">Progress</div>
+					<div class="ui indicating progress" id="pbar_itself">
+						<div class="bar">
+							<div class="progress" id="pbar_progress"></div>
+						</div>
+						<div class="label">error: you should not be able to see this</div>
+					</div>
+				</div>
+			</div>
+			<div id="table_section" style="display: none">
+				<div class="ui section divider"></div>
+				<div class="ui very padded raised segment" id="table_segment">
+					<div class="ui top left attached label">Results</div>
+					<h3 class="ui header">
+						<a href="results.csv" style="float: right">
+							<i class="big black download icon"></i>
+						</a>
+						Specificity
+						<div class="sub header" id="speci_sub_header">
+							error: you should not be able to see this
+						</div>
+					</h3>
+					<table id="results_table"></table>
+				</div>
+			</div>
+			<div class="ui hidden divider"></div>
+		</div>
+		<div class="ui basic modal">
+			<h1 class="ui center aligned icon header">
+				<i class="exclamation triangle icon"></i>
+				Error, please restart app
+			</h1>
+			<div class="ui center aligned">
+				<span id="error_msg">msg</span>
+			</div>
+		</div>
+	</body>
+</html>
