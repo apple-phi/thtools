@@ -3,7 +3,6 @@
 from setuptools import find_packages, setup, Extension
 
 import numpy as np
-from Cython.Build import cythonize, build_ext
 
 
 with open("README.md", "r") as f:
@@ -12,10 +11,17 @@ with open("README.md", "r") as f:
 meta = {}
 with open("thtools/_meta.py") as f:
     exec(f.read(), meta)
-
-ext_modules=[
-    Extension("*", ["thtools/*.pyx"])
-]
+    
+try:
+    from Cython.Build import cythonize, build_ext
+    ext_modules=cythonize([
+        Extension("*", ["thtools/*.pyx"])
+    ])
+except ImportError:
+    from distutils.command.build_ext import build_ext
+    ext_modules=[
+        Extension("*", ["thtools/*.c"])
+    ]
 
 setup(
     name="thtools",
@@ -34,7 +40,7 @@ setup(
     # url="",
     packages=find_packages(),
     python_requires=">=3.7",
-    ext_modules=cythonize(ext_modules),
+    ext_modules=ext_modules,
     cmdclass={'build_ext': build_ext},
     include_dirs=np.get_include(),
     install_requires=[
