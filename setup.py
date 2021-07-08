@@ -14,9 +14,7 @@ with open("thtools/_meta.py") as f:
     
 try:
     from Cython.Build import cythonize, build_ext
-    ext_modules=cythonize([
-        Extension("*", ["thtools/*.pyx"])
-    ])
+    ext_modules=cythonize(["./thtools/*.pyx"])
 except ImportError:
     from distutils.command.build_ext import build_ext
     ext_modules=[
@@ -37,7 +35,7 @@ setup(
         "Operating System :: OS Independent",
         "Intended Audience :: Science/Research",
     ],
-    # url="",
+    url="https://github.com/lkn849/thtools/",
     packages=find_packages(),
     python_requires=">=3.7",
     ext_modules=ext_modules,
