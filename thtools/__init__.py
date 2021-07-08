@@ -1,4 +1,4 @@
-"""pkg initialisation"""
+"""Initialize pkg."""
 
 from . import _meta
 

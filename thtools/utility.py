@@ -80,7 +80,7 @@ class FASTA(object):
     _linelength = 70
 
     def __init__(self, txt: str):
-        """Parse FASTA from text"""
+        """Parse FASTA from text."""
         txt_lines = [line for line in txt.splitlines() if len(line) > 0]
         self.headers = [line for line in txt_lines if ">" in line]
         self.seqs = "".join(

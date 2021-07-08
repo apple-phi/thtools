@@ -12,11 +12,11 @@ eel.init(f"{HOME}/web")
 
 class ErrorHandler:
     def __enter__(self):
-        """Create ErrorHandler context manager"""
+        """Create ErrorHandler context manager."""
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """Report exception to JS"""
+        """Report exception to JS."""
         if exc_type is not None:
             msg = f"{type(exc_val).__name__}: {str(exc_val)}"
             eel.report_error_js(msg)

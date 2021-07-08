@@ -49,7 +49,7 @@ function setup_form_rules() {
 
 async function run_test() {
 	$('#submit_button').addClass('disabled loading'); // makes submit button unclickable
-	if (document.getElementById('pbar_section').style.display == 'none') {
+	if (document.getElementById('pbar_section').style.display === 'none') {
 		$('#pbar_section').transition('fade', '2s');
 	}
 	let data = $('#main_form')
@@ -79,7 +79,7 @@ async function run_test() {
 
 async function update_pbar() {
 	let chunk_len = await eel.next_chunk_len_py()();
-	if (chunk_len != 'StopIteration') {
+	if (chunk_len !== 'StopIteration') {
 		window.setTimeout(function () {
 			$('.ui.progress').progress('increment', chunk_len);
 		});
@@ -87,17 +87,55 @@ async function update_pbar() {
 	}
 }
 
+////////////////////////////////////////////////////////////////
+function scrollToElement(element, duration) { //https://stackoverflow.com/a/39494245/13712044
+	function getElementY(query) {
+		return window.pageYOffset + document.querySelector(query).getBoundingClientRect().top;
+	}
+	let startingY = window.pageYOffset;
+	let elementY = getElementY(element);
+	// If element is close to page's bottom then window will scroll only to some position above the element.
+	let targetY = document.body.scrollHeight - elementY < window.innerHeight ? document.body.scrollHeight - window.innerHeight : elementY;
+	let diff = targetY - startingY;
+	// Easing function: easeInOutCubic
+	// From: https://gist.github.com/gre/1650294
+	let easing = t => { return t<0.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 };
+	let start;
+  
+	if (!diff) {return};
+  
+	// Bootstrap our animation - it will get called right before next frame shall be rendered.
+	window.requestAnimationFrame(function step(timestamp) {
+		if (!start) start = timestamp;
+		// Elapsed miliseconds since start of scrolling.
+		let time = timestamp - start;
+			// Get percent of completion in range [0, 1].
+		let percent = Math.min(time / duration, 1);
+		// Apply the easing.
+		// It can cause bad-looking slow frames in browser performance tool, so be careful.
+		percent = easing(percent);
+
+		window.scrollTo(0, startingY + diff * percent);
+
+			// Proceed with animation as long as we wanted it to.
+		if (time < duration) {
+			window.requestAnimationFrame(step);
+		}
+	});
+}
+////////////////////////////////////////////////////////////////
+
 eel.expose(create_table_js);
 function create_table_js(table_html, specificity) {
 	// $('.ui.progress').progress('complete');
 	document.getElementById('results_table').outerHTML = table_html;
 	document.getElementById('speci_sub_header').innerHTML = specificity;
-	if (document.getElementById('table_section').style.display == 'none') {
+	if (document.getElementById('table_section').style.display === 'none') {
 		$('#table_section').transition('fade', '2s');
 	}
 	// $('#pbar_segment').transition('jiggle', '500ms');
 	$('#submit_button').removeClass('disabled loading'); // make submit button clickable again
-	scrollToElement('#table_section', 1000)
+	scrollToElement('#table_section', 1000);
 }
 
 eel.expose(report_error_js);
@@ -105,44 +143,6 @@ function report_error_js(msg) {
 	$('#error_msg').text(msg);
 	$('.ui.basic.modal').modal('show');
 }
-
-////////////////////////////////////////////////////////////////
-function scrollToElement(element, duration) { //https://stackoverflow.com/a/39494245/13712044
-	function getElementY(query) {
-		return window.pageYOffset + document.querySelector(query).getBoundingClientRect().top
-	}
-	let startingY = window.pageYOffset
-	let elementY = getElementY(element)
-	// If element is close to page's bottom then window will scroll only to some position above the element.
-	let targetY = document.body.scrollHeight - elementY < window.innerHeight ? document.body.scrollHeight - window.innerHeight : elementY
-	let diff = targetY - startingY
-	// Easing function: easeInOutCubic
-	// From: https://gist.github.com/gre/1650294
-	let easing = t => { return t<0.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 }
-	let start
-  
-	if (!diff) return
-  
-	// Bootstrap our animation - it will get called right before next frame shall be rendered.
-	window.requestAnimationFrame(function step(timestamp) {
-		if (!start) start = timestamp
-		// Elapsed miliseconds since start of scrolling.
-		let time = timestamp - start
-			// Get percent of completion in range [0, 1].
-		let percent = Math.min(time / duration, 1)
-		// Apply the easing.
-		// It can cause bad-looking slow frames in browser performance tool, so be careful.
-		percent = easing(percent)
-
-		window.scrollTo(0, startingY + diff * percent)
-
-			// Proceed with animation as long as we wanted it to.
-		if (time < duration) {
-			window.requestAnimationFrame(step)
-		}
-	})
-}
-////////////////////////////////////////////////////////////////
 
 $(document).ready(function () {
 	eel.print_py('JS loaded');

@@ -7,7 +7,7 @@ import numpy as np
 
 with open("README.md", "r") as f:
     long_description = f.read()
-    
+
 meta = {}
 with open("thtools/_meta.py") as f:
     exec(f.read(), meta)
