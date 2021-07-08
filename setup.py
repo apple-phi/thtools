@@ -17,13 +17,11 @@ try:
     ext_modules=cythonize([
         Extension("*", ["thtools/*.pyx"])
     ])
-    USE_CYTHON = True
 except ImportError:
     from distutils.command.build_ext import build_ext
     ext_modules=[
         Extension("*", ["thtools/*.c"])
     ]
-    USE_CYTHON = False
 
 setup(
     name="thtools",
