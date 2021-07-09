@@ -22,7 +22,7 @@ class ErrorHandler:
             eel.report_error_js(msg)
             print(msg)
             sys.exit()
- 
+
 # globals
 data, ths, rbs, temperature, max_size, n_samples, fasta, model, test, result_generator = [None] * 10
 
