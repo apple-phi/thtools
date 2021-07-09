@@ -5,3 +5,4 @@ build
 dist
 *.so
 *.pyd
+*.csv
