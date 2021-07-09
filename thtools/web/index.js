@@ -99,7 +99,7 @@ function scrollToElement(element, duration) { //https://stackoverflow.com/a/3949
 	let diff = targetY - startingY;
 	// Easing function: easeInOutCubic
 	// From: https://gist.github.com/gre/1650294
-	let easing = (t) => { t<0.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 };
+	let easing = (t) => { t<0.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 }
 	let start;
   
 	if (!diff) {
