@@ -1,1 +1,2 @@
 . # https://stackoverflow.com/a/16624700/13712044
+numpy>=1.21.0
