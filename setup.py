@@ -14,12 +14,12 @@ with open("thtools/_meta.py") as f:
 
 try:
     from Cython.Build import cythonize, build_ext
-    ext_modules=cythonize(["./thtools/*.pyx"])
+
+    ext_modules = cythonize(["./thtools/*.pyx"])
 except ImportError:
     from distutils.command.build_ext import build_ext
-    ext_modules=[
-        Extension("*", ["thtools/*.c"])
-    ]
+
+    ext_modules = [Extension("*", ["thtools/*.c"])]
 
 setup(
     name="thtools",
@@ -39,7 +39,7 @@ setup(
     packages=find_packages(),
     python_requires=">=3.7",
     ext_modules=ext_modules,
-    cmdclass={'build_ext': build_ext},
+    cmdclass={"build_ext": build_ext},
     include_dirs=np.get_include(),
     install_requires=[
         "eel>=0.14.0",
