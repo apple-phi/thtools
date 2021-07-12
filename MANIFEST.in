@@ -1,2 +1,3 @@
-graft thtools/web
-graft thtools/miRBase
+graft src/thtools/web
+graft src/thtools/miRBase
+include src/thtools/*.pyx

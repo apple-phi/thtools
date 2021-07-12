@@ -6,3 +6,11 @@ dist
 *.so
 *.pyd
 *.csv
+*.eggs
+__pycache__
+examples.ipynb
+test.py
+TODO
+miRBase
+*.DS_Store
+*.spec
