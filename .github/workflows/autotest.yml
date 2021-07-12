@@ -16,16 +16,21 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install NUPACK
+      - name: Clone NUPACK
         run: |
         gh repo clone beliveau-lab/NUPACK
+      
+      - name: Install NUPACK
+      - run: |
         python -m pip install nupack -f ./NUPACK/src/package
 
       - name: Install ToeholdTools
         run: |
         python -m pip install thtools
 
-      - name: Install and run pytest
+      - name: Install pytest
         run: |
         python -m pip install pytest
+
+      - name: Run pytest
         pytest
