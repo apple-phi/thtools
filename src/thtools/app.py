@@ -143,4 +143,11 @@ def send_results_py():
 
 
 print("Python loaded")
-eel.start("index.html", size=(1920, 1080))
+
+
+def start():
+    eel.start("index.html", size=(1920, 1080))
+
+
+if __name__ == "__main__":
+    start()

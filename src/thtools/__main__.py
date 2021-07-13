@@ -55,3 +55,5 @@ if len(sys.argv) > 1:
         raise ValueError("Argument '" + " ".join(sys.argv[1:]) + "' not recognized.")
 else:
     from thtools import app
+
+    app.start()
