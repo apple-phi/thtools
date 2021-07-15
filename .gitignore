@@ -4,6 +4,7 @@
 build
 dist
 *.so
+*.c
 *.pyd
 *.csv
 *.eggs
@@ -14,3 +15,8 @@ TODO
 miRBase
 *.DS_Store
 *.spec
+*.vscode
+*.pytest_cache
+*.png
+*.svg
+output.txt
