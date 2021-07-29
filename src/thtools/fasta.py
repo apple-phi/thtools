@@ -99,8 +99,7 @@ class FParser:
         return self.text
 
     def __getitem__(self, key: Union[int, str, slice]):
-        key_type = type(key)
-        if key_type is slice:
+        if isinstance(key, slice):
             new = self.copy()
             new.ids = self.ids[key]
             new.seqs = self.seqs[key]
@@ -109,10 +108,10 @@ class FParser:
             new.text = new.format()
             return new
 
-        if key_type is int:
+        if isinstance(key, int):
             return (self.ids[key], (self.seqs[key]))
 
-        if key_type is str:
+        if isinstance(key, str):
 
             if key in self.ids:
                 return self.seqs[self.ids.index(key)]
