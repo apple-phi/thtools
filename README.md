@@ -2,7 +2,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/thtools?style=flat-square)](https://pypi.org/project/thtools/)
 ![Python](https://img.shields.io/pypi/pyversions/thtools?style=flat-square)
 [![Build](https://img.shields.io/github/workflow/status/lkn849/thtools/Build?style=flat-square)](https://github.com/lkn849/thtools/actions/workflows/autowheel.yml)
-[![Documentation Status](https://readthedocs.org/projects/thtools/badge/?version=latest)](https://thtools.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://img.shields.io/readthedocs/thtools?style=flat-square](https://thtools.readthedocs.io/)
 [![License](https://img.shields.io/pypi/l/thtools.svg?style=flat-square)](LICENSE)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/lkn849/thtools.svg?logo=lgtm&style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/context:python)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/lkn849/thtools.svg?logo=lgtm&style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/context:javascript)
