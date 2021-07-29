@@ -1,0 +1,31 @@
+/* https://github.com/executablebooks/sphinx-book-theme/issues/266#issuecomment-815844711 */
+.classifier::before {
+	content: ' : ';
+}
+
+/* Remove 'Theme by the Executable Book Project' footer */
+#site-navigation div.navbar_extra_footer {
+	display: none !important;
+	visibility: hidden !important;
+}
+
+/* Unhighlight parameter & reference lists */
+/*main.bd-content #main-content .admonition.seealso dl dt, */
+dl.field-list dd dl dt,
+dl.citation dt.label,
+dl.footnote dt.label {
+	border-left: none !important;
+	background: none !important;
+}
+
+/* Reduce parameter spacing
+main.bd-content #main-content dd dl.field-list dd dl dd p {
+	margin-bottom: 0 !important;
+} */
+
+/* Make methods look like classes */
+dl.py.method dt.sig.sig-object.py {
+	background: #e7f2fa !important;
+	color: #2980b9 !important;
+	border-left: solid 3px #6ab0de !important;
+}

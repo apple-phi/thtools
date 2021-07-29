@@ -2,7 +2,13 @@
 import sys
 
 if len(sys.argv) > 1:
-    if sys.argv[1] == "build_app":
+    arg = sys.argv[1]
+    if arg == "debug":
+        from thtools import app
+
+        app.start(False)
+
+    elif arg == "build_demo":
         import os
         import shutil
         import pkg_resources
@@ -37,20 +43,20 @@ if len(sys.argv) > 1:
                 + os.pathsep
                 + "nupack/parameters",
                 "--add-data="
-                + pkg_resources.resource_filename("thtools", "web")
+                + os.path.join(HOME, "app", "web")
                 + os.pathsep
                 + "thtools/web",
                 "--add-data="
-                + pkg_resources.resource_filename("thtools", "miRBase")
+                + os.path.join(HOME, "miRBase")
                 + os.pathsep
                 + "thtools/miRBase",
-                "--icon="
-                + pkg_resources.resource_filename("thtools", "web/favicon.png"),
+                "--icon=" + os.path.join(HOME, "app", "web", "favicon.png"),
                 "--noconfirm",
                 "--noconsole",
                 "--onefile",
             ]
         )
+
     else:
         raise ValueError("Argument '" + " ".join(sys.argv[1:]) + "' not recognized.")
 else:

@@ -1,0 +1,12 @@
+@import url('styles/Montserrat.css');
+
+*:not(i) {
+	font-family: 'Montserrat' !important;
+}
+.ui.top.left.attached.label {
+	font-weight: 500;
+	font-style: italic;
+}
+textarea {
+	font-weight: 200;
+}

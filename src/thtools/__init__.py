@@ -1,12 +1,16 @@
-"""A library for the analysis of toehold switch riboregulators."""
+"""
+A library for the analysis of toehold switch riboregulators
+created by the iGEM team City of London UK 2021.
+"""
 
-__version__ = "0.0.2"
+__version__ = "0.1.0"
 
 import os
 
 HOME = os.path.dirname(os.path.abspath(__file__))
-ASC = 1e-7  # Assumed Strand Concentration = 100nM, following the example of A. Green [doi: 10.1016/j.cell.2014.10.002]
+CPU_COUNT = os.cpu_count()
 
-from .analysis import ToeholdTest  # not confidence_interval
-from .utility import autoconfig, FASTA, find_rbs  # not _combs
-from . import demos
+from .core import *
+from .crt import *
+from .utils import *
+from .fasta import *

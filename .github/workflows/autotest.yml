@@ -1,14 +1,14 @@
 name: Test
-on: workflow_dispatch
+on: [push, workflow_dispatch]
 
 jobs:
   build_wheels:
-    name: Build wheels on ${{ matrix.os }}
+    name: Run pytest on ${{ matrix.os }} for ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest] # not windows since NUPACK installation is much trickier
+        os: [ubuntu-latest, macOS-latest] # not windows because of NUPACK
         python-version: [3.6, 3.7, 3.8, 3.9]
     steps:
       - uses: actions/checkout@v2
@@ -17,13 +17,16 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Clone NUPACK
-        run: gh repo clone beliveau-lab/NUPACK
+        run: git clone https://github.com/beliveau-lab/NUPACK.git
 
       - name: Install NUPACK
         run: python -m pip install nupack -f NUPACK/src/package
 
+      - name: Delete NUPACK repo
+        run: rm -r NUPACK
+
       - name: Install ToeholdTools
-        run: python -m pip install thtools
+        run: python -m pip install .
 
       - name: Install pytest
         run: python -m pip install pytest
