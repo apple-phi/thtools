@@ -6,6 +6,15 @@
 import os
 import sys
 
+if sys.platform == "linux":  # if RTD env
+    custom_steps = [
+        "python3 -m pip install git+https://github.com/lkn849/thtools.git",
+        "git clone https://github.com/beliveau-lab/NUPACK.git",
+        "python3 -m pip install nupack -f NUPACK/src/package",
+        "rm -r NUPACK",
+    ]
+    os.system(" && ".join(custom_steps))
+
 SOURCE_HOME = os.path.dirname(os.path.abspath(__file__))
 DOCS_HOME = os.path.join(SOURCE_HOME, os.pardir)
 # DOCS_HOME = os.path.dirname(os.path.abspath(__file__))
