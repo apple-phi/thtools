@@ -9,7 +9,7 @@ import sys
 if sys.platform == "linux":  # if RTD env
     custom_steps = [
         "cd /home/docs/checkouts/readthedocs.org/user_builds/thtools/checkouts/latest/",
-        # "python3 -m pip install Cython",
+        "python3 -m pip install Cython",
         "python3 setup.py bdist_wheel",
         "python3 -m pip install thtools -f dist",
         "git clone https://github.com/beliveau-lab/NUPACK.git",
