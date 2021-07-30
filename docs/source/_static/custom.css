@@ -29,3 +29,11 @@ dl.py.method dt.sig.sig-object.py {
 	color: #2980b9 !important;
 	border-left: solid 3px #6ab0de !important;
 }
+
+/* If dark mode (and thus favicon inverted), re-invert favicon to normal */
+@media (prefers-color-scheme: dark) {
+	img.logo {
+		-webkit-filter: invert(100%);
+		filter: invert(100%);
+	}
+}
