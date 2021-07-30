@@ -1,5 +1,6 @@
 # https://github.com/NiklasRosenstein/readthedocs-custom-steps/
 steps:
+  - python3 -m pip install git+https://github.com/lkn849/thtools.git
   - git clone https://github.com/beliveau-lab/NUPACK.git
   - python3 -m pip install nupack -f NUPACK/src/package"
   - rm -r NUPACK"

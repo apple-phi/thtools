@@ -6,3 +6,4 @@ sphinxcontrib-bibtex==2.3.0
 # nupack -f https://github.com/beliveau-lab/NUPACK/blob/master/src/package/nupack-4.0.0.23-cp38-cp38-macosx_10_13_x86_64.whl; sys_platform == "darwin"
 # nupack -f https://github.com/beliveau-lab/NUPACK/blob/master/src/package/nupack-4.0.0.23-cp38-cp38-manylinux2014_x86_64.whl; sys_platform == "linux"
 readthedocs-custom-steps
+thtools>=0.1.0
