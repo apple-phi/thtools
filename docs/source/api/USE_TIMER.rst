@@ -3,9 +3,10 @@ thtools.core.USE_TIMER
 
 .. currentmodule:: thtools.core
 
-.. data:: USE_TIMER
+.. attribute:: USE_TIMER
     :type: bool
     :value: True
+    :canonical: thtools.core.USE_TIMER
 
     Whether to show the simulation event log.
 

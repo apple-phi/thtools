@@ -11,10 +11,15 @@ textarea {
 	font-weight: 200;
 }
 
-/* If dark mode (and thus favicon inverted), re-invert favicon to normal */
+/* Dark mode, preserving images */
 @media (prefers-color-scheme: dark) {
-	img.logo {
-		-webkit-filter: invert(100%);
-		filter: invert(100%);
+	html {
+		-webkit-filter: invert(100%) hue-rotate(180deg);
+		filter: invert(100%) hue-rotate(180deg);
+		background: black;
+	}
+	img {
+		-webkit-filter: invert(100%) hue-rotate(180deg) !important;
+		filter: invert(100%) hue-rotate(180deg) !important;
 	}
 }

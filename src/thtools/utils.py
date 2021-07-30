@@ -33,7 +33,7 @@ def autoconfig(
     """
     Quick configuration of ToeholdTests,
     assuming every RNA has the concentration of
-    :data:`thtools.utils.ASSUMED_STRAND_CONC`.
+    :attr:`thtools.utils.ASSUMED_STRAND_CONC`.
 
     Parameters
     ----------

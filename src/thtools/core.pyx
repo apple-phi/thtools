@@ -42,7 +42,7 @@ cdef class _Timer:
     """
     Basic class for timing tests.
 
-    Turn on with :data:`thtools.core.USE_TIMER = True`.
+    Turn on with :attr:`thtools.core.USE_TIMER = True`.
     
     Built in use is as a context manager.
     It prints the time taken once the context manager has been exited.
@@ -152,7 +152,7 @@ cdef class ToeholdTest:
     :func:`~thtools.utils.autoconfig`
         Quick configuration of ToeholdTests,
         assuming every RNA has the concentration of
-        :data:`thtools.utils.ASSUMED_STRAND_CONC`.
+        :attr:`thtools.utils.ASSUMED_STRAND_CONC`.
     """
     cdef:
         # public attrs: ths, ths_conc, model

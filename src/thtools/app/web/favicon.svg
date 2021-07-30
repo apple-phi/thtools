@@ -9,7 +9,7 @@
 		@media (prefers-color-scheme: dark) {
 			image {
 				-webkit-filter: invert(100%);
-				filter: invert(100%);
+				filter: invert(100%) hue-rotate(180deg);
 			}
 		}
 	</style>
