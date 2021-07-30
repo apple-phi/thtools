@@ -8,7 +8,7 @@ import sys
 
 if sys.platform == "linux":  # if RTD env
     custom_steps = [
-        "python3 -m pip install git+https://github.com/lkn849/thtools.git",
+        "python3 -m pip install /home/docs/checkouts/readthedocs.org/user_builds/thtools/checkouts/latest/",
         "git clone https://github.com/beliveau-lab/NUPACK.git",
         "python3 -m pip install nupack -f NUPACK/src/package",
         "rm -r NUPACK",
