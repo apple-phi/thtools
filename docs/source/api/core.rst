@@ -9,7 +9,7 @@ Core
 .. toctree::
     :hidden:
 
-    USE_TIMER.rst
+    api/USE_TIMER.rst
 
 Module-level attributes:
 
@@ -18,7 +18,7 @@ Module-level attributes:
     :align: center
     :header-rows: 0
 
-    * - :data:`USE_TIMER`
+    * - :data:`~thtools.core.USE_TIMER`
       - Whether to show the simulation event log.
 
 

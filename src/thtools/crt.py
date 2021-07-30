@@ -1,4 +1,4 @@
-"""A sub-module to run a :class:`~thtools.core.ToeholdTest` across temperature ranges.`"""
+"""A sub-module to run a :class:`~thtools.core.ToeholdTest` across temperature ranges."""
 
 from typing import Sequence, Optional, Generator
 import datetime
@@ -57,7 +57,7 @@ class CelsiusRangeResult:
         >>> rbs = "AGAGGAGA"
         >>> fasta = tt.FParser.fromspecies("Homo sapiens")[295:305]
         >>> triggers = fasta.seqs
-        >>> temperatures = range(10, 101, 10)
+        >>> temperatures = range(20, 101, 10)
         >>> my_test = tt.autoconfig(ths, rbs, triggers)
         >>> my_crt = tt.CelsiusRangeTest(my_test, temperatures)
         >>> my_result = my_crt.run(max_size=3, n_samples=200)

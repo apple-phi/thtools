@@ -22,7 +22,7 @@ SOURCE_HOME = os.path.dirname(os.path.abspath(__file__))
 DOCS_HOME = os.path.join(SOURCE_HOME, os.pardir)
 # DOCS_HOME = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(DOCS_HOME, os.pardir)
-LOGO = os.path.join(ROOT, "src", "thtools", "app", "web", "favicon.png")
+LOGO = os.path.join(ROOT, "src", "thtools", "app", "web", "favicon.svg")
 
 # sys.path.insert(0, os.path.join(ROOT, "src"))
 # import thtools

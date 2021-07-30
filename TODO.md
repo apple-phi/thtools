@@ -2,11 +2,10 @@
 
 ## General
 - Increase code coverage
-- Use favicon.svg
 
 ## Docs
-- RTD badge
 - Syntax highlighting
+- CSS styles
 
 ## Source
 - Add probes and design

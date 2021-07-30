@@ -3,7 +3,11 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>ToeholdTools</title>
-		<link rel="icon" href="favicon.png" type="image/x-icon" />
+
+		<!--Don't use mask-icon or apple-touch-icon since no point in supporting Safari-->
+		<meta name="theme-color" content="#ffffff" />
+		<link rel="icon" href="favicon.svg" />
+		<link rel="manifest" href="manifest.json" />
 
 		<!-- Include jQuery before Fomantic -->
 		<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
@@ -26,7 +30,7 @@
 			<div class="ui hidden divider"></div>
 			<!--https://stackoverflow.com/a/22603786/13712044-->
 			<div style="display: flex; align-items: center">
-				<img src="favicon.png" style="width: 7vw" />
+				<img src="favicon.svg" style="width: 7vw" />
 				<h1 class="ui massive floated header">
 					ToeholdTools
 					<div class="sub header">A suite of toehold switch analysis tools</div>
