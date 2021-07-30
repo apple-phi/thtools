@@ -1,4 +1,5 @@
 sphinx-book-theme==0.1.1
+sphinx==4.1.2 # after sphinx-book-theme to force
 numpydoc==1.1.0
 matplotlib==3.4.2
 sphinx-copybutton==0.4.0
