@@ -81,6 +81,7 @@ for species, species_chunks in miRNA_by_species.items():
 
 import sys
 
+print("Building with Cython...")
 if len(sys.argv) > 1:
 
     from setuptools import setup, Extension

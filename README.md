@@ -11,14 +11,14 @@ A library for the analysis of toehold switch riboregulators created by the iGEM 
 ## Contents
 - [ToeholdTools](#toeholdtools)
   - [Contents](#contents)
-  - [What is this?](#what-is-this)
+  - [What is ToeholdTools?](#what-is-toeholdtools)
   - [Installation](#installation)
   - [Run demo](#run-demo)
   - [Documentation](#documentation)
   - [License](#license)
   
-## What is this?
-ToeholdTools is a package designed to facilitate the analysing and designing toehold switches.
+## What is ToeholdTools?
+ToeholdTools is a package designed to facilitate analyzing and designing toehold switches.
 It's still in the making, so please leave a feature request
 if there is anything else you would like to see!
 ## Installation
