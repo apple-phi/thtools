@@ -82,7 +82,7 @@ def accept_data_py(x: dict):
 
         ths = data["ths"]
         rbs = data["rbs"]
-        FASTA_txt = data["FASTA_txt"]
+        FASTA_text = data["FASTA_text"]
         temperature = data["temperature"]
         max_size = data["max_size"]
         n_samples = data["n_samples"]
@@ -91,7 +91,7 @@ def accept_data_py(x: dict):
         n_samples = int(n_samples)
         temperature = float(temperature)
 
-        fasta = FParser(FASTA_txt)
+        fasta = FParser(FASTA_text)
         model = nupack.Model(celsius=temperature)
 
 
@@ -106,7 +106,7 @@ def FASTA_num_py():
 ################################################################################
 @eel.expose
 def get_FASTA_text_py(species: str):
-    return FParser.fromspecies(species).txt.strip()
+    return FParser.fromspecies(species).text.strip()
 
 
 ################################################################################

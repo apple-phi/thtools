@@ -21,7 +21,7 @@ This will return a generator that you can iterate through
 using something like `tqdm <https://github.com/tqdm/tqdm>`_ to track the progress.
 By itself, that will not be helpful, since there is only one worker process per CPU core
 by default (and so the progress bar will not update until the very end),
-but you can change that using the :param:`chunks_per_node` argument.
+but you can change that using the :attr:`chunks_per_node` argument.
 
 .. note::
     For :class:`~thtools.core.ToeholdTest` only, the caveat is that using many small chunks

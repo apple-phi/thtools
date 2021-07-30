@@ -41,7 +41,7 @@ function setup_form_rules() {
 		fields: {
 			ths: 'is_ths',
 			rbs: 'regExp[/^[GUAC]+$/gi]',
-			FASTA_txt: 'empty',
+			FASTA_text: 'empty',
 			temperature: 'decimal', // accepts integer values also
 			max_size: 'integer',
 			n_samples: 'integer',

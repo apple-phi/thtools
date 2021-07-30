@@ -31,7 +31,7 @@ class FParser:
     Notes
     -----
     Upon instantiation, the :attr:`text` attribute is formatted
-    using the :attr:`line_length` attribute.
+    using the :meth:`format` method.
 
     Examples
     --------
