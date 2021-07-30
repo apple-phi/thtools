@@ -9,7 +9,7 @@ Core
 .. toctree::
     :hidden:
 
-    api/USE_TIMER.rst
+    USE_TIMER.rst
 
 Module-level attributes:
 
