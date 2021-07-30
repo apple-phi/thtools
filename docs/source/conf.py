@@ -6,13 +6,6 @@
 import os
 import sys
 
-if sys.platform == "linux":  # if building for RTD
-    os.system(
-        "git clone https://github.com/beliveau-lab/NUPACK.git"
-        " && python3 -m pip install nupack -f NUPACK/src/package"
-        " && rm -r NUPACK"
-    )
-
 SOURCE_HOME = os.path.dirname(os.path.abspath(__file__))
 DOCS_HOME = os.path.join(SOURCE_HOME, os.pardir)
 # DOCS_HOME = os.path.dirname(os.path.abspath(__file__))
