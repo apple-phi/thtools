@@ -14,6 +14,9 @@ from . import CPU_COUNT
 from .core import ToeholdTest, ToeholdResult
 
 
+__all__ = ["CelsiusRangeTest", "CelsiusRangeResult"]
+
+
 class CelsiusRangeResult:
     """
     Data container for a :class:`CelsiusRangeTest`.
@@ -353,6 +356,7 @@ class CelsiusRangeTest:
     ----------
     thtest : ToeholdTest
     celsius_range : Sequence[float]
+    result : CelsiusRangeResult
 
     Examples
     --------
@@ -374,6 +378,7 @@ class CelsiusRangeTest:
 
     thtest: ToeholdTest
     celsius_range: Sequence[float]
+    result: CelsiusRangeResult
 
     def __init__(self, thtest: ToeholdTest, celsius_range: Sequence[float]):
         self.thtest = thtest

@@ -5,6 +5,8 @@ from typing import List, Union
 
 from . import HOME
 
+__all__ = ["FParser"]
+
 
 class FParser:
     """

@@ -23,7 +23,7 @@ from libc.float cimport DBL_MIN
 from libc.math cimport sqrt #, fabs
 
 
-__all__ = ["ToeholdTest", "ToeholdResult"]
+__all__ = ["USE_TIMER", "ToeholdTest", "ToeholdResult"]
 
 
 cdef int CPU_COUNT = os.cpu_count()
