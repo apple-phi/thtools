@@ -11,13 +11,8 @@ textarea {
 	font-weight: 200;
 }
 
-/* Dark mode, preserving images */
+/* Don't support dark mode */
 @media (prefers-color-scheme: dark) {
-	html {
-		-webkit-filter: invert(100%) hue-rotate(180deg);
-		filter: invert(100%) hue-rotate(180deg);
-		background: black;
-	}
 	img {
 		-webkit-filter: invert(100%) hue-rotate(180deg) !important;
 		filter: invert(100%) hue-rotate(180deg) !important;

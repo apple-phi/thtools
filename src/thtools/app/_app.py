@@ -1,18 +1,20 @@
 import sys
 import os
+from typing import Generator
 
 import eel
 import nupack
+import numpy as np
 
-from . import HOME
-from ..fasta import FParser
-from ..utils import autoconfig
-from .. import core
+from thtools import HOME, FParser, autoconfig, ToeholdTest
+import thtools.core
+
+__all__ = ["start", "eel"]
 
 ################################################################################
 
 APP_HOME = os.path.join(HOME, "app")
-core.USE_TIMER = False
+thtools.core.USE_TIMER = False
 eel.init(os.path.join(APP_HOME, "web"))
 
 ################################################################################
@@ -36,21 +38,21 @@ class ErrorHandler:
 
 
 ################################################################################
+class GlobalData:
+    data: dict
+    ths: str
+    rbs: str
+    temperature: float
+    max_size: int
+    n_samples: int
+    fasta: FParser
+    model: nupack.Model
+    test: ToeholdTest
+    result_generator: Generator[np.ndarray, None, None]
 
 
-# globals
-(
-    data,
-    ths,
-    rbs,
-    temperature,
-    max_size,
-    n_samples,
-    fasta,
-    model,
-    test,
-    result_generator,
-) = [None] * 10
+gd = GlobalData()
+
 
 ################################################################################
 
@@ -72,27 +74,15 @@ def species_options_py():
 
 
 @eel.expose
-def accept_data_py(x: dict):
+def accept_data_py(data: dict):
     with ErrorHandler():
-        global data
-        global ths, rbs, temperature, max_size, n_samples
-        global fasta, model
-
-        data = x
-
-        ths = data["ths"]
-        rbs = data["rbs"]
-        FASTA_text = data["FASTA_text"]
-        temperature = data["temperature"]
-        max_size = data["max_size"]
-        n_samples = data["n_samples"]
-
-        max_size = int(max_size)
-        n_samples = int(n_samples)
-        temperature = float(temperature)
-
-        fasta = FParser(FASTA_text)
-        model = nupack.Model(celsius=temperature)
+        gd.ths = data["ths"]
+        gd.rbs = data["rbs"]
+        gd.max_size = int(data["max_size"])
+        gd.n_samples = int(data["n_samples"])
+        gd.temperature = float(data["temperature"])
+        gd.fasta = FParser(data["FASTA_text"])
+        gd.model = nupack.Model(celsius=gd.temperature)
 
 
 ################################################################################
@@ -100,7 +90,7 @@ def accept_data_py(x: dict):
 
 @eel.expose
 def FASTA_num_py():
-    return fasta.num
+    return gd.fasta.num
 
 
 ################################################################################
@@ -115,17 +105,16 @@ def get_FASTA_text_py(species: str):
 @eel.expose
 def run_test_py():
     with ErrorHandler():
-        global test, result_generator
-        test = autoconfig(
-            ths=ths,
-            rbs=rbs,
-            triggers=fasta.seqs,
+        gd.test = autoconfig(
+            ths=gd.ths,
+            rbs=gd.rbs,
+            triggers=gd.fasta.seqs,
             set_size=1,
-            names=fasta.ids,
-            model=model,
+            names=gd.fasta.ids,
+            model=gd.model,
         )
-        result_generator = test.generate(
-            max_size=max_size, n_samples=n_samples, chunks_per_node=10
+        gd.result_generator = gd.test.generate(
+            max_size=gd.max_size, n_samples=gd.n_samples, chunks_per_node=10
         )
 
 
@@ -136,7 +125,7 @@ def run_test_py():
 def next_trigger_py():
     with ErrorHandler():
         try:
-            next(result_generator)
+            next(gd.result_generator)
         except StopIteration:
             return "StopIteration"
 
@@ -147,7 +136,7 @@ def next_trigger_py():
 @eel.expose
 def send_result_py():
     with ErrorHandler():
-        table = test.result.tabulate()
+        table = gd.test.result.tabulate()
         for col in [
             "RBS unbinding %",
             "AUG unbinding %",
@@ -158,17 +147,17 @@ def send_result_py():
             attributes={"class": "ui celled striped table", "id": "result_table"}
         )
         specificity = (
-            "{:.4f}".format(test.result.specificity * 100)
+            "{:.4f}".format(gd.test.result.specificity * 100)
             + " ± "
             + "{:.4f}".format(
-                1.96 * test.result.specificity_se * 100
+                1.96 * gd.test.result.specificity_se * 100
             )  # for 95% confidence
             + " %"
         )
         with open(
             os.path.join(APP_HOME, "web", "result.csv"), "w", encoding="utf-8-sig"
         ) as f:  # utf-8-sig includes BOM so MS Excel can read utf-8
-            f.write(test.result.to_csv())  # implicitly generates new table first
+            f.write(gd.test.result.to_csv())  # implicitly generates new table first
         eel.create_table_js(table_html, specificity)
 
 

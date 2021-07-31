@@ -8,6 +8,7 @@
 - Rewrite analysis.pyx using memoryviews.
 
 ## App
+- Dark mode
 - Include CRT in app
 - Distribute Electron app for mac (and linux?)
     - Refactor app dirs

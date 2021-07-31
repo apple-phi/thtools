@@ -3,7 +3,7 @@ import sys
 
 if len(sys.argv) > 1:
     arg = sys.argv[1]
-    if arg == "debug":
+    if arg in ("dev", "debug"):
         from thtools import app
 
         app.start(False)
