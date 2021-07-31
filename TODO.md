@@ -6,7 +6,6 @@
 ## Source
 - Add probes and design
 - Rewrite analysis.pyx using memoryviews.
-- Make FParser.specieslist a submodule-wide datavalue
 
 ## App
 - Include CRT in app
