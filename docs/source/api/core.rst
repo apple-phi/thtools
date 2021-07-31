@@ -18,7 +18,7 @@ Module-level attributes:
     :align: center
     :header-rows: 0
 
-    * - :attr:`~thtools.core.USE_TIMER`
+    * - :attr:`USE_TIMER`
       - Whether to show the simulation event log.
 
 

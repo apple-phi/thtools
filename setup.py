@@ -77,6 +77,86 @@ for species, species_chunks in miRNA_by_species.items():
 
 #######################################################################
 
+# make pygments.css for docs
+
+import datetime
+
+from pygments.style import Style
+from pygments.formatters import HtmlFormatter
+from pygments.token import Token
+
+
+class MyStyle(Style):
+
+    default_style = ""
+
+    bg = "#f8f8f2"
+    fore = "#282a36"
+    comment = "#adb6cf"
+    error = "#8b080b"
+
+    # color names from https://coolors.co/
+    flickr_pink = "#f72585"
+    purple = "#7209b7"
+    trypan_blue = "#834cff"
+    absolute_zero = "#0048d0"
+
+    styles = {
+        Token.Text.Whitespace: fore,
+        Token.Comment: "italic " + comment,
+        Token.Comment.Preproc: "noitalic " + flickr_pink,
+        Token.Keyword: flickr_pink,
+        Token.Keyword.Pseudo: flickr_pink,
+        Token.Keyword.Type: fore,
+        Token.Operator: fore,
+        Token.Operator.Word: flickr_pink,
+        Token.Name.Builtin: absolute_zero,
+        Token.Name.Function: trypan_blue,
+        Token.Name.Class: absolute_zero,
+        Token.Name.Namespace: fore,
+        Token.Name.Exception: flickr_pink,
+        Token.Name.Variable: "italic " + absolute_zero,
+        Token.Name.Constant: flickr_pink,
+        Token.Name.Label: purple,
+        Token.Name.Entity: fore,
+        Token.Name.Attribute: absolute_zero,
+        Token.Name.Tag: flickr_pink,
+        Token.Name.Decorator: fore,
+        Token.Literal.String: purple,
+        Token.Literal.String.Doc: "italic " + purple,
+        Token.Literal.String.Interpol: "bold " + purple,
+        Token.Literal.String.Escape: "bold " + purple,
+        Token.Literal.String.Regex: purple,
+        Token.Literal.String.Symbol: purple,
+        Token.Literal.String.Other: purple,
+        Token.Literal.Number: trypan_blue,
+        Token.Generic.Heading: fore,
+        Token.Generic.Subheading: fore,
+        Token.Generic.Deleted: error,
+        Token.Generic.Inserted: "bg:#50fa7b",
+        Token.Generic.Error: flickr_pink,
+        Token.Generic.Emph: "italic",
+        Token.Generic.Strong: "bold",
+        Token.Generic.Prompt: "bold " + error,
+        Token.Generic.Output: fore,
+        Token.Generic.Traceback: error,
+        Token.Error: "border:" + error,
+    }
+
+
+css = HtmlFormatter(style=MyStyle).get_style_defs()
+with open("docs/source/_static/pygments.css", "w") as f:
+    f.write(
+        datetime.datetime.now().strftime(
+            "/* Created on %b %-d %Y at %H:%M:%S by make_pygments.py */"
+        )
+        + "\n"
+        + css
+    )
+
+
+#######################################################################
+
 # make package if not importing
 
 import sys

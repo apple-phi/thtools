@@ -3,10 +3,6 @@
 ## General
 - Increase code coverage
 
-## Docs
-- Syntax highlighting
-- CSS styles
-
 ## Source
 - Add probes and design
 - Rewrite analysis.pyx using memoryviews.

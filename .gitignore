@@ -16,3 +16,4 @@ miRBase
 *.pytest_cache
 assets
 generated
+pygments.css
