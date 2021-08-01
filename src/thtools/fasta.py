@@ -100,6 +100,19 @@ class FParser:
     def __str__(self):
         return self.text
 
+    def __add__(self, other):
+        new = self.__new__(type(self))
+        new.ids = self.ids + other.ids
+        new.seqs = self.seqs + other.seqs
+        new.headers = self.headers + other.headers
+        new.descriptions = self.descriptions + other.descriptions
+        new.num = self.num + other.num
+        if self.text[:-1] != "\n":
+            self.text += "\n"
+        new.text = self.text + other.text
+        new.source = self.source | other.source
+        return new
+
     def __getitem__(self, key: Union[int, str, slice]):
         if isinstance(key, slice):
             new = self.copy()
@@ -114,7 +127,6 @@ class FParser:
             return (self.ids[key], (self.seqs[key]))
 
         if isinstance(key, str):
-
             if key in self.ids:
                 return self.seqs[self.ids.index(key)]
             if key in self.seqs:
@@ -126,10 +138,23 @@ class FParser:
             if key in self.headers:
                 index = self.headers.index(key)
                 return (self.ids[index], (self.seqs[index]))
-
             raise KeyError(
                 f"key '{key}' not found in IDs, sequences, descriptions or headers."
             )
+
+    def index(self, key):
+        """Get the index of a key in IDs, sequences, descriptions or headers."""
+        if key in self.ids:
+            return self.ids.index(key)
+        if key in self.seqs:
+            return self.seqs.index(key)
+        if key in self.descriptions:
+            return self.descriptions.index(key)
+        if key in self.headers:
+            return self.headers.index(key)
+        raise KeyError(
+            f"key '{key}' not found in IDs, sequences, descriptions or headers."
+        )
 
     # def __setitem__(self, key: str, value: str):
     #     """Set sequence by indexing into any attribute."""
@@ -143,21 +168,7 @@ class FParser:
     #         self.seqs[self.descriptions.index(key)] = value
     #     raise KeyError(f"key '{key}' not found in ids, headers or sequences")
 
-    def __add__(self, other):
-        new = self.__new__(type(self))
-        new.ids = self.ids + other.ids
-        new.seqs = self.seqs + other.seqs
-        new.headers = self.headers + other.headers
-        new.descriptions = self.descriptions + other.descriptions
-        new.num = self.num + other.num
-
-        if self.text[:-1] != "\n":
-            self.text += "\n"
-        new.text = self.text + other.text
-        new.source = self.source | other.source
-        return new
-
-    def format(self, linelength: int = line_length) -> str:
+    def format(self, line_length: int = line_length) -> str:
         """
         Format the text of a FASTA to be a certain line length in each sequence.
 
@@ -173,7 +184,7 @@ class FParser:
         """
         return "".join(
             [
-                f">{self.ids[i]} {self.descriptions[i]}\n{self._seq_format(self.seqs[i], linelength)}\n"
+                f">{self.ids[i]} {self.descriptions[i]}\n{self._seq_format(self.seqs[i], line_length)}\n"
                 for i in range(self.num)
             ]
         ).strip()
