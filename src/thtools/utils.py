@@ -188,5 +188,16 @@ class ModelNu3(nupack.Model):
             magnesium=magnesium,
         )
 
+    def __init__(self, wobble=None, kelvin=None, celsius=37, sodium=1.0, magnesium=0.0):
+        super().__init__(
+            ensemble="some-nupack3",
+            material="rna95-nupack3",
+            wobble=wobble,
+            kelvin=kelvin,
+            celsius=celsius,
+            sodium=sodium,
+            magnesium=magnesium,
+        )
+
 
 ################################################################################
