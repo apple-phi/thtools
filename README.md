@@ -2,7 +2,6 @@
 ![Python](https://img.shields.io/pypi/pyversions/thtools?style=flat-square)
 [![Build](https://img.shields.io/github/workflow/status/lkn849/thtools/Build?style=flat-square)](https://github.com/lkn849/thtools/actions/workflows/autowheel.yml)
 [![Documentation Status](https://img.shields.io/readthedocs/thtools?style=flat-square)](https://thtools.readthedocs.io/)
-[![License](https://img.shields.io/pypi/l/thtools.svg?style=flat-square)](LICENSE)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/lkn849/thtools.svg?logo=lgtm&style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/context:python)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/lkn849/thtools.svg?logo=lgtm&style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/context:javascript)
 
@@ -21,6 +20,11 @@ A library for the analysis of toehold switch riboregulators created by the iGEM 
 ToeholdTools is a package designed to facilitate analyzing and designing toehold switches.
 It's still in the making, so please leave a feature request
 if there is anything else you would like to see!
+
+It currently provides the ability to:
+- Find the activation level of a toehold switch.
+- Test a switch for how specific it is to the target RNA.
+- Compare switch attributes across temperature ranges.
 ## Installation
 We distribute CPython wheels for Python 3.6-3.9 in all major operating systems.
 We cannot build for PyPy since it not supported by all dependencies.
