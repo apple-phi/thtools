@@ -1,5 +1,5 @@
 #!python
-#cython: language_level=3, cdivision=True, initializedcheck=False, binding=True, emit_code_comments=True 
+#cython: language_level=3, cdivision=True, initializedcheck=False, binding=True, emit_code_comments=True, linetrace=True
 #distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 
 """The sub-module which is the *raison d'être* for ToeholdTools' existence."""
@@ -173,7 +173,7 @@ cdef class ToeholdTest:
         list const_rna_seqs
         list const_rna_concs
         double start
-        Py_ssize_t aug_position
+        readonly Py_ssize_t aug_position # readonly for testing
         list chunked_trigger_sets
         list chunked_conc_sets
         dict const_strands
@@ -181,10 +181,10 @@ cdef class ToeholdTest:
         dict meta
 
         # run
-        int max_size
-        int n_samples
-        int n_nodes
-        int n_chunks
+        public int max_size
+        public int n_samples
+        public int n_nodes
+        public int n_chunks
 
         # output
         readonly ToeholdResult result
@@ -202,17 +202,29 @@ cdef class ToeholdTest:
         self.ths = ths
         self.ths_conc = ths_conc
         self.rbs_slice = rbs_slice
-        self._rbs_slice = rbs_slice.start, rbs_slice.stop
         self.trigger_sets = trigger_sets
         self.conc_sets = conc_sets
         self.const_rna = const_rna
         self.model = model
         self.names = names
 
+    def __eq__(self, ToeholdTest other):
+        cdef object item
+        return <bint> (
+            self.ths == other.ths
+            and self.ths_conc == other.ths_conc
+            and self.rbs_slice == other.rbs_slice
+            and np.asarray(self.trigger_sets == other.trigger_sets).all()
+            and np.asarray(self.conc_sets == other.conc_sets).all()
+            and self.const_rna == other.const_rna
+            and self.model == other.model
+            and np.asarray(self.names == other.names).all()
+        )
+
     def copy(self) -> ToeholdTest:
         """Return a copy of self."""
         # since the only public attrs are ths, ths_conc and model, we only need to make a proper copy of nupack.Model
-        return <ToeholdTest> ToeholdTest(
+        cdef ToeholdTest new = ToeholdTest(
             ths=self.ths,
             ths_conc=self.ths_conc,
             rbs_slice=self.rbs_slice,
@@ -222,6 +234,8 @@ cdef class ToeholdTest:
             model=copy_model(self.model),
             names=self.names
         )
+        new.result = <ToeholdResult> self.result
+        return <ToeholdTest> new
     
     def run(self,
             max_size: int,
@@ -332,11 +346,14 @@ cdef class ToeholdTest:
         self.result.names = self.names # make sure to use property setter
         self.meta["Runtime /s"] = time.time()-self.start
 
-    cdef void _setup(self) except *:
+    cpdef void _setup(self) except *:
         cdef:
             Py_ssize_t i, c
             object trig_arr
             object conc_arr
+
+        # extract RBS indicies
+        self._rbs_slice = self.rbs_slice.start, self.rbs_slice.stop
 
         # data extraction
         self.const_rna_seqs, self.const_rna_concs = list(self.const_rna.keys()), list(self.const_rna.values())
@@ -376,7 +393,7 @@ cdef class ToeholdTest:
         self.meta = {"THS"                              :self.ths,
                      "THS concentration"                :self.ths_conc,
                      "RBS"                              :self.ths[self.rbs_slice],
-                     "No. trigger sets"                          :len(self.trigger_sets),
+                     "No. trigger sets"                 :len(self.trigger_sets),
                      "Constant RNAs"                    :self.const_rna_seqs,
                      "Concentrations of constant RNAs"  :self.const_rna_concs,
                      "Temperature /°C"                  :self.model.temperature-273.15,
@@ -384,8 +401,12 @@ cdef class ToeholdTest:
                      "Sample number"                    :self.n_samples}
 
         # safety checks
-        assert np.asarray(self.trigger_sets).shape == np.asarray(self.conc_sets).shape, f"shape mismatch between trigger sets and trigger concentrations ({np.asarray(self.trigger_sets).shape} vs. {np.asarray(self.conc_sets).shape}"
-            
+        cdef:
+            object trigger_array = np.asarray(self.trigger_sets)
+            object conc_array = np.asarray(self.conc_sets, dtype=np.float64)
+        assert trigger_array.ndim == 2, "trigger_sets must have exactly 2 dimensions."
+        assert conc_array.ndim == 2, "conc_sets must have exactly 2 dimensions."
+        assert <bint> (conc_array > 0).all(), "all concentrations must be > 0."
 
     def _worker(self,
                 object trigger_sets_chunk = np.empty(shape=(1,0), dtype=str),
@@ -544,11 +565,12 @@ cdef class ToeholdResult:
 
     Not intended to be constructed manually.
 
-    .. note:: All float values are given as decimals, not percentages.
+    .. note:: All activation and unbinding values are given as decimals, not percentages.
 
     Attributes
     ----------
     trigger_sets : Collection[Collection[str]]
+        The trigger sets that were tested.
     names : Collection[str | Collection[str]]
         The names of each trigger set in :attr:`trigger_sets`.
         If a collection of names is given for each trigger set,
@@ -557,15 +579,20 @@ cdef class ToeholdResult:
         or passed to an argument to one of the methods defined here.
 
     activation : np.ndarray[np.float64]
+        An array of the activation by each trigger set.
     rbs_unbinding : np.ndarray[np.float64]
+        An array of the RBS unbinding by each trigger set.
     aug_unbinding : np.ndarray[np.float64]
+        An array of the AUG unbinding by each trigger set.
     post_aug_unbinding : np.ndarray[np.float64]
+        An array of the post-AUG unbinding by each trigger set.
     activation_se : np.ndarray[np.float64]
-        The standard error of the activation probability.
+        The standard error of each value in the :attr:`activation` attribute array.
 
     specificity : np.ndarray[np.float64]
+        The level of specificity to the highest activating trigger set.
     specificity_se : np.ndarray[np.float64]
-        The standard error of the specificity.
+        The standard error of the :attr:`specificity` attribute.
 
     target_index : int
         The index of the trigger_sets with the highest activation probability.
@@ -578,6 +605,7 @@ cdef class ToeholdResult:
         The name of the trigger_set with the highest activation probability.
 
     unix_created : datetime.datetime
+        UNIX timestamp of the creation of the :class:`ToeholdResult`.
     date : str
     meta : dict
     pretty_meta : str
@@ -828,11 +856,5 @@ cpdef inline (double, double) specificity_ci(np.float64_t [:] activation, np.flo
     return (best, se)
 
 def copy_model(model: nupack.Model) -> nupack.Model:
-    """Copy a nupack.Model since there is no built-in method."""
-    cdef:
-        object ensemble = model.ensemble
-        str material = model.material
-        double kelvin = model.temperature
-        dict conditions = model.conditions.save()
-    del conditions["temperature"]
-    return nupack.Model(ensemble=ensemble, material=material, kelvin=kelvin, **conditions)
+    """Copy a :class:`nupack.Model`."""
+    return nupack.Model().from_json(model.to_json())
