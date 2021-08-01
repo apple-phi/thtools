@@ -52,4 +52,4 @@ python3 -m thtools
 The full API reference and developer notes can be found [here](https://thtools.readthedocs.io).
 
 ## License
-[MIT](LICENSE)
+[MIT](https://github.com/lkn849/thtools/blob/master/LICENSE)
