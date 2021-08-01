@@ -2,6 +2,7 @@
 
 from typing import Sequence, Optional, Generator
 import datetime
+import re
 
 import nupack
 import numpy as np
@@ -23,30 +24,51 @@ class CelsiusRangeResult:
 
     Not intended to be constructed manually.
 
-    .. note:: All float values are given as decimals, not percentages.
+    .. note::
+        All activation and unbinding values are
+        given as decimals, not percentages.
 
     Attributes
     ----------
     results : Sequence[ToeholdResult]
-        The :class:`~thtools.core.ToeholdResult` objects from each temperature.
+        The :class:`~thtools.core.ToeholdResult` objects
+        from each temperature.
     celsius_range : Sequence[float]
+        The temperature range tested.
     targets : Sequence[str]
-        The highest activating item from the trigger_sets of each :class:`~thtools.core.ToeholdResult`.
+        The highest activating item from the trigger_sets
+        of each :class:`~thtools.core.ToeholdResult`.
     target_names : Sequence[str], optional
         The names of each item in :attr:`targets`.
+
+    activation : Sequence[float]
+        A list of the switch activation value when bound
+        to the target RNA as the temperature changes.
+    rbs_unbinding : Sequence[float]
+        A list of the RBS unbinding value when bound
+        to the target RNA as the temperature changes.
+    aug_unbinding : Sequence[float]
+        A list of the AUG unbinding value when bound
+        to the target RNA as the temperature changes.
+    post_aug_unbinding : Sequence[float]
+        A list of the post-AUG unbinding value when bound
+        to the target RNA as the temperature changes.
+    activation_se : Sequence[float]
+        A list of the switch activation's standard error
+        when bound to the target RNA as the temperature
+        changes.
+
+    specificity : Sequence[float]
+        A list of the switch specificity to the target
+        RNA as the temperature changes.
+    specificity_se : Sequence[float]
+        The standard error of the specificity.
+
     unix_created : datetime.datetime
+        The UNIX timestamp of the :class:`CelsiusRangeResult`.
     date : str
     meta : dict
     pretty_meta : str
-    activation : Sequence[float]
-    rbs_unbinding : Sequence[float]
-    aug_unbinding : Sequence[float]
-    post_aug_unbinding : Sequence[float]
-    specificity : Sequence[float]
-    activation_se : Sequence[float]
-        The standard error of the activation probability.
-    specificity_se : Sequence[float]
-        The standard error of the specificity.
 
     Examples
     --------
@@ -189,7 +211,7 @@ class CelsiusRangeResult:
         self, y: str = "activation", filename: Optional[str] = None, swap: bool = False
     ):
         """
-        Plot temperature against specificity, with color being the activation.
+        Plot temperature against activation, with color being the specificity.
 
         The following axes are plotted:
 
@@ -204,32 +226,40 @@ class CelsiusRangeResult:
               - temperature /°C
             * - y
               - toehold switch activation %
+                (or whatever :attr:`y` value you chose)
             * - color
               - specificity %
 
         Parameters
         ----------
+        y : str, default = "activation"
+            The attribute of the test to plot.
+            The options are:
+            - activation
+            - RBS unbinding
+            - AUG unbinding
+            - post-AUG unbinding
         filename : str, optional
             The filename to save the figure to if desired.
         swap : bool, optional
             Whether or not to swap the specificity and activation in the plot. Defaults to False.
         """
-        y = y.strip().lower().replace(" ", "_").replace("-", "_")
-        y_name = y.replace("_", " ").capitalize()
+        y = re.sub(r"[\W ]+", "", y).strip().lower().replace(" ", "_")
+        y_name = y.replace("_", " ").capitalize() + " %"
         x_vals = self.celsius_range
         cmap = sns.color_palette("crest", as_cmap=True)
         fig, ax = plt.subplots()
         formatter = matplotlib.ticker.ScalarFormatter(useOffset=False)
         if not swap:
-            y_vals = np.array(getattr(self, y)) * 100
-            z_vals = np.array(self.specificity) * 100
+            y_vals = np.asarray(getattr(self, y)) * 100
+            z_vals = np.asarray(self.specificity) * 100
             scatter = ax.scatter(x_vals, y_vals, c=z_vals, cmap=cmap)
             fig.colorbar(scatter, label="Specificity %", format=formatter)
             ax.set_xlabel("Temperature /°C")
             ax.set_ylabel(y_name)
         else:
-            y_vals = np.array(self.specificity) * 100
-            z_vals = np.array(getattr(self, y)) * 100
+            y_vals = np.asarray(self.specificity) * 100
+            z_vals = np.asarray(getattr(self, y)) * 100
             scatter = ax.scatter(x_vals, y_vals, c=z_vals, cmap=cmap)
             fig.colorbar(scatter, label=y_name, format=formatter)
             ax.set_xlabel("Temperature /°C")
@@ -453,11 +483,10 @@ class CelsiusRangeTest:
 
     def _adjust_temperature(self, celsius: float) -> ToeholdTest:
         new_thtest = self.thtest.copy()
-        ensemble = self.thtest.model.ensemble
-        material = self.thtest.model.material
-        conditions = self.thtest.model.conditions.save()
-        del conditions["temperature"]
-        self.thtest.model = nupack.Model(
-            ensemble=ensemble, material=material, celsius=celsius, **conditions
+        model_params = new_thtest.model.to_json().to_object()
+        model_params["conditions"]["temperature"] = 273.15 + celsius
+        model_params["parameters"]["temperature"] = 273.15 + celsius
+        new_thtest.model = new_thtest.model.from_json(
+            nupack.JSON.from_object(model_params)
         )
         return new_thtest
