@@ -27,6 +27,7 @@ It's still in the making, so please leave a feature request
 if there is anything else you would like to see!
 
 It currently provides the ability to:
+
 * Find the activation level of a toehold switch.
 * Test a switch for how specific it is to the target RNA.
 * Compare switch attributes across temperature ranges.
