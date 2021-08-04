@@ -41,10 +41,8 @@ templates_path = ["_templates"]
 html_static_path = ["_static"]
 html_css_files = ["custom.css"]
 
-# exclude_patterns = [os.path.join(templates_path[0], "*.rst")]
-
-pygments_style = "xcode"
 bibtex_bibfiles = [os.path.join(ROOT, "refs.bib")]
+bibtex_reference_style = "author_year"
 
 numpydoc_show_class_members = False
 autosummary_generate = True
