@@ -1,5 +1,6 @@
 # ToeholdTools
 ![Python](https://img.shields.io/pypi/pyversions/thtools?style=flat-square)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/thtools?style=flat-square)](https://pypi.org/project/thtools/)
 [![Build](https://img.shields.io/github/workflow/status/lkn849/thtools/Build?style=flat-square)](https://github.com/lkn849/thtools/actions/workflows/autowheel.yml)
 [![Documentation Status](https://img.shields.io/readthedocs/thtools?style=flat-square)](https://thtools.readthedocs.io/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/lkn849/thtools.svg?logo=lgtm&style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/context:python)
