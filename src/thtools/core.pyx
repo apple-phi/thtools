@@ -684,7 +684,7 @@ cdef class ToeholdResult:
         return self._names
 
     @names.setter
-    def names(self, value):
+    def names(self, value: Collection[Union[str, Collection[str]]]):
         if value is None:
             return
         self._names = value
