@@ -17,7 +17,7 @@ def test_crt_specificity(hsa_miR_210_3p_crt_result):
 
 def test_crt_activation(hsa_miR_210_3p_crt_result):
     result = hsa_miR_210_3p_crt_result
-    assert result.activation[3] > 0.6 and result.activation[-1] < 0.1
+    assert result.activation[3] > 0.5 and result.activation[-1] < 0.1
 
 
 def test_crt_target(hsa_miR_210_3p_crt_result):
