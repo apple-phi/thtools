@@ -30,7 +30,7 @@ def autoconfig(
     set_size: int = 1,
     model: nupack.Model = nupack.Model(),
     names: Optional[Collection[str]] = None,
-    const_rna: Optional[Iterable[str]] = None,
+    const_rna: Optional[str] = None,
 ) -> ToeholdTest:
     """
     Quick configuration of ToeholdTests,
@@ -72,7 +72,7 @@ def autoconfig(
     rbs_slice = find_rbs(ths, rbs)
     trigger_sets = _combs(triggers, set_size)
     conc_sets = np.full(trigger_sets.shape, ASSUMED_STRAND_CONC, dtype=np.float64)
-    if const_rna is None:
+    if not const_rna:
         const_rna = {}
     else:
         const_rna = {rna: ASSUMED_STRAND_CONC for rna in const_rna}
