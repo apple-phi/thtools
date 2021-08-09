@@ -1,7 +1,9 @@
 """A sub-module to parse FASTA files, which comes with the mature section of miRBase included."""
 
 import os
-from typing import List, Union
+from typing import List, Union, Collection, Optional
+import xml.etree.ElementTree as ElementTree
+import urllib.request, urllib.error
 
 from . import HOME
 
@@ -69,33 +71,41 @@ class FParser:
     line_length = 70
 
     def __init__(self, text: str):
-        text_lines = [
-            line.replace(";", ">") for line in text.splitlines() if len(line) > 0
-        ]
-        self.headers = [line for line in text_lines if ">" in line]
-        self.seqs = "".join(
-            [line if ">" not in line else "<split>" for line in text_lines][1:]
-        ).split("<split>")
-        first_space_indices = [header.index(" ") for header in self.headers]
-        self.ids = [
-            self.headers[i][1 : first_space_indices[i]]
-            for i in range(len(self.headers))
-        ]
-        self.descriptions = [
-            self.headers[i][first_space_indices[i] + 1 :]
-            for i in range(len(self.headers))
-        ]
-        assert (
-            len(self.headers)
-            == len(self.seqs)
-            == len(self.ids)
-            == len(self.descriptions)
-        ), "error in parsing FASTA file."
-        self.num = len(self.ids)
-        self.text = self.format()
+        if len(text) > 0:
+            text_lines = [
+                line.replace(";", ">").strip()
+                for line in text.splitlines()
+                if len(line) > 0
+            ]
+            self.headers = [line for line in text_lines if ">" in line]
+            self.seqs = "".join(
+                [line if ">" not in line else "<split>" for line in text_lines][1:]
+            ).split("<split>")
+            first_space_indices = [header.index(" ") for header in self.headers]
+            self.ids = [
+                self.headers[i][1 : first_space_indices[i]]
+                for i in range(len(self.headers))
+            ]
+            self.descriptions = [
+                self.headers[i][first_space_indices[i] + 1 :]
+                for i in range(len(self.headers))
+            ]
+            assert (
+                len(self.headers)
+                == len(self.seqs)
+                == len(self.ids)
+                == len(self.descriptions)
+            ), "error in parsing FASTA file."
+            self.num = len(self.ids)
+            self.text = self.format()
+        else:
+            self.num = 0
+
+    def __len__(self):
+        return self.num
 
     def __repr__(self):
-        return f"<{self.__module__}.{type(self).__qualname__} of {self.num} seqs at {hex(id(self))}>"
+        return f"<{self.__module__}.{type(self).__qualname__} of {self.num} {'seqs' if self.num != 1 else 'seq'} at {hex(id(self))}>"
 
     def __str__(self):
         return self.text
@@ -247,6 +257,54 @@ class FParser:
         FParser
         """
         return cls.fromfile(os.path.join(HOME, "miRBase", f"{species}.fa"))
+
+    @classmethod
+    def fromregistry(
+        cls, part: Optional[str] = None, parts: Optional[Collection[str]] = None
+    ):
+        """
+        Create a :class:`FParser` instance from a part
+        in the Registry of Standard Biological Parts.
+
+        Alternatively, create a list of :class:`FParser`s
+        from a collection of parts.
+
+        Parameters
+        ----------
+        part : str, optional
+        parts : Collection[str], optional
+
+        Returns
+        -------
+        FParser | list[FParser]
+
+        Raises
+        ------
+        ValueError
+            If neither `part` nor `parts` is supplied.
+        """
+        if parts:
+            if part:
+                parts.append(part)
+        elif part:
+            parts = [part]
+        else:
+            raise ValueError(
+                "at least one of the arguments `part` and `parts` must not blank."
+            )
+        url = "https://parts.igem.org/cgi/xml/part.cgi?part=" + ".".join(parts)
+        try:
+            xml_text = urllib.request.urlopen(url).read().decode()
+        except urllib.error.URLError as e:
+            raise urllib.error.URLError(f"connection to {url} timed out.") from e
+        assert "error" not in xml_text.lower()
+        root = ElementTree.fromstring(xml_text)
+        new = cls("")
+        new.ids = parts
+        new.descriptions = [tag.text for tag in root.findall(".//part_short_desc")]
+        new.seqs = [tag.text for tag in root.findall(".//seq_data")]
+        new.num = len(parts)
+        return cls(new.format())
 
     @staticmethod
     def _seq_format(seq, seq_width: int) -> str:
