@@ -1,11 +1,12 @@
 """A sub-module to run a :class:`~thtools.core.ToeholdTest` across temperature ranges."""
 
-from typing import Sequence, Optional, Generator
+from typing import Sequence, Optional, Generator, List
 import datetime
 import re
 
 import nupack
 import numpy as np
+import scipy.interpolate
 import prettytable
 import seaborn as sns
 import matplotlib
@@ -159,7 +160,7 @@ class CelsiusRangeResult:
 
     @inferred_target.setter
     def inferred_target(self, value):
-        self.meta["Target"] = self._inferred_target = value
+        self.meta["Target sequence"] = self._inferred_target = value
         self.meta["Target name"] = self._inferred_target_name = self.target_names[
             self.targets.index(value)
         ]
@@ -207,9 +208,7 @@ class CelsiusRangeResult:
     def __repr__(self):
         return f"<{self.__module__}.{type(self).__qualname__} of {len(self.results)} ToeholdTests at {hex(id(self))}>"
 
-    def plot(
-        self, y: str = "activation", filename: Optional[str] = None, swap: bool = False
-    ):
+    def plot(self, y: str = "activation", z_score=1.96, swap: bool = False):
         """
         Plot temperature against activation, with color being the specificity.
 
@@ -239,41 +238,66 @@ class CelsiusRangeResult:
             - RBS unbinding
             - AUG unbinding
             - post-AUG unbinding
-        filename : str, optional
-            The filename to save the figure to if desired.
+        z_score : float, default = 1.96
+            The Z score to multiply SE with when drawing error bars.
+            The default represents a 95% confidence interval.
         swap : bool, optional
             Whether or not to swap the specificity and activation in the plot. Defaults to False.
         """
         y = re.sub(r"[\W ]+", "", y).strip().lower().replace(" ", "_")
         y_name = y.replace("_", " ").capitalize() + " %"
-        x_vals = self.celsius_range
+        x_vals = np.asarray(self.celsius_range)
         cmap = sns.color_palette("crest", as_cmap=True)
         fig, ax = plt.subplots()
         formatter = matplotlib.ticker.ScalarFormatter(useOffset=False)
         if not swap:
             y_vals = np.asarray(getattr(self, y)) * 100
             z_vals = np.asarray(self.specificity) * 100
-            scatter = ax.scatter(x_vals, y_vals, c=z_vals, cmap=cmap)
+            y_err = np.asarray(self.activation_se) * z_score * 100
+            scatter = ax.scatter(x_vals, y_vals, c=z_vals, cmap=cmap, zorder=3)
             fig.colorbar(scatter, label="Specificity %", format=formatter)
             ax.set_xlabel("Temperature /°C")
             ax.set_ylabel(y_name)
         else:
             y_vals = np.asarray(self.specificity) * 100
             z_vals = np.asarray(getattr(self, y)) * 100
-            scatter = ax.scatter(x_vals, y_vals, c=z_vals, cmap=cmap)
+            y_err = np.asarray(self.specificity_se) * z_score * 100
+            scatter = ax.scatter(x_vals, y_vals, c=z_vals, cmap=cmap, zorder=3)
             fig.colorbar(scatter, label=y_name, format=formatter)
             ax.set_xlabel("Temperature /°C")
             ax.set_ylabel("Specificity %")
+        ax.errorbar(
+            x_vals, y_vals, yerr=y_err, fmt="none", ecolor="black", capsize=3, zorder=1
+        )
+        self._lobf(ax, x_vals, y_vals, y_err)
         ax.set_axisbelow(True)
         ax.grid()
         plt.title(
-            f"CRT for toehold detecting {self.inferred_target_name if self.inferred_target_name is not None else self.inferred_target}"
+            f"CRT for toehold detecting {self.inferred_target_name if self.inferred_target_name else self.inferred_target}"
         )
-        if filename is not None:
-            fig.savefig(filename, dpi=1200)
-            return plt
-        else:
-            return plt
+        return plt
+
+    @staticmethod
+    def _lobf(ax, x_vals, y_vals, y_err: np.ndarray, k=3, zorder=2):
+        weights = np.divide(
+            1, y_err, out=np.full_like(y_err, 100), where=y_err != 0
+        )  # set w to 100 if ZeroDivision
+        # weights = y_err.max() - y_err
+        x_smooth = np.linspace(x_vals.min(), x_vals.max(), num=500)
+        y_smooth = scipy.interpolate.UnivariateSpline(x_vals, y_vals, w=weights, k=k)(
+            x_smooth
+        )
+        ax.plot(x_smooth, y_smooth, color="firebrick", zorder=zorder)
+
+    def savefig(
+        self, path: str, y: str = "activation", z_score=1.96, swap: bool = False
+    ):
+        """
+        Convenience function saving the figure from :meth:`plot`.
+
+        See :meth:`plot`.
+        """
+        self.plot(y, z_score, swap).savefig(path, dpi=1200)
 
     def __str__(self):
         return self.prettify()
@@ -289,10 +313,13 @@ class CelsiusRangeResult:
         """
         table = prettytable.PrettyTable()
         table.add_column("Temperature /°C", self.celsius_range)
-        table.add_column("Target", self.targets)
-        if len(self.target_names) > 0 and not all(self.target_names):
-            names = ["+".join(name) for name in self.target_names]
-            table.add_column("Name", names)
+        if self.target_names:
+            names = [
+                "+".join(name) if not isinstance(name, str) else name
+                for name in self.target_names
+            ]
+            table.add_column("Target name", names)
+        table.add_column("Target sequence", self.targets)
         table.add_column("Activation %", [i * 100 for i in self.activation])
         table.add_column("Specificity %", [i * 100 for i in self.specificity])
         table.add_column("Activation SE", [i * 100 for i in self.activation_se])
@@ -471,15 +498,18 @@ class CelsiusRangeTest:
         -----
         Unlike :meth:`generate`, this method has no significant performance penalty compared to :meth:`run`.
         """
-        chunks = []
+        chunks: List[ToeholdTest] = []
         for celsius in self.celsius_range:
             chunks.append(
                 self._adjust_temperature(celsius).run(max_size, n_samples, n_nodes)
             )
             yield chunks[-1]
-        self.result = CelsiusRangeResult(
-            chunks, self.celsius_range, meta={"THS": self.thtest.ths}
-        )
+        self.meta = chunks[-1].meta
+        del self.meta["Temperature /°C"]
+        del self.meta["Specificity %"]
+        del self.meta["Specificity SE"]
+        del self.meta["Runtime /s"]
+        self.result = CelsiusRangeResult(chunks, self.celsius_range, meta=self.meta)
 
     def _adjust_temperature(self, celsius: float) -> ToeholdTest:
         new_thtest = self.thtest.copy()
