@@ -104,11 +104,29 @@ class FParser:
     def __len__(self):
         return self.num
 
+    def __mul__(self, other):
+        if isinstance(other, int):
+            new = self.copy()
+            for _ in range(other - 1):
+                new += self
+            return new
+        else:
+            raise NotImplementedError("only scalar multiplication is supported.")
+
+    __rmul__ = __mul__
+
     def __repr__(self):
         return f"<{self.__module__}.{type(self).__qualname__} of {self.num} {'seqs' if self.num != 1 else 'seq'} at {hex(id(self))}>"
 
     def __str__(self):
         return self.text
+
+    def __eq__(self, other):
+        return (
+            self.ids == other.ids
+            and self.seqs == other.seqs
+            and self.descriptions == other.descriptions
+        )
 
     def __add__(self, other):
         new = self.__new__(type(self))
