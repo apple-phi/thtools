@@ -281,11 +281,11 @@ cdef class ToeholdTest:
             final_result = np.concatenate(chunked_result, axis=1)
         else:
             final_result = self._worker()
+        self.meta["Runtime /s"] = time.time()-self.start
         self.result = ToeholdResult(self.trigger_sets,
                                     *final_result,
                                     self.meta)
         self.result.names = self.names # make sure to use property setter
-        self.meta["Runtime /s"] = time.time()-self.start
         return self.result
         
     def generate(self,
@@ -340,11 +340,11 @@ cdef class ToeholdTest:
             for subarray in chunk.T:
                 yield subarray
         final_result = np.concatenate(chunked_result, axis=1)
+        self.meta["Runtime /s"] = time.time()-self.start
         self.result = ToeholdResult(self.trigger_sets,
                                      *final_result,
                                      self.meta)
         self.result.names = self.names # make sure to use property setter
-        self.meta["Runtime /s"] = time.time()-self.start
 
     cpdef void _setup(self) except *:
         cdef:
@@ -603,6 +603,10 @@ cdef class ToeholdResult:
         this is the RNA sequence.
     target_name : str
         The name of the trigger_set with the highest activation probability.
+    target_activation : float
+        The switch activation probability with the target trigger set.
+    target_activation_se : float
+        The standard error of the switch activation probability with the target trigger set.
 
     unix_created : datetime.datetime
         UNIX timestamp of the creation of the :class:`ToeholdResult`.
@@ -634,6 +638,8 @@ cdef class ToeholdResult:
         readonly object target_set
         readonly Py_ssize_t target_index
         readonly str target_name
+        readonly double target_activation
+        readonly double target_activation_se
 
         readonly datetime.datetime unix_created
         readonly str date
@@ -664,13 +670,16 @@ cdef class ToeholdResult:
         self.target = self.trigger_sets[self.target_index]
         if len(self.target) == 1:
             self.target = self.target[0]
+        self.target_activation = self.activation[self.target_index]
+        self.target_activation_se = self.activation_se[self.target_index]
 
         self.specificity, self.specificity_se = specificity_ci(activation, activation_se)
 
         self.unix_created = datetime.datetime.now()
         self.meta = meta
 
-        self.meta["Target RNA"] = self.target
+        self.meta["Target sequence"] = self.target
+        self.meta["Target name"] = self.target_name
         self.meta["Specificity %"] = self.specificity*100
         self.meta["Specificity SE"] = self.specificity_se*100
 
@@ -718,9 +727,11 @@ cdef class ToeholdResult:
             if names is None:
                 names = self._names
             # assert hasattr(names, "__len__"), "names must have a __len__ method"
-            if len(names) > 0 and not all(names):
-                names = ["+".join(name) for name in names]
-                table.add_column("Name", names)
+            names = ["+".join(name)
+                     if not isinstance(name, str)
+                     else name
+                     for name in names]
+            table.add_column("Name", names)
         table.add_column("Sequence", ["+".join(s) for s in self.trigger_sets])
         table.add_column("Activation %", self.activation*100)
         if <bint> show_unbinding:
