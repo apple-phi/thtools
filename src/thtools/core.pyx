@@ -1,5 +1,6 @@
 #!python
-#cython: language_level=3, cdivision=True, initializedcheck=False, binding=True, emit_code_comments=True, linetrace=True
+#cython: language_level=3, cdivision=True, initializedcheck=False, binding=True, linetrace=True
+#distutils: define_macros=CYTHON_TRACE_NOGIL=1
 #distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 
 """The sub-module which is the *raison d'être* for ToeholdTools' existence."""
@@ -281,11 +282,7 @@ cdef class ToeholdTest:
             final_result = np.concatenate(chunked_result, axis=1)
         else:
             final_result = self._worker()
-        self.meta["Runtime /s"] = time.time()-self.start
-        self.result = ToeholdResult(self.trigger_sets,
-                                    *final_result,
-                                    self.meta)
-        self.result.names = self.names # make sure to use property setter
+        self._finally(final_result)
         return self.result
         
     def generate(self,
@@ -340,11 +337,7 @@ cdef class ToeholdTest:
             for subarray in chunk.T:
                 yield subarray
         final_result = np.concatenate(chunked_result, axis=1)
-        self.meta["Runtime /s"] = time.time()-self.start
-        self.result = ToeholdResult(self.trigger_sets,
-                                     *final_result,
-                                     self.meta)
-        self.result.names = self.names # make sure to use property setter
+        self._finally(final_result)
 
     cpdef void _setup(self) except *:
         cdef:
@@ -407,6 +400,16 @@ cdef class ToeholdTest:
         assert trigger_array.ndim == 2, "trigger_sets must have exactly 2 dimensions."
         assert conc_array.ndim == 2, "conc_sets must have exactly 2 dimensions."
         assert <bint> (conc_array > 0).all(), "all concentrations must be > 0."
+
+    cdef void _finally(self, np.ndarray final_result):
+        self.meta["Runtime /s"] = time.time()-self.start
+        self.result = ToeholdResult(self.trigger_sets,
+                                    *final_result,
+                                    self.meta)
+        self.result.names = self.names # make sure to use property setter
+        self.pool.close()
+        self.pool.join()
+        self.pool.clear()
 
     def _worker(self,
                 object trigger_sets_chunk = np.empty(shape=(1,0), dtype=str),
@@ -540,16 +543,19 @@ cdef class ToeholdTest:
     # may or may not be worth it in terms of effort per performance
     # perhaps str/str types are never needed in processing: just directly interface with nupack C++???
 
+    @cython.profile(False)
     cdef inline bint _rbs_exposed(self, str ths_struct):
         """Test if rbs is fully unbound"""
         cdef str rbs_struct = ths_struct[self._rbs_slice[0]:self._rbs_slice[1]]
         cdef int rbs_len = self._rbs_slice[1] - self._rbs_slice[0]
         return rbs_struct == ("." * rbs_len)
-    
+
+    @cython.profile(False)
     cdef inline bint _aug_exposed(self, str ths_struct):
         """Test if aug is fully unbound"""
         return ths_struct[self.aug_position:self.aug_position+3] == "..."
     
+    @cython.profile(False)
     cdef inline bint _post_aug_exposed(self, str ths_struct):
         """Test for binding to previous regions based of DPP notation"""
         cdef str post_aug = ths_struct[self.aug_position+3:]
