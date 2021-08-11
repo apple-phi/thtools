@@ -13,6 +13,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
     env:
       CIBW_SKIP: pp* # Skip building for PyPy
+      CIBW_BUILD_FRONTEND: "build" # build with https://github.com/pypa/build/ instead of pip
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
