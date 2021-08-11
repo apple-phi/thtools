@@ -18,7 +18,7 @@ def test_autoconfig(hsa_miR_210_3p_thtest, hsa_fasta_slice):
 
 
 def test_find_rbs():
-    assert tt.find_rbs("AAGGUCACC", "GGU") == slice(2, 5)
+    assert tt.find_rbs("AAGGUCACC", "GGU", mult_check=True) == slice(2, 5)
 
 
 def test_ModelNu3():
