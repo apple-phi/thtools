@@ -2,13 +2,7 @@
 requires-python = ">=3.6"
 
 [build-system]
-requires = [
-    "setuptools>=57.4.0",
-    "wheel>=0.36.2",
-    "numpy",
-    "Cython",
-    "pygments",
-]
+requires = ["setuptools", "wheel", "numpy", "Cython", "pygments"]
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
