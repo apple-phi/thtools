@@ -3,7 +3,7 @@
 plugins = Cython.Coverage
 concurrency =
     gevent
-source = src
+source = .
 omit =
     src/thtools/__main__.py
     src/thtools/app/*
