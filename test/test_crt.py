@@ -56,7 +56,7 @@ def test_plot_swap(hsa_miR_210_3p_crt_result):
     x, y = plt.gca().lines[0].get_xydata().T
     assert (
         np.greater_equal(100, y[:7]).all()
-        and np.greater_equal(y[:7], 99).all()
+        and np.greater_equal(y[:7], 90).all()
         and np.equal(y[8:], 0).all()
     )
 
