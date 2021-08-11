@@ -9,12 +9,40 @@ def test_format(hsa_fasta_slice):
     assert tt.FParser(hsa_fasta_slice.format(line_length=1)) == hsa_fasta_slice
 
 
-def test_index(hsa_fasta_slice):
+def test_index_by_id(hsa_fasta_slice):
     assert (
         hsa_fasta_slice["hsa-miR-210-3p"]
         == hsa_fasta_slice[::-1][
             len(hsa_fasta_slice) - hsa_fasta_slice.index("hsa-miR-210-3p") - 1
         ][1]
+        == "CUGUGCGUGUGACAGCGGCUGA"
+    )
+
+
+def test_index_by_seq(hsa_fasta_slice):
+    assert hsa_fasta_slice["CUGUGCGUGUGACAGCGGCUGA"] == "hsa-miR-210-3p"
+
+
+def test_getitem_by_description_or_header(hsa_fasta_slice):
+    index_210_3p = hsa_fasta_slice.index("CUGUGCGUGUGACAGCGGCUGA")
+    assert (
+        hsa_fasta_slice[hsa_fasta_slice.descriptions[index_210_3p]]
+        == hsa_fasta_slice[hsa_fasta_slice.headers[index_210_3p]]
+        == ("hsa-miR-210-3p", "CUGUGCGUGUGACAGCGGCUGA")
+    )
+
+
+def test_index_by_description_or_header(hsa_fasta_slice):
+    assert (
+        hsa_fasta_slice[
+            hsa_fasta_slice.index(
+                ">hsa-miR-210-3p MIMAT0000267 Homo sapiens miR-210-3p"
+            )
+        ]
+        == hsa_fasta_slice[
+            hsa_fasta_slice.index("MIMAT0000267 Homo sapiens miR-210-3p")
+        ]
+        == ("hsa-miR-210-3p", "CUGUGCGUGUGACAGCGGCUGA")
     )
 
 
