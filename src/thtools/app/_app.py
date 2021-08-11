@@ -17,25 +17,6 @@ APP_HOME = os.path.join(HOME, "app")
 thtools.core.USE_TIMER = False
 eel.init(os.path.join(APP_HOME, "web"))
 
-################################################################################
-
-
-SUPPRESS_ERRORS = True
-
-
-class ErrorHandler:
-    """Suppress errors in Python and emit them to Fomantic modal via JS."""
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if SUPPRESS_ERRORS and exc_type is not None:
-            msg = f"{type(exc_val).__name__}: {str(exc_val)}"
-            eel.report_error_js(msg)
-            print(msg)
-            sys.exit()
-
 
 ################################################################################
 class GlobalData:
@@ -52,6 +33,22 @@ class GlobalData:
 
 
 gd = GlobalData()
+
+
+################################################################################
+
+
+class ErrorHandler:
+    """Emit errors to Fomantic modal in JS."""
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type:
+            msg = f"{type(exc_val).__name__}: {str(exc_val)}"
+            eel.report_error_js(msg)
+            return False
 
 
 ################################################################################
@@ -164,10 +161,8 @@ def send_result_py():
 ################################################################################
 
 
-def start(suppress_errors=True):
-    global SUPPRESS_ERRORS
-    SUPPRESS_ERRORS = suppress_errors
-    eel.start("index.html", size=(1920, 1080))
+def start(**kwargs):
+    eel.start("index.html", size=(1920, 1080), **kwargs)
 
 
 ################################################################################

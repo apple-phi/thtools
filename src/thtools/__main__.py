@@ -1,14 +1,13 @@
 # NOTE: all imports must be absolute otherwise PyInstaller will not compile correctly
 import sys
 
-if len(sys.argv) > 1:
+if len(sys.argv) == 1:
+    from thtools import app
+
+    app.start()
+else:
     arg = sys.argv[1]
-    if arg in ("dev", "debug"):
-        from thtools import app
-
-        app.start(False)
-
-    elif arg == "build_demo":
+    if arg == "build_demo":
         import os
         import shutil
         import pkg_resources
@@ -59,7 +58,3 @@ if len(sys.argv) > 1:
 
     else:
         raise ValueError("Argument '" + " ".join(sys.argv[1:]) + "' not recognized.")
-else:
-    from thtools import app
-
-    app.start()

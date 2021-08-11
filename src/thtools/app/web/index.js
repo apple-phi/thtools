@@ -14,7 +14,13 @@ async function add_species() {
 			species_list[i] +
 			'</option>';
 	}
-	$('#species_options_html').append(html_to_insert).dropdown();
+	$('#species_options_html')
+		.append(html_to_insert)
+		.dropdown({
+			onChange: function (text, value) {
+				update_FASTA_text();
+			},
+		});
 }
 
 async function update_FASTA_text() {
