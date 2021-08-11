@@ -148,7 +148,7 @@ css = HtmlFormatter(style=MyStyle).get_style_defs()
 with open("docs/source/_static/pygments.css", "w") as f:
     f.write(
         datetime.datetime.now().strftime(
-            "/* Created on %b %-d %Y at %H:%M:%S by make_pygments.py */"
+            "/* Created on %b %d %Y at %H:%M:%S by make_pygments.py */"
         )
         + "\n"
         + css
