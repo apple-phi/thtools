@@ -1,9 +1,16 @@
+[project]
+requires-python = ">=3.6"
+
 [build-system]
 requires = [
     "setuptools>=57.4.0",
     "wheel>=0.36.2",
     "numpy",
     "Cython",
-    "pygments"
+    "pygments",
 ]
 build-backend = "setuptools.build_meta"
+
+[tool.cibuildwheel]
+skip = "pp*" # Skip building for PyPy
+build-frontend = "build" # build with https://github.com/pypa/build/ instead of pip
