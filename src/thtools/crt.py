@@ -153,6 +153,21 @@ class CelsiusRangeResult:
         # assume the mode is the actual target
         self.inferred_target = max(set(self.targets), key=self.targets.count)
 
+    def __eq__(self, other):
+        return (
+            self.celsius_range == other.celsius_range
+            and self.results == other.results
+            and self._inferred_target == other._inferred_target
+        )
+
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            return self.__class__(self.results[key], self.celsius_range[key], self.meta)
+        elif isinstance(key, int):
+            return self.results[key]
+        else:
+            raise NotImplementedError("__getitem__ only supports slice and int")
+
     @property
     def inferred_target(self):
         """The target sequence inferred from the mode of the individual :class:`~thtools.core.ToeholdTest` highest activators."""
@@ -207,6 +222,11 @@ class CelsiusRangeResult:
 
     def __repr__(self):
         return f"<{self.__module__}.{type(self).__qualname__} of {len(self.results)} ToeholdTests at {hex(id(self))}>"
+
+    def copy(self):
+        new = self.__class__(self.results, self.celsius_range, self.meta)
+        new.inferred_target = self.inferred_target
+        return new
 
     def plot(self, y: str = "activation", z_score=1.96, swap: bool = False):
         """
