@@ -147,6 +147,7 @@ class FParser:
             new.ids = self.ids[key]
             new.seqs = self.seqs[key]
             new.descriptions = self.descriptions[key]
+            new.headers = self.headers[key]
             new.num = len(new.ids)
             new.text = new.format()
             return new
