@@ -1,7 +1,7 @@
 """A sub-module containing utility functions and objects."""
 
 import itertools
-from typing import Collection, Iterable, Optional
+from typing import Collection, Optional
 
 import numpy as np
 import nupack
