@@ -1,0 +1,34 @@
+[run]
+# Cython coverage not working atm due to https://github.com/cython/cython/pull/3831
+plugins = Cython.Coverage
+concurrency =
+    gevent
+source = thtools
+omit =
+    src/thtools/__main__.py
+    src/thtools/app/*
+parallel = true
+
+# [pytest]
+# addopts = --cov=src/thtools --cov-report html
+
+[html]
+directory = coverage_html_report
+
+[report]
+ignore_errors = true
+show_missing = true
+
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    def tabulate
+    def prettify
+    def to_csv
+    def to_html
+    def to_json
+    def savefig
+    def __repr__
+    def __str__
+    except
+    raise
+    if __name__ == .__main__.:

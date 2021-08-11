@@ -2,6 +2,7 @@
 
 ## General
 - Increase code coverage
+- Implement Cython coverage report; see https://github.com/cython/cython/pull/3831
 
 ## Source
 - Add probes and design

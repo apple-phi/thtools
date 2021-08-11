@@ -18,3 +18,7 @@ assets
 generated
 pygments.css
 favicon.png
+registry/contributions/
+*coverage.*
+.coverage
+coverage_html_report
