@@ -1,22 +1,16 @@
 # ToeholdTools
 ![Python](https://img.shields.io/pypi/pyversions/thtools?style=flat-square)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/thtools?style=flat-square)](https://pypi.org/project/thtools/)
+[![GitHub](https://img.shields.io/github/license/lkn849/thtools?style=flat-square)](https://github.com/lkn849/thtools/blob/master/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/thtools?style=flat-square)](https://pypi.org/project/thtools/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/thtools?style=flat-square)](https://pypistats.org/packages/thtools)
 [![Build](https://img.shields.io/github/workflow/status/lkn849/thtools/Build?style=flat-square)](https://github.com/lkn849/thtools/actions/workflows/autowheel.yml)
 [![Documentation Status](https://img.shields.io/readthedocs/thtools?style=flat-square)](https://thtools.readthedocs.io/)
+[![Codecov](https://img.shields.io/codecov/c/github/lkn849/thtools?style=flat-square)](https://codecov.io/gh/lkn849/thtools/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/lkn849/thtools.svg?logo=lgtm&style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/context:python)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/lkn849/thtools.svg?logo=lgtm&style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/context:javascript)
+[![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/lkn849/thtools?style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/)
 
 A library for the analysis of toehold switch riboregulators created by the iGEM team City of London UK 2021.
-
-## Contents
-- [ToeholdTools](#toeholdtools)
-  - [Contents](#contents)
-  - [What is ToeholdTools?](#what-is-toeholdtools)
-  - [Installation](#installation)
-  - [Run demo](#run-demo)
-  - [Documentation](#documentation)
-  - [License](#license)
-  
 ## What is ToeholdTools?
 ToeholdTools is a package designed to facilitate analyzing and designing toehold switches.
 It's still in the making, so please leave a feature request
@@ -35,7 +29,7 @@ We cannot build for PyPy since it not supported by all dependencies.
 
 You can install ToeholdTools from PyPI via pip:
 ```bash
-python3 -m pip install thtools -U
+python3 -m pip install -U thtools
 ```
 
 Alternatively, you can build the latest development version of the project from source yourself:
