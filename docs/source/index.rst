@@ -45,7 +45,7 @@ You can install ToeholdTools from PyPI via pip:
 
 .. code-block:: bash
 
-   $ python3 -m pip install thtools -U
+   $ python3 -m pip install -U thtools
 
 Alternatively, you can build the latest development version of the project from source yourself:
 
