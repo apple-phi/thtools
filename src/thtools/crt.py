@@ -310,14 +310,20 @@ class CelsiusRangeResult:
         ax.plot(x_smooth, y_smooth, color="firebrick", zorder=zorder)
 
     def savefig(
-        self, fname, y: str = "activation", z_score=1.96, swap: bool = False, **kwargs
+        self,
+        fname,
+        y: str = "activation",
+        z_score=1.96,
+        swap: bool = False,
+        dpi=1200,
+        **kwargs,
     ):
         """
         Convenience function saving the figure from :meth:`plot`.
 
         See :meth:`plot`. All kwargs are passed to :func:`matplotlib.pyplot.savefig`.`
         """
-        self.plot(y, z_score, swap).savefig(fname, dpi=1200, **kwargs)
+        self.plot(y, z_score, swap).savefig(fname, dpi=dpi, **kwargs)
 
     def __str__(self):
         return self.prettify()
