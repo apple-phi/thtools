@@ -40,6 +40,7 @@ We cannot build for PyPy since it not supported by all dependencies.
 .. important::
    Before installation, make sure you have downloaded the NUPACK library by following the instructions
    `here <https://piercelab-caltech.github.io/nupack-docs/start/#installation-requirements>`_.
+   If you are a Windows user, you will be installing both NUPACK and ToeholdTools via the Linux subsystem.
 
 You can install ToeholdTools from PyPI via pip:
 
