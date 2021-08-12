@@ -108,7 +108,7 @@ class Contribution:
         self.rbs = self.toml_dict["rbs"]
         self.species = self.toml_dict["species"]
         self.celsius = self.toml_dict["celsius"]
-        self.fasta = tt.FParser.fromspecies(self.species)[29:75]  # [48:53]
+        self.fasta = tt.FParser.fromspecies(self.species)  # [29:75]  # [48:53]
         self.mirna = {
             key: value
             for key, value in self.toml_dict.items()
