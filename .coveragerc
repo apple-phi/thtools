@@ -18,15 +18,12 @@ directory = coverage_html_report
 [report]
 ignore_errors = true
 show_missing = true
-
-# Regexes for lines to exclude from consideration
 exclude_lines =
     def tabulate
     def prettify
     def to_csv
     def to_html
     def to_json
-    def savefig
     def __repr__
     def __str__
     except

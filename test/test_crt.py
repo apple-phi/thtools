@@ -1,6 +1,9 @@
+import tempfile
+
 import pytest
 import scipy.optimize
 import numpy as np
+from PIL import Image, ImageChops
 
 import thtools as tt
 
@@ -63,3 +66,13 @@ def test_plot_swap(hsa_miR_210_3p_crt_result):
 
 def test_getitem(hsa_miR_210_3p_crt_result):
     assert hsa_miR_210_3p_crt_result[0] == hsa_miR_210_3p_crt_result.results[0]
+
+
+def test_savefig(hsa_miR_210_3p_crt_result):
+    # https://stackoverflow.com/questions/35176639/compare-images-python-pil
+    tmp1 = tempfile.TemporaryFile(suffix=".png")
+    hsa_miR_210_3p_crt_result.savefig(tmp1, dpi=1200)
+    tmp2 = tempfile.TemporaryFile(suffix=".png")
+    hsa_miR_210_3p_crt_result.plot().savefig(tmp2, dpi=1200)
+    with Image.open(tmp1) as im1, Image.open(tmp2) as im2:
+        assert not ImageChops.difference(im1, im2).getbbox()
