@@ -46,7 +46,8 @@ The temperature&ndash;activation&ndash;specificity relationship is shown here:
 
 [[File:{part}_crt.png|500px|center]]
 
-Error bars represent the standard error (SE). The line of best fit was calculated using a univariate B-spline weighted inverse to SE.
+Error bars represent the standard error (SE).
+The line of best fit was calculated using a univariate B-spline weighted inverse to each point's SE.
 
 """
 BAD_SWITCH = """'''Since this switch does not accurately detect the desired target miRNA, we do not recommend this part for use.'''"""
@@ -215,6 +216,6 @@ class Contribution:
 
 
 if __name__ == "__main__":
+    Contribution(os.path.join(HOME, "2019_SASTRA_Thanjavur.toml"))
     Contribution(os.path.join(HOME, "2017_CLSB_UK.toml"))
-    # Contribution(os.path.join(HOME, "2019_SASTRA_Thanjavur.toml"))
-    # Contribution(os.path.join(HOME, "2020_CSMU_Taiwan.toml"))
+    Contribution(os.path.join(HOME, "2020_CSMU_Taiwan.toml"))
