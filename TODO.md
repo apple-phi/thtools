@@ -19,3 +19,6 @@
 
 ## iGEM
 - Part characterization
+
+## CI
+- Build wheels for CPython 3.10
