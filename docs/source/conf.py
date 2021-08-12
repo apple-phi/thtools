@@ -83,6 +83,7 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "pathos": ("https://pathos.readthedocs.io/en/latest/", None),
     # "nupack": ("https://docs.nupack.org/", None), # not supported :(
+    "matplotlib": ("https://matplotlib.org/stable/", None),
 }
 
 if __name__ == "__main__":
