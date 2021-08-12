@@ -159,6 +159,7 @@ class Contribution:
                     for _ in crt.generate(max_size=len(toeholds) + len(antis) + 1):
                         switch_bar.update()
                     self.crts[mirna][name] = crt.result
+        print(f"Simulation of team {self.team}'s toehold switches finished")
 
     def save(self):
         mkdir(os.path.join(HOME, "contributions"))
@@ -213,6 +214,7 @@ class Contribution:
                     desc += BAD_SWITCH
                 with open(os.path.join(partdir, "desc"), "w") as f:
                     f.write(desc)
+        print(f"Results for {self.team} saved.")
 
 
 if __name__ == "__main__":
