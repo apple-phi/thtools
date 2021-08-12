@@ -123,10 +123,10 @@ class Contribution:
 
     def run(self):
         for mirna, switch in tqdm.tqdm(self.mirna.items(), desc=self.team):
-            toeholds = tt.FParser.fromregistry(parts=switch["toeholds"])
+            toeholds = tt.FParser.fromregistry(parts=switch["toeholds"], retry=True)
             if "antis" in switch:
                 antis = [
-                    [tt.FParser.fromregistry(part=part).seqs[0].upper()]
+                    [tt.FParser.fromregistry(part=part, retry=True).seqs[0].upper()]
                     if part
                     else None
                     for part in switch["antis"]

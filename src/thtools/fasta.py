@@ -279,7 +279,10 @@ class FParser:
 
     @classmethod
     def fromregistry(
-        cls, part: Optional[str] = None, parts: Optional[Collection[str]] = None
+        cls,
+        part: Optional[str] = None,
+        parts: Optional[Collection[str]] = None,
+        retry=False,
     ):
         """
         Create a :class:`FParser` instance from a part
@@ -315,7 +318,11 @@ class FParser:
         try:
             xml_text = urllib.request.urlopen(url).read().decode()
         except urllib.error.URLError as e:
-            raise urllib.error.URLError(f"connection to {url} timed out.") from e
+            if retry:
+                print(f"connection to {url} timed out. Retrying...")
+                cls.fromregistry(parts=parts, retry=True)
+            else:
+                raise urllib.error.URLError(f"connection to {url} timed out.") from e
         assert "error" not in xml_text.lower()
         root = ElementTree.fromstring(xml_text)
         new = cls("")
