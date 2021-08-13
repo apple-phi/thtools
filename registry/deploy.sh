@@ -1,17 +1,22 @@
 #!/bin/bash
 
 NAME="thtools-1"
-ZONE=europe-west2-c
+ZONE=us-west4-a
 
-gcloud compute instances create $NAME \
-    --image-family=ubuntu-minimal-2004-lts  \
-    --image-project=ubuntu-os-cloud \
-    --custom-cpu=12 \
-    --custom-memory=48GB
-    --custom-vm-type=n2d \
-    --metadata-from-file startup-script=startup.sh \
-    --zone $ZONE \
-    --scopes compute, cloud-platform, devstorage.read_write
+function create_vm {
+    gcloud compute instances create $NAME \
+        --zone $ZONE \
+        --metadata-from-file startup-script=startup.sh \
+        --scopes=compute-rw,cloud-platform,storage-rw,default \
+        --image-family=ubuntu-minimal-2004-lts  \
+        --image-project=ubuntu-os-cloud \
+        --machine-type=n2d-highcpu-8 \
+    ;
+}
 
-# https://askubuntu.com/a/430383
-watch -n 60 'gcloud compute instances get-serial-port-output $NAME --zone $ZONE'
+# https://linux.die.net/man/1/watch
+function watch_vm {
+    watch -n 60 --differences "gcloud compute instances get-serial-port-output $NAME --zone $ZONE";
+}
+
+create_vm && watch_vm;

@@ -3,9 +3,9 @@
 
 # Self-terminate https://cloud.google.com/community/tutorials/create-a-self-deleting-virtual-machine 
 function terminate {
-    export NAME=$(curl -X GET http://metadata.google.internal/computeMetadata/v1/instance/name -H 'Metadata-Flavor: Google')
-    export ZONE=$(curl -X GET http://metadata.google.internal/computeMetadata/v1/instance/zone -H 'Metadata-Flavor: Google')
-    gcloud --quiet compute instances delete $NAME --zone=$ZONE
+    export NAME=$(curl -X GET http://metadata.google.internal/computeMetadata/v1/instance/name -H 'Metadata-Flavor: Google');
+    export ZONE=$(curl -X GET http://metadata.google.internal/computeMetadata/v1/instance/zone -H 'Metadata-Flavor: Google');
+    gcloud --quiet compute instances delete $NAME --zone=$ZONE;
 }
 
 # Send results to bucket
@@ -13,7 +13,8 @@ function terminate {
 function bucket {
     {
         zip -r contributions.zip contributions && gsutil cp contributions.zip gs://thtools-bucket/ &&
-    } || terminate
+        ;
+    } || terminate;
 }
 
 # https://stackoverflow.com/a/61024169
@@ -47,6 +48,7 @@ gsutil cp contrib.py gs://thtools-bucket/
 # Run contrib.py
 {
     python3 contrib.py &&
+    ;
 } || bucket
 
 bucket
