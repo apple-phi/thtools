@@ -1,6 +1,6 @@
 import os
 import pathlib
-from typing import Mapping
+from typing import Mapping, Any
 import math
 import decimal
 
@@ -88,19 +88,24 @@ def to_same_dp(x, template):
 
 
 class Contribution:
-    toml_dict: dict
+    """A class to generate a contribution to the iGEM Parts Registry based on a team.toml configuration file."""
 
+    __slots__ = (
+        "toml_dict",
+        "team",
+        "rbs",
+        "species",
+        "celsius",
+        "fasta",
+        "mirna",
+    )
+    toml_dict: Mapping[str, Any]
     team: str
     rbs: str
     species: str
     celsius: str
-
     fasta: tt.FParser
-    mirna: dict
-    test: tt.ToeholdTest
-
-    thtests: Mapping[str, Mapping[str, tt.ToeholdResult]]
-    crts: Mapping[str, Mapping[str, tt.CelsiusRangeResult]]
+    mirna: Mapping[str, Any]
 
     def __init__(self, path: str, autorun=True):
         self.team = pathlib.Path(path).stem
@@ -109,17 +114,16 @@ class Contribution:
         self.rbs = self.toml_dict["rbs"]
         self.species = self.toml_dict["species"]
         self.celsius = self.toml_dict["celsius"]
-        self.fasta = tt.FParser.fromspecies(self.species)  # [29:75]  # [48:53]
+        self.fasta = tt.FParser.fromspecies(self.species)
         self.mirna = {
             key: value
             for key, value in self.toml_dict.items()
             if key not in ("rbs", "species", "celsius")
         }
-        self.thtests = {}
-        self.crts = {}
+        mkdir(os.path.join(HOME, "contributions"))
+        mkdir(os.path.join(HOME, "contributions", self.team))
         if autorun:
             self.run()
-            self.save()
 
     def run(self):
         for mirna, switch in tqdm.tqdm(self.mirna.items(), desc=self.team):
@@ -133,9 +137,7 @@ class Contribution:
                 ]
             else:
                 antis = [None] * len(toeholds)
-            self.thtests[mirna] = {}
-            self.crts[mirna] = {}
-            for ths, name, anti in tqdm.tqdm(
+            for ths, toehold_name, anti in tqdm.tqdm(
                 zip(toeholds.seqs, toeholds.ids, antis),
                 total=len(toeholds),
                 desc=mirna,
@@ -149,72 +151,73 @@ class Contribution:
                     const_rna=anti,
                 )
                 with tqdm.tqdm(
-                    total=len(CELSIUS_RANGE) + 1, desc=name, leave=None
+                    total=len(CELSIUS_RANGE) + 1, desc=toehold_name, leave=None
                 ) as switch_bar:
-                    self.thtests[mirna][name] = thtest.run(
-                        max_size=len(toeholds) + len(antis) + 1
-                    )
+                    thtest.run(max_size=len(toeholds) + len(antis) + 1)
                     switch_bar.update()
                     crt = tt.CelsiusRangeTest(thtest, CELSIUS_RANGE)
                     for _ in crt.generate(max_size=len(toeholds) + len(antis) + 1):
                         switch_bar.update()
-                    self.crts[mirna][name] = crt.result
-        print(f"Simulation of team {self.team}'s toehold switches finished")
+                self.save(mirna, toehold_name, thtest.result, crt.result)
 
-    def save(self):
-        mkdir(os.path.join(HOME, "contributions"))
-        mkdir(os.path.join(HOME, "contributions", self.team))
-        for (mirna, thtests), (mirna, crts) in zip(
-            self.thtests.items(), self.crts.items()
-        ):
-            for (name, thtest), (name, crt) in zip(thtests.items(), crts.items()):
-                crt.inferred_target_name = thtest.target_name
-                partdir = os.path.join(HOME, "contributions", self.team, name)
-                mkdir(partdir)
-                with open(
-                    os.path.join(partdir, name + "_thtest.txt"),
-                    "w",
-                ) as f:
-                    f.write(thtest.prettify())
-                with open(
-                    os.path.join(partdir, name + "_thtest.csv"),
-                    "w",
-                ) as f:
-                    f.write(thtest.to_csv())
-                with open(
-                    os.path.join(partdir, name + "_crt.txt"),
-                    "w",
-                ) as f:
-                    f.write(crt.prettify())
-                with open(
-                    os.path.join(partdir, name + "_crt.csv"),
-                    "w",
-                ) as f:
-                    f.write(crt.to_csv())
-                crt.savefig(os.path.join(partdir, name + "_graph.png"), z_score=1)
-                specificity_se = to_one_sf(thtest.specificity_se * Z_SCORE * 100)
-                specificity = to_same_dp(thtest.specificity * 100, specificity_se)
-                activation_se = to_one_sf(thtest.target_activation_se * Z_SCORE * 100)
-                activation = to_same_dp(
-                    thtest.target_activation * Z_SCORE * 100, activation_se
-                )
-                desc = TEXT.format(
-                    part=name,
-                    target=mirna,
-                    inferred_target_name=thtest.target_name,
-                    celsius=self.celsius,
-                    specificity=specificity,
-                    specificity_se=specificity_se,
-                    activation=activation,
-                    activation_se=activation_se,
-                    team=self.team,
-                    species=self.species,
-                )
-                if mirna != thtest.target_name:
-                    desc += BAD_SWITCH
-                with open(os.path.join(partdir, "desc"), "w") as f:
-                    f.write(desc)
-        print(f"Results for {self.team} saved.")
+    def save(
+        self,
+        mirna: str,
+        toehold_name: str,
+        thtest_res: tt.ToeholdResult,
+        crt_res: tt.CelsiusRangeResult,
+    ):
+        try:
+            crt_res.inferred_target = thtest_res.target
+        finally:
+            partdir = os.path.join(HOME, "contributions", self.team, toehold_name)
+            mkdir(partdir)
+            with open(
+                os.path.join(partdir, toehold_name + "_thtest.txt"),
+                "w",
+            ) as f:
+                f.write(thtest_res.prettify())
+            with open(
+                os.path.join(partdir, toehold_name + "_thtest.csv"),
+                "w",
+            ) as f:
+                f.write(thtest_res.to_csv())
+            with open(
+                os.path.join(partdir, toehold_name + "_crt.txt"),
+                "w",
+            ) as f:
+                f.write(crt_res.prettify())
+            with open(
+                os.path.join(partdir, toehold_name + "_crt.csv"),
+                "w",
+            ) as f:
+                f.write(crt_res.to_csv())
+            crt_res.savefig(
+                os.path.join(partdir, toehold_name + "_graph.png"), z_score=1
+            )
+            specificity_se = to_one_sf(thtest_res.specificity_se * Z_SCORE * 100)
+            specificity = to_same_dp(thtest_res.specificity * 100, specificity_se)
+            activation_se = to_one_sf(thtest_res.target_activation_se * Z_SCORE * 100)
+            activation = to_same_dp(
+                thtest_res.target_activation * Z_SCORE * 100, activation_se
+            )
+            desc = TEXT.format(
+                part=toehold_name,
+                target=mirna,
+                inferred_target_name=thtest_res.target_name,
+                celsius=self.celsius,
+                specificity=specificity,
+                specificity_se=specificity_se,
+                activation=activation,
+                activation_se=activation_se,
+                team=self.team,
+                species=self.species,
+            )
+            if mirna != thtest_res.target_name:
+                desc += BAD_SWITCH
+            with open(os.path.join(partdir, "desc"), "w") as f:
+                f.write(desc)
+            print(f"Results for {toehold_name} saved.")
 
 
 if __name__ == "__main__":
