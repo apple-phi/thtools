@@ -3,18 +3,18 @@
 
 # Self-terminate https://cloud.google.com/community/tutorials/create-a-self-deleting-virtual-machine 
 function terminate {
-    export NAME=$(curl -X GET http://metadata.google.internal/computeMetadata/v1/instance/name -H 'Metadata-Flavor: Google');
-    export ZONE=$(curl -X GET http://metadata.google.internal/computeMetadata/v1/instance/zone -H 'Metadata-Flavor: Google');
-    gcloud --quiet compute instances delete $NAME --zone=$ZONE;
+    export NAME=$(curl -X GET http://metadata.google.internal/computeMetadata/v1/instance/name -H 'Metadata-Flavor: Google') &&
+    export ZONE=$(curl -X GET http://metadata.google.internal/computeMetadata/v1/instance/zone -H 'Metadata-Flavor: Google') &&
+    gcloud --quiet compute instances delete $NAME --zone=$ZONE
 }
 
 # Send results to bucket
 # try / catch from https://stackoverflow.com/a/15656652
 function bucket {
     {
-        zip -r contributions.zip contributions && gsutil cp contributions.zip gs://thtools-bucket/ &&
-        ;
-    } || terminate;
+        zip -r contributions.zip contributions &&
+        gsutil cp contributions.zip gs://thtools-bucket/
+    } || terminate
 }
 
 # https://stackoverflow.com/a/61024169
@@ -46,10 +46,7 @@ pip install -r requirements.txt
 gsutil cp contrib.py gs://thtools-bucket/
 
 # Run contrib.py
-{
-    python3 contrib.py &&
-    ;
-} || bucket
+python3 contrib.py || bucket
 
 bucket
 terminate
