@@ -7,7 +7,7 @@
 [![Build](https://img.shields.io/github/workflow/status/lkn849/thtools/Build?style=flat-square)](https://github.com/lkn849/thtools/actions/workflows/autowheel.yml)
 [![GitHub Workflow Status (event)](https://img.shields.io/github/workflow/status/lkn849/thtools/Test?label=tests&style=flat-square)](https://github.com/lkn849/thtools/actions/workflows/autotest.yml)
 [![Codecov](https://img.shields.io/codecov/c/github/lkn849/thtools?style=flat-square)](https://codecov.io/gh/lkn849/thtools/)
-[![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/pypi/thtools?style=flat-square)](https://libraries.io/pypi/thtools)
+[![Requires.io](https://img.shields.io/requires/github/lkn849/thtools?style=flat-square)](https://requires.io/github/lkn849/thtools/requirements/?branch=master)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/lkn849/thtools.svg?logo=lgtm&style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/context:python)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/lkn849/thtools.svg?logo=lgtm&style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/context:javascript)
 [![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/lkn849/thtools?style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/)

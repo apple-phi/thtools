@@ -1,7 +1,6 @@
-sphinx-book-theme==0.1.2
-numpydoc==1.1.0
-matplotlib==3.4.2
-sphinx-copybutton==0.4.0
-sphinxcontrib-bibtex==2.3.0
+sphinx-book-theme~=0.1
+numpydoc~=1.1
+sphinx-copybutton~=0.4
+sphinxcontrib-bibtex~=2.3
 # nupack -f https://github.com/beliveau-lab/NUPACK/blob/master/src/package/nupack-4.0.0.23-cp38-cp38-macosx_10_13_x86_64.whl; sys_platform == "darwin"
 # nupack -f https://github.com/beliveau-lab/NUPACK/blob/master/src/package/nupack-4.0.0.23-cp38-cp38-manylinux2014_x86_64.whl; sys_platform == "linux"
