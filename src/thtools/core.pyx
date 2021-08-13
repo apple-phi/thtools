@@ -380,7 +380,7 @@ cdef class ToeholdTest:
         self.pool = pathos.multiprocessing.ProcessPool(nodes=self.n_nodes)
         
         # set NUPACK cache
-        nupack.config.cache = psutil.virtual_memory().available * 1e-9
+        nupack.config.cache = psutil.virtual_memory().available * 1e-9 / 2
 
         # store meta
         self.meta = {"THS"                              :self.ths,
