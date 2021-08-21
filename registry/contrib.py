@@ -3,6 +3,7 @@ import pathlib
 from typing import Mapping, Any
 import math
 import decimal
+import gc
 
 import tomli
 import tqdm
@@ -221,6 +222,9 @@ class Contribution:
 
 
 if __name__ == "__main__":
-    Contribution(os.path.join(HOME, "2019_SASTRA_Thanjavur.toml"))
+    # Contribution(os.path.join(HOME, "2019_SASTRA_Thanjavur.toml"))
+    # gc.collect()
     Contribution(os.path.join(HOME, "2017_CLSB_UK.toml"))
+    gc.collect()
     Contribution(os.path.join(HOME, "2020_CSMU_Taiwan.toml"))
+    gc.collect()
