@@ -8,9 +8,13 @@ import nupack
 import numpy as np
 import scipy.interpolate
 import prettytable
-import seaborn as sns
-import matplotlib
-import matplotlib.pyplot as plt
+
+try:
+    import matplotlib
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+except ImportError:
+    pass
 
 from . import CPU_COUNT
 from .core import ToeholdTest, ToeholdResult
