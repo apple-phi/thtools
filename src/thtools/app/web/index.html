@@ -9,20 +9,23 @@
 		<link rel="icon" href="favicon.svg" />
 		<link rel="manifest" href="manifest.json" />
 
-		<!-- Include jQuery before Fomantic -->
-		<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+		<!-- You MUST include jQuery before Fomantic -->
+		<script src="modules/jquery/jquery.slim.min.js"></script>
 		<link
 			rel="stylesheet"
 			type="text/css"
-			href="https://cdn.jsdelivr.net/npm/fomantic-ui@nightly/dist/semantic.min.css"
+			href="modules/fomantic-ui/semantic.min.css"
 		/>
-		<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@nightly/dist/semantic.min.js"></script>
+		<script src="modules/fomantic-ui/semantic.min.js"></script>
 
-		<!-- Include own styles after Fomantic -->
-		<link rel="stylesheet" type="text/css" href="index.css" />
+		<!-- Scroll function -->
+		<script src="scroll.js"></script>
 
 		<!-- Include eel.js before any other Eel JS files -->
-		<script type="text/javascript" src="/eel.js"></script>
+		<script type="text/javascript" src="eel.js"></script>
+
+		<!-- index files -->
+		<link rel="stylesheet" type="text/css" href="index.css" />
 		<script src="index.js"></script>
 	</head>
 	<body>
@@ -126,7 +129,7 @@
 				<div class="ui very padded raised segment" id="table_segment">
 					<div class="ui top left attached label">Result</div>
 					<h3 class="ui header">
-						<a href="result.csv" style="float: right">
+						<a id="download_link" , href="result.csv" style="float: right">
 							<i class="big black save icon"></i>
 						</a>
 						Specificity

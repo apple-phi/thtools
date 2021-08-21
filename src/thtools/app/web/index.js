@@ -1,4 +1,4 @@
-// eel.expose(log_js);
+// eel.expose(log_js, 'log_js');
 // function log_js(x) {
 // 	console.log(x);
 // }
@@ -91,61 +91,12 @@ async function run_test() {
 		.progress('set active')
 		.progress('reset');
 	await eel.run_test_py();
+	scrollToElement('.ui.progress', 1000);
 	await update_pbar();
 	eel.send_result_py();
 }
 
-////////////////////////////////////////////////////////////////
-function scrollToElement(element, duration) {
-	//https://stackoverflow.com/a/39494245/13712044
-	function getElementY(query) {
-		return (
-			window.pageYOffset +
-			document.querySelector(query).getBoundingClientRect().top
-		);
-	}
-	let startingY = window.pageYOffset;
-	let elementY = getElementY(element);
-	// If element is close to page's bottom then window will scroll only to some position above the element.
-	let targetY =
-		document.body.scrollHeight - elementY < window.innerHeight
-			? document.body.scrollHeight - window.innerHeight
-			: elementY;
-	let diff = targetY - startingY;
-	// Easing function: easeInOutCubic
-	// From: https://gist.github.com/gre/1650294
-	let easing = (t) =>
-		t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-	let start;
-
-	if (!diff) {
-		return;
-	}
-
-	// Bootstrap our animation - it will get called right before next frame shall be rendered.
-	window.requestAnimationFrame(function step(timestamp) {
-		if (!start) {
-			start = timestamp;
-		}
-		// Elapsed miliseconds since start of scrolling.
-		let time = timestamp - start;
-		// Get percent of completion in range [0, 1].
-		let percent = Math.min(time / duration, 1);
-		// Apply the easing.
-		// It can cause bad-looking slow frames in browser performance tool, so be careful.
-		percent = easing(percent);
-
-		window.scrollTo(0, startingY + diff * percent);
-
-		// Proceed with animation as long as we wanted it to.
-		if (time < duration) {
-			window.requestAnimationFrame(step);
-		}
-	});
-}
-////////////////////////////////////////////////////////////////
-
-eel.expose(create_table_js);
+eel.expose(create_table_js, 'create_table_js');
 function create_table_js(table_html, specificity) {
 	$('#result_table').replaceWith(table_html);
 	$('#speci_sub_header').html(specificity);
@@ -153,10 +104,14 @@ function create_table_js(table_html, specificity) {
 		$('#table_section').transition('fade', '2s');
 	}
 	$('#submit_button').removeClass('disabled loading'); // make submit button clickable again
+	$('#download_link').attr(
+		'download',
+		$('#species_options_html').dropdown('get text') + '.csv'
+	);
 	scrollToElement('#table_section', 1000);
 }
 
-eel.expose(report_error_js);
+eel.expose(report_error_js, 'report_error_js');
 function report_error_js(msg) {
 	$('#error_msg').text(msg);
 	$('.ui.basic.modal').modal('show');
@@ -164,7 +119,6 @@ function report_error_js(msg) {
 
 $(document).ready(function () {
 	eel.print_py('JS loaded');
-
 	add_species();
 	setup_form_rules();
 	document.getElementById('main_form').onsubmit = function () {

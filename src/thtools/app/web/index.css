@@ -1,4 +1,4 @@
-@import url('styles/Montserrat.css');
+@import url('./fonts/fonts.css');
 
 *:not(i) {
 	font-family: 'Montserrat' !important;
@@ -11,9 +11,14 @@ textarea {
 	font-weight: 200;
 }
 
-/* Don't support dark mode */
 @media (prefers-color-scheme: dark) {
-	img {
+	html {
+		-webkit-filter: invert(100%) hue-rotate(180deg) !important;
+		filter: invert(100%) hue-rotate(180deg) !important;
+	}
+	img,
+	button,
+	.bar {
 		-webkit-filter: invert(100%) hue-rotate(180deg) !important;
 		filter: invert(100%) hue-rotate(180deg) !important;
 	}

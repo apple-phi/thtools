@@ -1,30 +1,36 @@
 # NOTE: all imports must be absolute otherwise PyInstaller will not compile correctly
 import sys
 
-if len(sys.argv) == 1:
-    from thtools import app
+from thtools import HOME
 
-    app.start()
+if len(sys.argv) <= 1:
+    print("Running demo...")
+
+    from thtools.app import start
+
+    start()
 else:
     arg = sys.argv[1]
-    if arg == "build_demo":
+    if arg == "build":
         import os
         import shutil
-        import pkg_resources
 
+        import pkg_resources
         import PyInstaller.__main__
-        from thtools import HOME
+
+        from thtools.app import APP_HOME
 
         try:
-            os.mkdir("./app/")
+            os.mkdir("./apphouse/")
         except FileExistsError:
-            shutil.rmtree("./app/", ignore_errors=True)
-            os.mkdir("./app/")
+            shutil.rmtree("./apphouse/", ignore_errors=True)
+            os.mkdir("./apphouse/")
+
         PyInstaller.__main__.run(
             [
-                os.path.join(HOME, "__main__.py"),
+                __file__,
                 "--name=ToeholdTools",
-                "--distpath=./app",
+                "--distpath=./apphouse/",
                 "--hidden-import=bottle_websocket",  # necessary for eel
                 "--hidden-import=psutil",
                 "--hidden-import=pathos",
@@ -33,6 +39,16 @@ else:
                 "--hidden-import=nupack",
                 "--hidden-import=eel",
                 "--hidden-import=thtools",
+                "--exclude-module=matplotlib",
+                "--exclude-module=seaborn",
+                "--exclude-module=pygments",
+                "--exclude-module=coverage",
+                "--exclude-module=PIL",
+                "--exclude-module=tkinter",
+                "--exclude-module=sphinx",
+                "--exclude-module=jedi",
+                "--exclude-module=docutils",
+                "--exclude-module=alabaster",
                 "--add-data="
                 + pkg_resources.resource_filename("eel", "eel.js")
                 + os.pathsep
@@ -42,14 +58,14 @@ else:
                 + os.pathsep
                 + "nupack/parameters",
                 "--add-data="
-                + os.path.join(HOME, "app", "web")
+                + os.path.join(APP_HOME, "web")
                 + os.pathsep
-                + "thtools/web",
+                + "thtools/app/web",
                 "--add-data="
                 + os.path.join(HOME, "miRBase")
                 + os.pathsep
                 + "thtools/miRBase",
-                "--icon=" + os.path.join(HOME, "app", "web", "favicon.png"),
+                "--icon=" + os.path.join(APP_HOME, "web", "favicon.png"),
                 "--noconfirm",
                 "--noconsole",
                 "--onefile",
