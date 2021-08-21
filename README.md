@@ -1,20 +1,17 @@
 # ToeholdTools
-[![GitHub](https://img.shields.io/github/license/lkn849/thtools?style=flat-square)](https://github.com/lkn849/thtools/blob/master/LICENSE)
-![Python](https://img.shields.io/pypi/pyversions/thtools?style=flat-square)
-[![PyPI](https://img.shields.io/pypi/v/thtools?style=flat-square)](https://pypi.org/project/thtools/)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/thtools?style=flat-square)](https://pypistats.org/packages/thtools)
-[![Documentation Status](https://img.shields.io/readthedocs/thtools?style=flat-square)](https://thtools.readthedocs.io/)
-[![Build](https://img.shields.io/github/workflow/status/lkn849/thtools/Build?style=flat-square)](https://github.com/lkn849/thtools/actions/workflows/autowheel.yml)
-[![GitHub Workflow Status (event)](https://img.shields.io/github/workflow/status/lkn849/thtools/Test?label=tests&style=flat-square)](https://github.com/lkn849/thtools/actions/workflows/autotest.yml)
-[![Codecov](https://img.shields.io/codecov/c/github/lkn849/thtools?style=flat-square)](https://codecov.io/gh/lkn849/thtools/)
-[![Requires.io](https://img.shields.io/requires/github/lkn849/thtools?style=flat-square)](https://requires.io/github/lkn849/thtools/requirements/?branch=master)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/lkn849/thtools.svg?logo=lgtm&style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/context:python)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/lkn849/thtools.svg?logo=lgtm&style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/context:javascript)
-[![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/lkn849/thtools?style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/)
+
+<div style="text-align:center"><img width="100wv" src="https://raw.githubusercontent.com/lkn849/thtools/master/src/thtools/app/web/favicon.svg" /></div>
+
+| Category | Status                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Repo     | [![GitHub](https://img.shields.io/github/license/lkn849/thtools?style=flat-square)](https://github.com/lkn849/thtools/blob/master/LICENSE) [![Documentation Status](https://img.shields.io/readthedocs/thtools?style=flat-square&logo=readthedocs&logoColor=white)](https://thtools.readthedocs.io/)                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Package  | ![Python](https://img.shields.io/pypi/pyversions/thtools?style=flat-square&logo=python&logoColor=white) [![PyPI](https://img.shields.io/pypi/v/thtools?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/thtools/) [![PyPI - Downloads](https://img.shields.io/pypi/dm/thtools?style=flat-square&logo=pypi&logoColor=white)](https://pypistats.org/packages/thtools)                                                                                                                                                                                                                                                                                                                   |
+| Build    | [![Build](https://img.shields.io/github/workflow/status/lkn849/thtools/Build?style=flat-square&logo=github)](https://github.com/lkn849/thtools/actions/workflows/autowheel.yml) [![GitHub Workflow Status (event)](https://img.shields.io/github/workflow/status/lkn849/thtools/Test?label=tests&style=flat-square&logo=github)](https://github.com/lkn849/thtools/actions/workflows/autotest.yml)                                                                                                                                                                                                                                                                                                          |
+| Quality  | [![Codecov](https://img.shields.io/codecov/c/github/lkn849/thtools?style=flat-square&logo=codecov&logoColor=white)](https://codecov.io/gh/lkn849/thtools/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/lkn849/thtools.svg?logo=lgtm&style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/context:python) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/lkn849/thtools.svg?logo=lgtm&style=flat-square)](https://lgtm.com/projects/g/lkn849/thtools/context:javascript) [![LGTM Alerts](https://img.shields.io/lgtm/alerts/github/lkn849/thtools?label=lgtm%20alerts&style=flat-square&logo=lgtm)](https://lgtm.com/projects/g/lkn849/thtools/) |
 
 A library for the analysis of toehold switch riboregulators created by the iGEM team City of London UK 2021.
 ## What is ToeholdTools?
-ToeholdTools is a package designed to facilitate analyzing and designing toehold switches.
+ToeholdTools is a Python package designed to facilitate analyzing and designing toehold switches.
 It's still in the making, so please leave a feature request
 if there is anything else you would like to see!
 
@@ -35,9 +32,13 @@ You can install ToeholdTools from PyPI via pip:
 python3 -m pip install -U thtools
 ```
 
-Alternatively, you can build the latest development version of the project from source yourself:
+Alternatively, you can build the latest development version of the project from source yourself.
+You will need [npm](https://nodejs.org/en/download/) installed:
 ```bash
-python3 -m pip install git+https://github.com/lkn849/thtools.git
+git clone https://github.com/lkn849/thtools.git
+cd thtools
+./src/thtools/app/build.sh
+python3 -m pip3 install .
 ```
 
 ## Run demo
@@ -50,4 +51,4 @@ python3 -m thtools
 The full API reference and developer notes can be found [here](https://thtools.readthedocs.io).
 
 ## License
-[MIT](https://github.com/lkn849/thtools/blob/master/LICENSE)
+[MIT.](https://github.com/lkn849/thtools/blob/master/LICENSE) © Copyright 2021, Lucas Ng.

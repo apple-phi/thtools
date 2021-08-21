@@ -52,7 +52,10 @@ Alternatively, you can build the latest development version of the project from 
 
 .. code-block:: bash
 
-   $ python3 -m pip install git+https://github.com/lkn849/thtools.git
+   $ git clone https://github.com/lkn849/thtools.git
+   $ cd thtools
+   $ ./src/thtools/app/build.sh
+   $ python3 -m pip3 install .
 
 Run demo
 --------
