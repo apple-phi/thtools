@@ -1,7 +1,9 @@
 # To-do
 
 ## General
-- Increase code coverage
+- organise .gitignore
+
+## Tests
 - Implement Cython coverage report; see https://github.com/cython/cython/pull/3831
 
 ## Source
@@ -9,11 +11,8 @@
 - Rewrite analysis.pyx using memoryviews.
 
 ## App
-- Dark mode
+- make proper logo
 - Include CRT in app
-- Distribute Electron app for mac (and linux?)
-    - Refactor app dirs
-    - offline Fomantic
 - Form validation using regex for FASTA
 - Form error msgs
 
