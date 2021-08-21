@@ -541,7 +541,7 @@ cdef class ToeholdTest:
     # this is 1D so is both C and F continguous, aka [::1,::1]
     # however, then you must consider how to get the indices of the required sections --> maybe the 1D Structure.nicks ndarray?
     # may or may not be worth it in terms of effort per performance
-    # perhaps str/str types are never needed in processing: just directly interface with nupack C++???
+    # perhaps str types are never needed in processing: just directly interface with nupack C++???
 
     @cython.profile(False)
     cdef inline bint _rbs_exposed(self, str ths_struct):
