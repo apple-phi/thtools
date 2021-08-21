@@ -30,7 +30,7 @@ LOGO = os.path.join(ROOT, "src", "thtools", "app", "web", "favicon.svg")
 project = "ToeholdTools"
 copyright = "2021, Lucas Ng"
 author = "Lucas Ng"
-version = "0.1.1"  # have to do manually for now
+version = "0.2.0-dev0"  # have to do manually for now
 release = version
 
 html_theme = "sphinx_book_theme"
