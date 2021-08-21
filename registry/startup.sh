@@ -5,13 +5,14 @@
 function terminate {
     export NAME=$(curl -X GET http://metadata.google.internal/computeMetadata/v1/instance/name -H 'Metadata-Flavor: Google') &&
     export ZONE=$(curl -X GET http://metadata.google.internal/computeMetadata/v1/instance/zone -H 'Metadata-Flavor: Google') &&
-    gcloud --quiet compute instances delete $NAME --zone=$ZONE
+    gcloud --quiet compute instances stop $NAME --zone=$ZONE
 }
 
 # Send results to bucket
 # try / catch from https://stackoverflow.com/a/15656652
 function bucket {
-    {
+    {   
+        gsutil cp pylogs.txt gs://thtools-bucket/
         zip -r contributions.zip contributions &&
         gsutil cp contributions.zip gs://thtools-bucket/
     } || terminate
@@ -46,7 +47,8 @@ pip install -r requirements.txt
 gsutil cp contrib.py gs://thtools-bucket/
 
 # Run contrib.py
-python3 contrib.py || bucket
+touch pylogs.txt
+python3 contrib.py > pylogs.txt || bucket
 
 bucket
 terminate
