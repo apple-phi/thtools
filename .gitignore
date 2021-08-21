@@ -14,7 +14,7 @@ miRBase
 *.spec
 *.vscode
 *.pytest_cache
-assets
+fonts/
 generated
 pygments.css
 favicon.png
@@ -22,3 +22,10 @@ registry/contributions/
 *coverage.*
 .coverage
 coverage_html_report
+node_modules
+bin
+*.log
+*house*
+neutralino.js
+*.storage
+modules/
