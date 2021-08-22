@@ -35,6 +35,9 @@ jobs:
       - name: Build app
         run: src/thtools/app/build.sh
 
+      - name: Install build requirements
+        run: pip install setuptools wheel numpy Cython pygments pyinstaller
+
       - name: Install ToeholdTools
         run: pip install -e .
 
