@@ -42,13 +42,14 @@ jobs:
         run: brew install upx
 
       - name: Run PyInstaller
-        run: python3 -m thtools build ${{ matrix.os }}
+        run: python3 -m thtools build ${{ runner.os }}
 
       - name: Modify permissions
         run: chmod -R 777 ./apphouse/
 
-      - uses: apple-actions/import-codesign-certs@v1
-        if: ${{ matrix.os }} == 'macOS-latest'
+      - name: Codesign app
+        if: runner.os == macOS
+        uses: apple-actions/import-codesign-certs@v1
         with: 
           p12-file-base64: ${{ secrets.CODESIGN_CERT }}
           p12-password: ${{ secrets.CODESIGN_CERT_PASS }}

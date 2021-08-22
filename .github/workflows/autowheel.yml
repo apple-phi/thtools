@@ -20,7 +20,7 @@ jobs:
           node-version: '14'
 
       - name: Install build requirements
-        run: pip install setuptools wheel numpy Cython pygments pyinstaller
+        run: pip install setuptools wheel numpy Cython pygments
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.1.1
