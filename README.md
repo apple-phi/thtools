@@ -29,19 +29,16 @@ We cannot build for PyPy since it not supported by all dependencies.
 [here](https://piercelab-caltech.github.io/nupack-docs/start/#installation-requirements).
 >If you are a Windows user, you will be installing both NUPACK and ToeholdTools via the Linux subsystem.
 
-You can install ToeholdTools from PyPI via pip:
+You can install a stable version of ToeholdTools from PyPI via pip:
 ```bash
 python3 -m pip install -U thtools
 ```
 
-Alternatively, you can build the latest development version of the project from source yourself.
-You will need [npm](https://nodejs.org/en/download/) installed:
+Alternatively, you can build the latest development version of the project from source yourself:
 ```bash
-git clone https://github.com/lkn849/thtools.git
-cd thtools
-./src/thtools/app/build.sh
-python3 -m pip install .
+python3 -m pip install -U https://github.com/lkn849/thtools.git
 ```
+If you have [npm](https://nodejs.org/en/download/) installed, this will also build the [demo](#run-demo).
 
 ## Run demo
 There is a demo app that displays the core functionality of the module:

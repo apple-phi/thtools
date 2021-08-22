@@ -19,9 +19,6 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Build app
-        run: src/thtools/app/build.sh
-
       - name: Install build requirements
         run: pip install setuptools wheel numpy Cython pygments pyinstaller
 

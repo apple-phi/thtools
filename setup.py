@@ -135,6 +135,14 @@ with open("docs/source/_static/pygments.css", "w") as f:
 
 #######################################################################
 
+# package app requirements
+
+if shutil.which("npm"):
+    print("npm detected: getting app requirements...")
+    os.system("src/thtools/app/build.sh")
+
+#######################################################################
+
 # build package
 
 from setuptools import setup, Extension
