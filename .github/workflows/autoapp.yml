@@ -45,11 +45,17 @@ jobs:
         run: brew install upx
 
       - name: Run PyInstaller
-        run: python3 -m thtools build
+        run: python3 -m thtools build ${{ matrix.os }}
 
       - name: Modify permissions
         run: chmod -R 777 ./apphouse/
 
+      - uses: apple-actions/import-codesign-certs@v1
+        if: ${{ matrix.os }} == 'macOS-latest'
+        with: 
+          p12-file-base64: ${{ secrets.CODESIGN_CERT }}
+          p12-password: ${{ secrets.CODESIGN_CERT_PASS }}
+
       - uses: actions/upload-artifact@v2
         with:
-          path: ./apphouse/*/*
+          path: ./apphouse/*

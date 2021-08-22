@@ -29,8 +29,9 @@ else:
         PyInstaller.__main__.run(
             [
                 __file__,
-                "--name=ToeholdTools",
-                "--distpath=./apphouse/" + sys.platform,
+                "--name=ToeholdTools-"
+                + (sys.platform if len(sys.argv) == 2 else sys.argv[2]),
+                "--distpath=./apphouse/",
                 "--hidden-import=bottle_websocket",  # necessary for eel
                 "--hidden-import=psutil",
                 "--hidden-import=pathos",
