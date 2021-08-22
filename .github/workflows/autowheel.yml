@@ -15,6 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Build app
+        run: src/thtools/app/build.sh
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.1.1

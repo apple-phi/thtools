@@ -65,7 +65,7 @@ else:
                 + os.path.join(HOME, "miRBase")
                 + os.pathsep
                 + "thtools/miRBase",
-                "--icon=" + os.path.join(APP_HOME, "web", "favicon.png"),
+                "--icon=" + os.path.join(APP_HOME, "appicon.png"),
                 "--noconfirm",
                 "--noconsole",
                 "--onefile",
