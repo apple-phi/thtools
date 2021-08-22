@@ -30,7 +30,7 @@ else:
             [
                 __file__,
                 "--name=ToeholdTools",
-                "--distpath=./apphouse/",
+                "--distpath=./apphouse/" + sys.platform,
                 "--hidden-import=bottle_websocket",  # necessary for eel
                 "--hidden-import=psutil",
                 "--hidden-import=pathos",
