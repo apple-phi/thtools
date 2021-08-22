@@ -1,7 +1,6 @@
-name: Test
+name: App
 on:
   workflow_dispatch:  
-  push:
   pull_request:
   schedule:
     - cron: '0 0 * * *'
