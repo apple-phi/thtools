@@ -56,10 +56,10 @@ jobs:
           p12-password: ${{ secrets.CODESIGN_CERT_PASS }}
 
       - name: Tar app
-        run: tar -cvf thtools.app-${{ matrix.os }}.tar ./apphouse/*
+        run: tar -cvf thtools.app-${{ runner.os }}.tar ./apphouse/$(cd apphouse/ && ls -r | head -n 1) # last file alphabetically
 
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.os }}
-          path: thtools.app-${{ matrix.os }}.tar
+          name: ${{ runner.os }}
+          path: thtools.app-${{ runner.os }}.tar
           if-no-files-found: error
