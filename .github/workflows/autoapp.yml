@@ -46,7 +46,7 @@ jobs:
         run: python3 -m thtools build thtools.app-${{ runner.os }}
 
       - name: Modify permissions
-        run: chmod +x -R 777 ./apphouse/
+        run: chmod -R 777 ./apphouse/
 
       - name: Codesign app
         if: runner.os == 'macOS'
