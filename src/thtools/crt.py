@@ -179,10 +179,10 @@ class CelsiusRangeResult:
 
     @inferred_target.setter
     def inferred_target(self, value):
-        self.meta["Target sequence"] = self._inferred_target = value
         self.meta["Target name"] = self._inferred_target_name = self.target_names[
             self.targets.index(value)
         ]
+        self.meta["Target sequence"] = self._inferred_target = value
         self.pretty_meta = "\n".join(
             [f"{key}: {value}" for key, value in self.meta.items()]
         )
@@ -195,12 +195,10 @@ class CelsiusRangeResult:
         self.post_aug_unbinding = []
         for result in self.results:
             target_index = next(  # the first result from the below generator
-                (
-                    index
-                    for index, val in enumerate(result.trigger_sets)
-                    if val == self.inferred_target
-                    or (len(val) == 1 and val[0] == self.inferred_target)
-                )
+                index
+                for index, val in enumerate(result.trigger_sets)
+                if val == self.inferred_target
+                or (len(val) == 1 and val[0] == self.inferred_target)
             )
             self.activation.append(result.activation[target_index])
             self.activation_se.append(result.activation_se[target_index])
