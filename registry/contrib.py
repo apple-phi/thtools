@@ -17,6 +17,7 @@ EXTRA_SIZE = 1
 N_SAMPLES = 100
 CELSIUS_RANGE = range(0, 100, 10)
 Z_SCORE = 1.96
+
 TEXT = """===Information contributed by City of London UK (2021)===
 [[File:ToeholdTools.png|x200px|center]]
 
@@ -49,10 +50,23 @@ The temperature&ndash;activation&ndash;specificity relationship is shown here:
 [[File:{part}_crt.png|500px|center]]
 
 Error bars represent the standard error (SE).
-The line of best fit was calculated using a univariate B-spline weighted inverse to each point's SE.
-
+The line of best fit was calculated using a univariate cubic spline weighted inverse to each point's SE.
 """
-BAD_SWITCH = """'''Since this switch does not accurately detect the desired target miRNA, we do not recommend this part for use.'''"""
+BAD_SWITCH = """As per the above, we cannot confirm that this switch detects the desired RNA sequence."""
+UNRELIABLE_SWITCH = """
+Although at the indented usage temperature of {celsius}°C this switch best detected {inferred_target_name}, 
+this RNA did not appear as a best target for any of separate tests 
+taken at the temperatures tested in the above graph ({temperature_range}). 
+Therefore, we cannot confirm the reliability of this switch. 
+""".replace(
+    "\n", ""
+)
+CAVEATS = """
+'''Caveats:'''
+"""
+BAD_CONCLUSION = """
+We do not recommend this part for future usage.
+"""
 
 
 def mkdir(path):
@@ -128,42 +142,43 @@ class Contribution:
             self.run()
 
     def run(self):
-        for mirna, switch in tqdm.tqdm(self.mirna.items(), desc=self.team):
-            toeholds = tt.FParser.fromregistry(parts=switch["toeholds"], retry=True)
-            if "antis" in switch:
-                antis = [
-                    [tt.FParser.fromregistry(part=part, retry=True).seqs[0].upper()]
-                    if part
-                    else None
-                    for part in switch["antis"]
-                ]
-            else:
-                antis = [None] * len(toeholds)
-            for ths, toehold_name, anti in tqdm.tqdm(
-                zip(toeholds.seqs, toeholds.ids, antis),
-                total=len(toeholds),
-                desc=mirna,
-                leave=None,
-            ):
-                thtest = tt.autoconfig(
-                    ths.replace("T", "U").replace("t", "U"),
-                    self.rbs,
-                    self.fasta.seqs,
-                    names=self.fasta.ids,
-                    const_rna=anti,
-                )
-                with tqdm.tqdm(
-                    total=len(CELSIUS_RANGE) + 1, desc=toehold_name, leave=None
-                ) as switch_bar:
-                    thtest.run(max_size=len(toeholds) + len(antis) + 1)
-                    switch_bar.update()
-                    crt = tt.CelsiusRangeTest(thtest, CELSIUS_RANGE)
-                    for _ in crt.generate(max_size=len(toeholds) + len(antis) + 1):
+        with tqdm.tqdm(self.mirna.items(), desc=self.team) as team_bar:
+            for mirna, switch in team_bar:
+                toeholds = tt.FParser.fromregistry(parts=switch["toeholds"], retry=True)
+                if "antis" in switch:
+                    antis = [
+                        [tt.FParser.fromregistry(part=part, retry=True).seqs[0].upper()]
+                        if part
+                        else None
+                        for part in switch["antis"]
+                    ]
+                else:
+                    antis = [None] * len(toeholds)
+                for ths, toehold_name, anti in tqdm.tqdm(
+                    zip(toeholds.seqs, toeholds.ids, antis),
+                    total=len(toeholds),
+                    desc=mirna,
+                    leave=None,
+                ):
+                    thtest = tt.autoconfig(
+                        ths.replace("T", "U").replace("t", "U"),
+                        self.rbs,
+                        self.fasta.seqs,
+                        names=self.fasta.ids,
+                        const_rna=anti,
+                    )
+                    with tqdm.tqdm(
+                        total=len(CELSIUS_RANGE) + 1, desc=toehold_name, leave=None
+                    ) as switch_bar:
+                        thtest.run(max_size=len(toeholds) + len(antis) + 1)
                         switch_bar.update()
-                self.save(mirna, toehold_name, thtest.result, crt.result)
-                del thtest
-                del crt
-                gc.collect()
+                        crt = tt.CelsiusRangeTest(thtest, CELSIUS_RANGE)
+                        for _ in crt.generate(max_size=len(toeholds) + len(antis) + 1):
+                            switch_bar.update()
+                    self.save(mirna, toehold_name, thtest.result, crt.result, team_bar)
+                    del thtest
+                    del crt
+                    gc.collect()
 
     def save(
         self,
@@ -171,42 +186,50 @@ class Contribution:
         toehold_name: str,
         thtest_res: tt.ToeholdResult,
         crt_res: tt.CelsiusRangeResult,
+        bar: tqdm.tqdm,
     ):
+        caveats = CAVEATS
+        if mirna != thtest_res.target_name:
+            caveats += "*" + BAD_SWITCH + "\n"
         try:
             crt_res.inferred_target = thtest_res.target
-        finally:
-            partdir = os.path.join(HOME, "contributions", self.team, toehold_name)
-            mkdir(partdir)
-            with open(
-                os.path.join(partdir, toehold_name + "_thtest.txt"),
-                "w",
-            ) as f:
-                f.write(thtest_res.prettify())
-            with open(
-                os.path.join(partdir, toehold_name + "_thtest.csv"),
-                "w",
-            ) as f:
-                f.write(thtest_res.to_csv())
-            with open(
-                os.path.join(partdir, toehold_name + "_crt.txt"),
-                "w",
-            ) as f:
-                f.write(crt_res.prettify())
-            with open(
-                os.path.join(partdir, toehold_name + "_crt.csv"),
-                "w",
-            ) as f:
-                f.write(crt_res.to_csv())
-            crt_res.savefig(
-                os.path.join(partdir, toehold_name + "_graph.png"), z_score=1
-            )
-            specificity_se = to_one_sf(thtest_res.specificity_se * Z_SCORE * 100)
-            specificity = to_same_dp(thtest_res.specificity * 100, specificity_se)
-            activation_se = to_one_sf(thtest_res.target_activation_se * Z_SCORE * 100)
-            activation = to_same_dp(
-                thtest_res.target_activation * Z_SCORE * 100, activation_se
-            )
-            desc = TEXT.format(
+        except ValueError:
+            caveats += "*" + UNRELIABLE_SWITCH + "\n"
+        if caveats == CAVEATS:
+            caveats = ""
+        else:
+            caveats += BAD_CONCLUSION
+        partdir = os.path.join(HOME, "contributions", self.team, toehold_name)
+        mkdir(partdir)
+        with open(
+            os.path.join(partdir, toehold_name + "_thtest.txt"),
+            "w",
+        ) as f:
+            f.write(thtest_res.prettify())
+        with open(
+            os.path.join(partdir, toehold_name + "_thtest.csv"),
+            "w",
+        ) as f:
+            f.write(thtest_res.to_csv())
+        with open(
+            os.path.join(partdir, toehold_name + "_crt.txt"),
+            "w",
+        ) as f:
+            f.write(crt_res.prettify())
+        with open(
+            os.path.join(partdir, toehold_name + "_crt.csv"),
+            "w",
+        ) as f:
+            f.write(crt_res.to_csv())
+        crt_res.savefig(os.path.join(partdir, toehold_name + "_graph.png"), z_score=1)
+        specificity_se = to_one_sf(thtest_res.specificity_se * Z_SCORE * 100)
+        specificity = to_same_dp(thtest_res.specificity * 100, specificity_se)
+        activation_se = to_one_sf(thtest_res.target_activation_se * Z_SCORE * 100)
+        activation = to_same_dp(
+            thtest_res.target_activation * Z_SCORE * 100, activation_se
+        )
+        desc = (
+            TEXT.format(
                 part=toehold_name,
                 target=mirna,
                 inferred_target_name=thtest_res.target_name,
@@ -218,11 +241,11 @@ class Contribution:
                 team=self.team,
                 species=self.species,
             )
-            if mirna != thtest_res.target_name:
-                desc += BAD_SWITCH
-            with open(os.path.join(partdir, "desc"), "w") as f:
-                f.write(desc)
-            print(f"Results for {toehold_name} saved.")
+            + caveats
+        )
+        with open(os.path.join(partdir, "desc"), "w") as f:
+            f.write(desc)
+        bar.write(f"Results for {toehold_name} saved.")
 
 
 if __name__ == "__main__":
