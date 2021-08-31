@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest] # not windows because of NUPACK
+        os: [ubuntu-latest, macos-latest] # not windows because of NUPACK
         python-version: [3.6, 3.7, 3.8, 3.9]
     steps:
       - uses: actions/checkout@v2
@@ -45,3 +45,4 @@ jobs:
           env_vars: OS,PYTHON
           fail_ci_if_error: true
           verbose: true
+          files: ./**/coverage*.xml
