@@ -4,6 +4,7 @@ from typing import Mapping, Any
 import math
 import decimal
 import gc
+import sys
 
 import tomli
 import tqdm
@@ -160,6 +161,9 @@ class Contribution:
                     for _ in crt.generate(max_size=len(toeholds) + len(antis) + 1):
                         switch_bar.update()
                 self.save(mirna, toehold_name, thtest.result, crt.result)
+                del thtest
+                del crt
+                gc.collect()
 
     def save(
         self,
@@ -222,9 +226,8 @@ class Contribution:
 
 
 if __name__ == "__main__":
-    # Contribution(os.path.join(HOME, "2019_SASTRA_Thanjavur.toml"))
-    # gc.collect()
-    Contribution(os.path.join(HOME, "2017_CLSB_UK.toml"))
-    gc.collect()
-    Contribution(os.path.join(HOME, "2020_CSMU_Taiwan.toml"))
-    gc.collect()
+    assert (
+        len(sys.argv) > 1
+    ), "make sure to run the program specifying the team config TOML file!"
+    for team in sys.argv[1:]:
+        Contribution(os.path.join(HOME, team))
