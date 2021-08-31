@@ -60,13 +60,9 @@ class FParser:
     source = set()
 
     specieslist = sorted(
-        [
-            i
-            for i in [
-                f.split(".")[0] for f in os.listdir(os.path.join(HOME, "miRBase"))
-            ]
-            if len(i) > 0
-        ]
+        i
+        for i in [f.split(".")[0] for f in os.listdir(os.path.join(HOME, "miRBase"))]
+        if len(i) > 0
     )
     line_length = 70
 

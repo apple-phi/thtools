@@ -48,7 +48,6 @@ class ErrorHandler:
         if exc_type:
             msg = f"{type(exc_val).__name__}: {str(exc_val)}"
             eel.report_error_js(msg)
-            return False
 
 
 ################################################################################
