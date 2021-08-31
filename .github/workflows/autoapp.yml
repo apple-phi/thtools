@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest] # not windows because of NUPACK
+        os: [ubuntu-latest, macos-latest] # not windows because of NUPACK
         python-version: ['3.8']
     steps:
       - uses: actions/checkout@v2
@@ -38,14 +38,15 @@ jobs:
       - name: Install ToeholdTools
         run: pip install -e .
 
+        # NOTE: try without UPX https://stackoverflow.com/a/64895860/13712044
       - name: Install UPX
         run: brew install upx
 
       - name: Run PyInstaller
-        run: python3 -m thtools build ${{ runner.os }}
+        run: python3 -m thtools build thtools.app-${{ runner.os }}
 
       - name: Modify permissions
-        run: chmod -R 777 ./apphouse/
+        run: chmod +x -R 777 ./apphouse/
 
       - name: Codesign app
         if: runner.os == 'macOS'
@@ -54,11 +55,11 @@ jobs:
           p12-file-base64: ${{ secrets.CODESIGN_CERT }}
           p12-password: ${{ secrets.CODESIGN_CERT_PASS }}
 
-      - name: Zip app
-        run: |
-          brew install zip
-          for file in ./apphouse/*; do zip ./apphouse/$(basename $file).zip $file; done 
+      - name: Tar app
+        run: tar -cvf thtools.app-${{ matrix.os }}.tar ./apphouse/*
 
       - uses: actions/upload-artifact@v2
         with:
-          path: ./apphouse/*.zip
+          name: ${{ matrix.os }}
+          path: thtools.app-${{ matrix.os }}.tar
+          if-no-files-found: error
