@@ -1,0 +1,43 @@
+name: iGEM Contribution
+on:
+  workflow_dispatch:
+  pull_request:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  run_contrib:
+    name: Test the toeholds of ${{ matrix.team }}
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        team: ["2017_CLSB_UK", "2019_SASTRA_Thanjavur", "2020_CSMU_Taiwan"]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Clone NUPACK
+        run: git clone https://github.com/beliveau-lab/NUPACK.git
+
+      - name: Install NUPACK
+        run: pip install nupack -f NUPACK/src/package
+
+      - name: Delete NUPACK repo
+        run: rm -r NUPACK
+
+      - name: Install ToeholdTools
+        run: pip install -e .
+
+      - name: Install contribution dependencies
+        run: pip install -r registry/requirements.txt
+
+      - name: Run contribution for ${{ matrix.team }}
+        run: python3 registry/contrib.py ${{ matrix.team }}.toml
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.team }}
+          path: ./registry/contributions/${{ matrix.team }}/
+          if-no-files-found: error
