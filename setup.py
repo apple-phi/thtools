@@ -32,9 +32,8 @@ print("Downloading miRBase...")
 mkdir("src/thtools/miRBase/")
 with urllib.request.urlopen(
     "ftp://mirbase.org/pub/mirbase/CURRENT/mature.fa.gz"
-) as miRBase_url:
-    with gzip.GzipFile(fileobj=miRBase_url, mode="rb") as gzipped_f:
-        txt = gzipped_f.read()
+) as miRBase_url, gzip.GzipFile(fileobj=miRBase_url, mode="rb") as gzipped_f:
+    txt = gzipped_f.read()
 lines = txt.splitlines()
 chunks = [b"\n".join(lines[n : n + 2]) for n in range(0, len(lines), 2)]
 sorted_chunks = sorted(
