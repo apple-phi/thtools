@@ -85,13 +85,12 @@ def autoconfig(
         const_rna=const_rna,
         model=model,
     )
-    if names is not None:
-        if len(names) > 0:
-            assert len(names) == len(
-                triggers
-            ), "each name must match to a corresponding trigger. Set to [] otherwise."
-            names = _combs(names, set_size)
-            t.names = names
+    if names is not None and len(names) > 0:
+        assert len(names) == len(
+            triggers
+        ), "each name must match to a corresponding trigger. Set to [] otherwise."
+        names = _combs(names, set_size)
+        t.names = names
     return t
 
 

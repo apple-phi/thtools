@@ -184,8 +184,9 @@ class CelsiusRangeResult:
         ]
         self.meta["Target sequence"] = self._inferred_target = value
         self.pretty_meta = "\n".join(
-            [f"{key}: {value}" for key, value in self.meta.items()]
+            f"{key}: {value}" for key, value in self.meta.items()
         )
+
         self.specificity = []
         self.specificity_se = []
         self.activation = []
@@ -295,8 +296,9 @@ class CelsiusRangeResult:
         ax.set_axisbelow(True)
         ax.grid()
         plt.title(
-            f"CRT for toehold detecting {self.inferred_target_name if self.inferred_target_name else self.inferred_target}"
+            f'CRT for toehold detecting {self.inferred_target_name or self.inferred_target}'
         )
+
         return plt
 
     @staticmethod

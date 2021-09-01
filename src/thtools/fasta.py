@@ -208,10 +208,8 @@ class FParser:
             The formatted text of the FParser object.
         """
         return "".join(
-            [
-                f">{self.ids[i]} {self.descriptions[i]}\n{self._seq_format(self.seqs[i], line_length)}\n"
-                for i in range(self.num)
-            ]
+            f">{self.ids[i]} {self.descriptions[i]}\n{self._seq_format(self.seqs[i], line_length)}\n"
+            for i in range(self.num)
         ).strip()
 
     def copy(self):
@@ -314,11 +312,10 @@ class FParser:
         try:
             xml_text = urllib.request.urlopen(url).read().decode()
         except urllib.error.URLError as e:
-            if retry:
-                print(f"connection to {url} timed out. Retrying...")
-                cls.fromregistry(parts=parts, retry=True)
-            else:
+            if not retry:
                 raise urllib.error.URLError(f"connection to {url} timed out.") from e
+            print(f"connection to {url} timed out. Retrying...")
+            cls.fromregistry(parts=parts, retry=True)
         assert "error" not in xml_text.lower()
         root = ElementTree.fromstring(xml_text)
         new = cls("")
@@ -331,11 +328,6 @@ class FParser:
     @staticmethod
     def _seq_format(seq, seq_width: int) -> str:
         """Internal sequence formatter to set sequences to a certain length."""
-        return "".join(
-            [
-                seq[i]
+        return "".join(seq[i]
                 if (i + 1) % seq_width != 0 or i == len(seq) - 1
-                else f"{seq[i]}\n"
-                for i in range(len(seq))
-            ]
-        )
+                else f"{seq[i]}\n" for i in range(len(seq)))

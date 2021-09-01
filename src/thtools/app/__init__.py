@@ -46,7 +46,7 @@ class ErrorHandler:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type:
-            msg = f"{type(exc_val).__name__}: {str(exc_val)}"
+            msg = f'{type(exc_val).__name__}: {exc_val}'
             eel.report_error_js(msg)
 
 
