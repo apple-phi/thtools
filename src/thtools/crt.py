@@ -167,10 +167,9 @@ class CelsiusRangeResult:
     def __getitem__(self, key):
         if isinstance(key, slice):
             return self.__class__(self.results[key], self.celsius_range[key], self.meta)
-        elif isinstance(key, int):
+        if isinstance(key, int):
             return self.results[key]
-        else:
-            raise NotImplementedError("__getitem__ only supports slice and int")
+        raise NotImplementedError("__getitem__ only supports slice and int")
 
     @property
     def inferred_target(self):

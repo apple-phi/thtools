@@ -106,8 +106,7 @@ class FParser:
             for _ in range(other - 1):
                 new += self
             return new
-        else:
-            raise NotImplementedError("only scalar multiplication is supported.")
+        raise NotImplementedError("only scalar multiplication is supported.")
 
     __rmul__ = __mul__
 
