@@ -3,7 +3,8 @@
 import os
 from typing import List, Union, Collection, Optional
 import xml.etree.ElementTree as ElementTree
-import urllib.request, urllib.error
+import urllib.request
+import urllib.error
 
 from . import HOME
 
