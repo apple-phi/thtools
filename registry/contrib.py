@@ -170,10 +170,10 @@ class Contribution:
                     with tqdm.tqdm(
                         total=len(CELSIUS_RANGE) + 1, desc=toehold_name, leave=None
                     ) as switch_bar:
-                        thtest.run(max_size=len(toeholds) + len(antis) + 1)
+                        thtest.run(max_size=3 + len(antis) + EXTRA_SIZE)
                         switch_bar.update()
                         crt = tt.CelsiusRangeTest(thtest, CELSIUS_RANGE)
-                        for _ in crt.generate(max_size=len(toeholds) + len(antis) + 1):
+                        for _ in crt.generate(max_size=3 + len(antis) + EXTRA_SIZE):
                             switch_bar.update()
                     self.save(mirna, toehold_name, thtest.result, crt.result, team_bar)
                     del thtest
