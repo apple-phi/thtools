@@ -1,9 +1,6 @@
 name: iGEM Contribution
 on:
   workflow_dispatch:
-  pull_request:
-  schedule:
-    - cron: "0 0 * * *"
 
 jobs:
   run_contrib:
