@@ -11,3 +11,5 @@ mkdir web/modules/
 for module in ${MODULES[@]}; do
     cp -r node_modules/${module}/dist web/modules/$module
 done
+
+rm -r node_modules/
