@@ -1,31 +1,46 @@
-*.egg-info
-*.pyc
-*~
-build
-dist
-*.so
-*.c
-*.pyd
-*.csv
-*.eggs
-__pycache__
-miRBase
+# config
 *.DS_Store
-*.spec
 *.vscode
+
+# cache
+__pycache__
+*.pyc
 *.pytest_cache
-fonts/
+
+# output
+*.csv
 generated
-pygments.css
-favicon.png
 registry/contributions/
+modules/
+
+# test
 *coverage.*
 .coverage
 coverage_html_report
+
+# build
+miRBase
+fonts/
+pygments.css
+favicon.png
 node_modules
+
+# dist
+*~
+*.so
+*.c
+*.pyd
+build
+dist
+*.egg-info
+*.eggs
+
+# PyInstaller
+*.spec
+*house*
+
+# neutralino.js
+*.storage
 bin
 *.log
-*house*
 neutralino.js
-*.storage
-modules/

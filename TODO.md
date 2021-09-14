@@ -1,23 +1,17 @@
 # To-do
 
-## General
-- organise .gitignore
-
 ## Tests
 - Implement Cython coverage report; see https://github.com/cython/cython/pull/3831
 
 ## Source
 - Add probes and design
 - Rewrite analysis.pyx using memoryviews.
+- Add metadata to JSON output
 
 ## App
-- make proper logo
-- Include CRT in app
 - Form validation using regex for FASTA
 - Form error msgs
+- **Licensing**
 
 ## iGEM
-- Part characterization
-
-## CI
-- Build wheels for CPython 3.10
+- **Part characterization**
