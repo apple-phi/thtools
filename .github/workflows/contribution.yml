@@ -5,7 +5,7 @@ on:
 jobs:
   run_contrib:
     name: Test the toeholds of ${{ matrix.team }}
-    runs-on: macos-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         team: ["2017_CLSB_UK", "2019_SASTRA_Thanjavur", "2020_CSMU_Taiwan"]
