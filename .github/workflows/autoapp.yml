@@ -48,13 +48,6 @@ jobs:
       - name: Modify permissions
         run: chmod -R 777 ./apphouse/
 
-      - name: Codesign app
-        if: runner.os == 'macOS'
-        uses: apple-actions/import-codesign-certs@v1
-        with: 
-          p12-file-base64: ${{ secrets.CODESIGN_CERT }}
-          p12-password: ${{ secrets.CODESIGN_CERT_PASS }}
-
       - name: Tar app
         run: tar -cvf thtools.app-${{ runner.os }}.tar ./apphouse/$(cd apphouse/ && ls -r | head -n 1) # last file alphabetically
 
