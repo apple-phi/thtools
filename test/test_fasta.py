@@ -1,4 +1,8 @@
+import unittest.mock
+import urllib.request, urllib.error
+
 import thtools as tt
+from thtools.fasta import iGEMError
 
 
 def test_copy(hsa_fasta_slice):
@@ -63,3 +67,15 @@ def test_fromregistry():
         )
         == tt.FParser.fromregistry(part="BBa_K2206001", parts=["BBa_K2206001"])
     )
+
+
+def test_iGEMError():
+    with unittest.mock.patch(
+        "urllib.request.urlopen",
+        side_effect=urllib.error.URLError(""),
+        return_value=None,
+    ):
+        try:
+            tt.FParser.fromregistry("BBa_K2206001", retries=10)
+        except iGEMError:
+            assert True
