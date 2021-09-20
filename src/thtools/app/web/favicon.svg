@@ -1,3 +1,22 @@
+<!--
+	This file is part of ToeholdTools (a library for the analysis of
+	toehold switch riboregulators created by the iGEM team City of
+	London UK 2021).
+	Copyright (c) 2021 Lucas Ng
+
+	ToeholdTools is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	ToeholdTools is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with ToeholdTools.  If not, see <https://www.gnu.org/licenses/>.
+-->
 <svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5000 5000" width="5000"
 	height="5000">
 	<title>ToeholdTools</title>

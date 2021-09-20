@@ -1,13 +1,38 @@
-"""A sub-module to parse FASTA files, which comes with the mature section of miRBase included."""
+"""
+Parse FASTA files, with built-in access to the mature section of miRBase <http://mirbase.org/>.
+"""
+
+# This file is part of ToeholdTools (a library for the analysis of
+# toehold switch riboregulators created by the iGEM team City of
+# London UK 2021).
+# Copyright (c) 2021 Lucas Ng
+
+# ToeholdTools is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# ToeholdTools is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with ToeholdTools.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
 from typing import List, Union, Collection, Optional
 import xml.etree.ElementTree as ElementTree
 import urllib.request, urllib.error
+import logging
 
 from . import HOME
 
 __all__ = ["FParser"]
+
+
+class iGEMError(Exception):
+    """For when something in the iGEM API fails."""
 
 
 class FParser:
@@ -67,35 +92,35 @@ class FParser:
     line_length = 70
 
     def __init__(self, text: str):
-        if len(text) > 0:
-            text_lines = [
-                line.replace(";", ">").strip()
-                for line in text.splitlines()
-                if len(line) > 0
-            ]
-            self.headers = [line for line in text_lines if ">" in line]
-            self.seqs = "".join(
-                [line if ">" not in line else "<split>" for line in text_lines][1:]
-            ).split("<split>")
-            first_space_indices = [header.index(" ") for header in self.headers]
-            self.ids = [
-                self.headers[i][1 : first_space_indices[i]]
-                for i in range(len(self.headers))
-            ]
-            self.descriptions = [
-                self.headers[i][first_space_indices[i] + 1 :]
-                for i in range(len(self.headers))
-            ]
-            assert (
-                len(self.headers)
-                == len(self.seqs)
-                == len(self.ids)
-                == len(self.descriptions)
-            ), "error in parsing FASTA file."
-            self.num = len(self.ids)
-            self.text = self.format()
-        else:
+        if not text:
             self.num = 0
+            return
+        text_lines = [
+            line.replace(";", ">").strip()
+            for line in text.splitlines()
+            if len(line) > 0
+        ]
+        self.headers = [line for line in text_lines if ">" in line]
+        self.seqs = "".join(
+            [line if ">" not in line else "<split>" for line in text_lines][1:]
+        ).split("<split>")
+        first_space_indices = [header.index(" ") for header in self.headers]
+        self.ids = [
+            self.headers[i][1 : first_space_indices[i]]
+            for i in range(len(self.headers))
+        ]
+        self.descriptions = [
+            self.headers[i][first_space_indices[i] + 1 :]
+            for i in range(len(self.headers))
+        ]
+        assert (
+            len(self.headers)
+            == len(self.seqs)
+            == len(self.ids)
+            == len(self.descriptions)
+        ), "error in parsing FASTA file."
+        self.num = len(self.ids)
+        self.text = self.format()
 
     def __len__(self):
         return self.num
@@ -139,33 +164,48 @@ class FParser:
 
     def __getitem__(self, key: Union[int, str, slice]):
         if isinstance(key, slice):
-            new = self.copy()
-            new.ids = self.ids[key]
-            new.seqs = self.seqs[key]
-            new.descriptions = self.descriptions[key]
-            new.headers = self.headers[key]
-            new.num = len(new.ids)
-            new.text = new.format()
-            return new
-
+            return self._get_by_slice(key)
         if isinstance(key, int):
-            return (self.ids[key], (self.seqs[key]))
-
+            return self._get_by_index(key)
         if isinstance(key, str):
             if key in self.ids:
-                return self.seqs[self.ids.index(key)]
+                return self._get_by_id(key)
             if key in self.seqs:
-                return self.ids[self.seqs.index(key)]
-
+                return self._get_by_seq(key)
             if key in self.descriptions:
-                index = self.descriptions.index(key)
-                return (self.ids[index], (self.seqs[index]))
+                return self._get_by_desc(key)
             if key in self.headers:
-                index = self.headers.index(key)
-                return (self.ids[index], (self.seqs[index]))
+                return self._get_by_header(key)
             raise KeyError(
                 f"key '{key}' not found in IDs, sequences, descriptions or headers."
             )
+
+    def _get_by_slice(self, key: slice):
+        new = self.copy()
+        new.ids = self.ids[key]
+        new.seqs = self.seqs[key]
+        new.descriptions = self.descriptions[key]
+        new.headers = self.headers[key]
+        new.num = len(new.ids)
+        new.text = new.format()
+        return new
+
+    def _get_by_index(self, key: int):
+        return (self.ids[key], (self.seqs[key]))
+
+    def _get_by_id(self, key: str):
+        return self.seqs[self.ids.index(key)]
+
+    def _get_by_seq(self, key: str):
+        return self.ids[self.seqs.index(key)]
+
+    def _get_by_desc(self, key: str):
+        index = self.descriptions.index(key)
+        return (self.ids[index], (self.seqs[index]))
+
+    def _get_by_header(self, key: str):
+        index = self.headers.index(key)
+        return (self.ids[index], (self.seqs[index]))
 
     def index(self, key):
         """Get the index of a key in IDs, sequences, descriptions or headers."""
@@ -208,7 +248,7 @@ class FParser:
             The formatted text of the FParser object.
         """
         return "".join(
-            f">{self.ids[i]} {self.descriptions[i]}\n{self._seq_format(self.seqs[i], line_length)}\n"
+            f">{self.ids[i]} {self.descriptions[i]}\n{_seq_format(self.seqs[i], line_length)}\n"
             for i in range(self.num)
         ).strip()
 
@@ -276,7 +316,7 @@ class FParser:
         cls,
         part: Optional[str] = None,
         parts: Optional[Collection[str]] = None,
-        retry=False,
+        retries: int = 0,
     ):
         """
         Create a :class:`FParser` instance from a part
@@ -302,20 +342,29 @@ class FParser:
         if parts:
             if part:
                 parts.append(part)
+                logging.info("both `part` and `parts` supplied to `fromregsitry`.")
         elif part:
             parts = [part]
         else:
             raise ValueError(
-                "at least one of the arguments `part` and `parts` must not blank."
+                "at least one of the arguments `part` or `parts` must be passed."
             )
         url = "https://parts.igem.org/cgi/xml/part.cgi?part=" + ".".join(parts)
         try:
-            xml_text = urllib.request.urlopen(url).read().decode()
+            return cls._fromigemxml(parts, urllib.request.urlopen(url).read().decode())
         except urllib.error.URLError as e:
-            if not retry:
-                raise urllib.error.URLError(f"connection to {url} timed out.") from e
-            print(f"connection to {url} timed out. Retrying...")
-            cls.fromregistry(parts=parts, retry=True)
+            if retries > 0:
+                logging.warning(
+                    "Connection to %s timed out. Retrying %s more times.",
+                    url,
+                    retries,
+                )
+                return cls.fromregistry(parts=parts, retries=retries - 1)
+            raise iGEMError(f"connection to {url} timed out. No more retries.") from e
+
+    @classmethod
+    def _fromigemxml(cls, parts, xml_text: str):
+        """Parse the return value from the iGEM API."""
         assert "error" not in xml_text.lower()
         root = ElementTree.fromstring(xml_text)
         new = cls("")
@@ -325,9 +374,10 @@ class FParser:
         new.num = len(parts)
         return cls(new.format())
 
-    @staticmethod
-    def _seq_format(seq, seq_width: int) -> str:
-        """Internal sequence formatter to set sequences to a certain length."""
-        return "".join(seq[i]
-                if (i + 1) % seq_width != 0 or i == len(seq) - 1
-                else f"{seq[i]}\n" for i in range(len(seq)))
+
+def _seq_format(seq, seq_width: int) -> str:
+    """Internal sequence formatter to set sequences to a certain length."""
+    return "".join(
+        seq[i] if (i + 1) % seq_width != 0 or i == len(seq) - 1 else f"{seq[i]}\n"
+        for i in range(len(seq))
+    )

@@ -1,8 +1,30 @@
-"""A sub-module to run a :class:`~thtools.core.ToeholdTest` across temperature ranges."""
+"""
+An implementation of running a :class:`~thtools.core.ToeholdTest` across temperature ranges.
+"""
 
-from typing import Sequence, Optional, Generator, List
+# This file is part of ToeholdTools (a library for the analysis of
+# toehold switch riboregulators created by the iGEM team City of
+# London UK 2021).
+# Copyright (c) 2021 Lucas Ng
+
+# ToeholdTools is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# ToeholdTools is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with ToeholdTools.  If not, see <https://www.gnu.org/licenses/>.
+
+
+from typing import Sequence, Optional, Generator, List, Mapping, Union
 import datetime
 import re
+import logging
 
 import nupack
 import numpy as np
@@ -14,7 +36,9 @@ try:
     import matplotlib.pyplot as plt
     import seaborn as sns
 except ImportError:
-    pass
+    logging.warning(
+        "Seaborn not installed; please download it from https://pypi.org/project/seaborn/ if you wish to use graph plotting functionality."
+    )
 
 from . import CPU_COUNT
 from .core import ToeholdTest, ToeholdResult
@@ -296,7 +320,7 @@ class CelsiusRangeResult:
         ax.set_axisbelow(True)
         ax.grid()
         plt.title(
-            f'CRT for toehold detecting {self.inferred_target_name or self.inferred_target}'
+            f"CRT for toehold detecting {self.inferred_target_name or self.inferred_target}"
         )
 
         return plt
@@ -444,6 +468,7 @@ class CelsiusRangeTest:
     thtest : ToeholdTest
     celsius_range : Sequence[float]
     result : CelsiusRangeResult
+    meta : Mapping[str, str | int | float]
 
     Examples
     --------
@@ -466,6 +491,7 @@ class CelsiusRangeTest:
     thtest: ToeholdTest
     celsius_range: Sequence[float]
     result: CelsiusRangeResult
+    meta: Mapping[str, Union[str, int, float]]
 
     def __init__(self, thtest: ToeholdTest, celsius_range: Sequence[float]):
         self.thtest = thtest

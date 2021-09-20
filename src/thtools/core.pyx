@@ -3,7 +3,27 @@
 #distutils: define_macros=CYTHON_TRACE_NOGIL=1
 #distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 
-"""The sub-module which is the *raison d'être* for ToeholdTools' existence."""
+"""
+The core data powerhouse of the ToeholdTools library.
+"""
+
+# This file is part of ToeholdTools (a library for the analysis of
+# toehold switch riboregulators created by the iGEM team City of
+# London UK 2021).
+# Copyright (c) 2021 Lucas Ng
+
+# ToeholdTools is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# ToeholdTools is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with ToeholdTools.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Collection, Generator, Sequence, Mapping, Optional, Union
 
@@ -378,9 +398,6 @@ cdef class ToeholdTest:
         
         # create worker pool
         self.pool = pathos.multiprocessing.ProcessPool(nodes=self.n_nodes)
-        
-        # set NUPACK cache
-        nupack.config.cache = psutil.virtual_memory().available * 1e-9 / 2
 
         # store meta
         self.meta = {"THS"                              :self.ths,
