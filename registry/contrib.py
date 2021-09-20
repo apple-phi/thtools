@@ -12,6 +12,7 @@ import tqdm
 import thtools as tt
 
 HOME = os.path.dirname(os.path.abspath(__file__))
+URLLIB_RETRIES = 10
 
 EXTRA_SIZE = 1
 N_SAMPLES = 100
@@ -144,10 +145,16 @@ class Contribution:
     def run(self):
         with tqdm.tqdm(self.mirna.items(), desc=self.team) as team_bar:
             for mirna, switch in team_bar:
-                toeholds = tt.FParser.fromregistry(parts=switch["toeholds"], retry=True)
+                toeholds = tt.FParser.fromregistry(
+                    parts=switch["toeholds"], retries=URLLIB_RETRIES
+                )
                 if "antis" in switch:
                     antis = [
-                        [tt.FParser.fromregistry(part=part, retry=True).seqs[0].upper()]
+                        [
+                            tt.FParser.fromregistry(part=part, retries=URLLIB_RETRIES)
+                            .seqs[0]
+                            .upper()
+                        ]
                         if part
                         else None
                         for part in switch["antis"]
