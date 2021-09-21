@@ -3,3 +3,4 @@ selenium
 pytest-depends
 Cython # for future when src layout is fixed; see https://github.com/cython/cython/pull/3831
 Pillow
+seaborn
