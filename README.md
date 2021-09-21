@@ -52,6 +52,6 @@ The full API reference and developer notes can be found [here](https://thtools.r
 ## License
 ToeholdTools is licensed under the terms of the [GPLv3](https://github.com/lkn849/thtools/blob/master/COPYING).
 However, the distributed app is bundled with several third party projects.
-Please see [THIRD_PARTY_LICENSES.md](https://github.com/lkn849/thtools/blob/master/THIRD_PARTY_LICENSES.md) for more information.
+Please see [third_party/LICENSES.md](https://github.com/lkn849/thtools/blob/master/third_party/LICENSES.md) for more information.
 
 © Copyright 2021, Lucas Ng.

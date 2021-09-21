@@ -28,4 +28,5 @@ To access this table from inside the app, click the button labelled \`Legal\` in
 $PIP_LICENSES
 EOM
 
-printf "$MAIN_TEXT" > THIRD_PARTY_LICENSES.md
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+printf "$MAIN_TEXT" > "$SCRIPT_DIR/LICENSES.md"
