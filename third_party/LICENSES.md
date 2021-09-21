@@ -1,6 +1,6 @@
 # Overview of third party libraries included within ToeholdTools
 
-ToeholdTools is licensed under the terms of the [GPLv3](https://github.com/lkn849/thtools/blob/master/COPYING).
+ToeholdTools is licensed under the terms of the [GPLv3](https://github.com/lkn849/thtools/blob/master/LICENSE).
 
 However, the distributed app is made using [PyInstaller](https://github.com/pyinstaller/pyinstaller).
 This means that it includes a standalone copy of Python 3.8.8 and that all Python dependencies are bundled in as well.
@@ -100,7 +100,6 @@ To access this table from inside the app, click the button labelled `Legal` in t
 | latexcodec                    | 2.0.1       | MIT License                                                                                         | https://github.com/mcmtroffaes/latexcodec                                  |
 | lazy-object-proxy             | 1.5.2       | BSD License                                                                                         | https://github.com/ionelmc/python-lazy-object-proxy                        |
 | macholib                      | 1.14        | MIT License                                                                                         | http://bitbucket.org/ronaldoussoren/macholib                               |
-| matplotlib                    | 3.4.2       | Python Software Foundation License                                                                  | https://matplotlib.org                                                     |
 | matplotlib-inline             | 0.1.2       | BSD 3-Clause                                                                                        | https://github.com/martinRenou/matplotlib-inline                           |
 | mbstrdecoder                  | 1.0.1       | MIT License                                                                                         | https://github.com/thombashi/mbstrdecoder                                  |
 | mccabe                        | 0.6.1       | MIT License                                                                                         | https://github.com/pycqa/mccabe                                            |
@@ -177,7 +176,6 @@ To access this table from inside the app, click the button labelled `Legal` in t
 | sanitize-ml-labels            | 1.0.24      | MIT License                                                                                         | https://github.com/LucaCappelletti94/sanitize_ml_labels                    |
 | scikit-learn                  | 0.24.1      | new BSD                                                                                             | http://scikit-learn.org                                                    |
 | scipy                         | 1.7.0       | BSD License                                                                                         | https://www.scipy.org                                                      |
-| seaborn                       | 0.11.1      | BSD License                                                                                         | https://seaborn.pydata.org                                                 |
 | selenium                      | 3.141.0     | Apache Software License                                                                             | https://github.com/SeleniumHQ/selenium/                                    |
 | sequence-tagging              | 0.1.6       | MIT License                                                                                         | https://github.com/blester125/sequence_tagging                             |
 | setuptools                    | 58.0.4      | MIT License                                                                                         | https://github.com/pypa/setuptools                                         |
@@ -207,7 +205,6 @@ To access this table from inside the app, click the button labelled `Legal` in t
 | termcolor                     | 1.1.0       | MIT License                                                                                         | http://pypi.python.org/pypi/termcolor                                      |
 | text-unidecode                | 1.3         | Artistic License; GNU General Public License (GPL); GNU General Public License v2 or later (GPLv2+) | https://github.com/kmike/text-unidecode/                                   |
 | threadpoolctl                 | 2.1.0       | BSD License                                                                                         | https://github.com/joblib/threadpoolctl                                    |
-| thtools                       | 0.1.1       | MIT License                                                                                         | https://github.com/lkn849/thtools/                                         |
 | toml                          | 0.10.2      | MIT License                                                                                         | https://github.com/uiri/toml                                               |
 | tomli                         | 1.2.1       | MIT License                                                                                         | UNKNOWN                                                                    |
 | toposort                      | 1.6         | Apache Software License                                                                             | https://gitlab.com/ericvsmith/toposort                                     |

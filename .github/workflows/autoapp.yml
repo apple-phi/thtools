@@ -7,18 +7,17 @@ on:
 
 jobs:
   build_wheels:
-    name: Build app on ${{ matrix.os }} for ${{ matrix.python-version }}
+    name: Build app on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest] # not windows because of NUPACK
-        python-version: ['3.8']
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.8'
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
