@@ -8,7 +8,7 @@ PY_VERSION=$(python3 -V)
 
 # Dependency licenses
 python3 -m pip install pip-licenses
-PIP_LICENSES=$(python3 -m piplicenses --with-system --from=mixed --format=markdown --with-urls --ignore-packages thtools seaborn matplotlib)
+PIP_LICENSES=$(python3 -m piplicenses --with-system --from=mixed --format=markdown --with-urls --ignore-packages thtools seaborn matplotlib PTable pip pip-licenses)
 
 read -r -d '' MAIN_TEXT << EOM
 # Overview of third party libraries included within ToeholdTools

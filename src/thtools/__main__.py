@@ -70,6 +70,7 @@ else:
             "--exclude-module=pygments",
             "--exclude-module=coverage",
             "--exclude-module=PIL",
+            "--exclude-module=pip",
             "--exclude-module=tkinter",
             "--exclude-module=sphinx",
             "--exclude-module=jedi",

@@ -31,7 +31,6 @@ import os
 import time
 import datetime
 
-import psutil
 import pathos
 import nupack
 import prettytable
