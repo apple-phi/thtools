@@ -1,4 +1,4 @@
-name: Test
+name: 3rd party licenses
 on:
   workflow_dispatch:  
   schedule:
