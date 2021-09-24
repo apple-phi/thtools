@@ -3,7 +3,7 @@
 ToeholdTools is licensed under the terms of the [GPLv3](https://github.com/lkn849/thtools/blob/master/LICENSE).
 
 However, the distributed app is made using [PyInstaller](https://github.com/pyinstaller/pyinstaller).
-This means that it includes a standalone copy of Python 3.8.11 and that all Python dependencies are bundled in as well.
+This means that it includes a standalone copy of Python 3.8.12 and that all Python dependencies are bundled in as well.
 The Python license is available [here](https://github.com/python/cpython/blob/main/LICENSE).
 
 This is a compendium of projects which are packaged into the app,
@@ -17,7 +17,6 @@ To access this table from inside the app, click the button labelled `Legal` in t
 | Eel              | 0.14.0    | MIT License                                            | https://github.com/samuelhwilliams/Eel           |
 | Jinja2           | 3.0.1     | BSD License                                            | https://palletsprojects.com/p/jinja/             |
 | MarkupSafe       | 2.0.1     | BSD License                                            | https://palletsprojects.com/p/markupsafe/        |
-| PTable           | 0.9.2     | BSD License                                            | https://github.com/kxxoling/PTable               |
 | bottle           | 0.12.19   | MIT License                                            | http://bottlepy.org/                             |
 | bottle-websocket | 0.2.9     | MIT License                                            | https://github.com/zeekay/bottle-websocket       |
 | dill             | 0.3.4     | BSD License                                            | https://github.com/uqfoundation/dill             |
@@ -30,8 +29,6 @@ To access this table from inside the app, click the button labelled `Legal` in t
 | nupack           | 4.0.0.23  | UNKNOWN                                                | www.nupack.org                                   |
 | pandas           | 1.3.3     | BSD License                                            | https://pandas.pydata.org                        |
 | pathos           | 0.2.8     | BSD License                                            | https://github.com/uqfoundation/pathos           |
-| pip              | 21.2.4    | MIT License                                            | https://pip.pypa.io/                             |
-| pip-licenses     | 3.5.2     | MIT License                                            | https://github.com/raimon49/pip-licenses         |
 | pox              | 0.3.0     | BSD License                                            | https://github.com/uqfoundation/pox              |
 | ppft             | 1.6.6.4   | BSD-like                                               | https://github.com/uqfoundation/ppft             |
 | prettytable      | 2.2.0     | BSD License                                            | https://github.com/jazzband/prettytable          |
