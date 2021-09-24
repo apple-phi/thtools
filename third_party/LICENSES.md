@@ -3,7 +3,7 @@
 ToeholdTools is licensed under the terms of the [GPLv3](https://github.com/lkn849/thtools/blob/master/LICENSE).
 
 However, the distributed app is made using [PyInstaller](https://github.com/pyinstaller/pyinstaller).
-This means that it includes a standalone copy of Python 3.8.11 and that all Python dependencies are bundled in as well.
+This means that it includes a standalone copy of Python 3.8.12 and that all Python dependencies are bundled in as well.
 The Python license is available [here](https://github.com/python/cpython/blob/main/LICENSE).
 
 This is a compendium of projects which are packaged into the app,
