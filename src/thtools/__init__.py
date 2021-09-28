@@ -21,7 +21,7 @@ created by the iGEM team City of London UK 2021.
 # You should have received a copy of the GNU General Public License
 # along with ToeholdTools.  If not, see <https://www.gnu.org/licenses/>.
 
-__version__ = "0.2.0-dev0"
+__version__ = "0.2.0"
 
 import os
 import nupack
