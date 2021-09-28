@@ -251,6 +251,7 @@ class CelsiusRangeResult:
         return f"<{self.__module__}.{type(self).__qualname__} of {len(self.results)} ToeholdTests at {hex(id(self))}>"
 
     def copy(self):
+        """Copy an instance of CelsiusRangeResult."""
         new = self.__class__(self.results, self.celsius_range, self.meta)
         new.inferred_target = self.inferred_target
         return new

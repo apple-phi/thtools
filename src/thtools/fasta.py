@@ -1,5 +1,5 @@
 """
-Parse FASTA files, with built-in access to the mature section of miRBase <http://mirbase.org/>.
+Parse FASTA files, with built-in access to the mature section of `miRBase <http://mirbase.org/>`_.
 """
 
 # This file is part of ToeholdTools (a library for the analysis of
@@ -319,16 +319,14 @@ class FParser:
         retries: int = 0,
     ):
         """
-        Create a :class:`FParser` instance from a part
-        in the Registry of Standard Biological Parts.
-
-        Alternatively, create a list of :class:`FParser`s
-        from a collection of parts.
+        Create a :class:`FParser` instance from a part or list of parts
+        in the `Registry of Standard Biological Parts <http://parts.igem.org/Main_Page>`_.
 
         Parameters
         ----------
         part : str, optional
         parts : Collection[str], optional
+        retries : int, default=0
 
         Returns
         -------
