@@ -30,6 +30,14 @@ dl.py.method dt:not(.field-list dt) {
 	border-left: solid 3px #6ab0de !important;
 }
 
+/* Latex coloring */
+.mi,
+.mo,
+.mfrac,
+.mn {
+	color: #e83e8c;
+}
+
 /* Dark mode, preserving images */
 @media (prefers-color-scheme: dark) {
 	html {

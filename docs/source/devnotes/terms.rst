@@ -1,3 +1,5 @@
+.. _Terminology:
+
 Terminology
 ===========
 
@@ -10,7 +12,7 @@ This is a collection of definitions for terms which appear frequently in the doc
 
     * - **activation**
       - The state of a toehold switch being correctly unbound for translation, or the probability of.
-        This equivalent to the proportion of toehold switch molecules which have all of:
+        This equivalent to the proportion of toehold switch strands which have all of:
 
         * an unbound RBS
         * an unbound AUG

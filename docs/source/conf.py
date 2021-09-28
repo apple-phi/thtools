@@ -30,7 +30,7 @@ LOGO = os.path.join(ROOT, "src", "thtools", "app", "web", "favicon.svg")
 project = "ToeholdTools"
 copyright = "2021, Lucas Ng"
 author = "Lucas Ng"
-version = "0.2.0-dev0"  # have to do manually for now
+version = "0.2.0"  # have to do manually for now
 release = version
 
 html_theme = "sphinx_book_theme"
@@ -82,7 +82,6 @@ html_context = {
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "pathos": ("https://pathos.readthedocs.io/en/latest/", None),
-    # "nupack": ("https://docs.nupack.org/", None), # not supported :(
     "matplotlib": ("https://matplotlib.org/stable/", None),
 }
 

@@ -1,5 +1,37 @@
+General notes
+=============
+
+This is an aggregation of titbits and useful notes that the developer feels are worth sharing.
+
+Using the NUPACK website
+------------------------
+
+If you are comparing the result of the tests with the online NUPACK `website <https://www.nupack.org>`_,
+it is common for a disparity whereby ToeholdTools suggests an RNA activates the toehold switch but the
+website disagrees. This is due to a difference in thermodynamic models used, since this package uses
+NUPACK 4 whereas the NUPACK website uses NUPACK 3.
+
+.. note::
+    This information is accurate as of 28/09/2021.
+    However, the developer understands that NUPACK hopes to release a new version of their website
+    integrating NUPACK 4. Therefore by the time you read this the information may be out of date.
+
+However, if you must emulate the website's behavior, we provide the class :class:`thtools.utils.ModelNu3`,
+which subclasses :class:`nupack.Model`. The majority of the ToeholdTools suite has a :obj:`model` argument
+you can pass an instance of this object to.
+
+Performance
+-----------
+
+For performance, :mod:`thtools.core` is compiled via `Cython <https://github.com/cython/cython>`_,
+and uses :mod:`pathos.multiprocessing` for distributing work across CPU cores :cite:p:`mckerns_building_2012`.
+
+The majority of runtime is taken up by NUPACK simulations which we have no control over.
+However, we have made reasonable effort to bring down the time of analysing the results that NUPACK returns.
+Future releases may improve upon this by internally using GIL-free processing of typed memoryviews using `OpenMP <https://www.openmp.org/>`_.
+
 Tracking Progress
-=================
+-----------------
 
 .. currentmodule:: thtools
 
@@ -15,7 +47,7 @@ but may not be helpful since the majority of the time is taken up by NUPACK's al
 so there will not be much time difference
 between the first set of printing (after the initial simulations) and the end of the whole test itself.
 
-Second, you can use the :meth:`generate` methods of :class:`~thtools.core.ToeholdTest`
+Second, you can use the :meth:`~thtools.core.ToeholdTest.generate` methods of :class:`~thtools.core.ToeholdTest`
 and :class:`~thtools.crt.CelsiusRangeTest` in lieu of :meth:`run`.
 This will return a generator that you can iterate through
 using something like `tqdm <https://github.com/tqdm/tqdm>`_ to track the progress.
