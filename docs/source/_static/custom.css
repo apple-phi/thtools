@@ -34,7 +34,12 @@ dl.py.method dt:not(.field-list dt) {
 .mi,
 .mo,
 .mfrac,
-.mn {
+.mn,
+mi,
+math,
+mjx-c,
+mjx-math,
+mjx-line {
 	color: #e83e8c;
 }
 
