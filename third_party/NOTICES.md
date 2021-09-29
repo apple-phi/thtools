@@ -32,7 +32,6 @@ To access this table from inside the app, click the button labelled `Legal` in t
 | pox              | 0.3.0     | BSD License                                            | https://github.com/uqfoundation/pox              |
 | ppft             | 1.6.6.4   | BSD-like                                               | https://github.com/uqfoundation/ppft             |
 | prettytable      | 2.2.1     | BSD License                                            | https://github.com/jazzband/prettytable          |
-| psutil           | 5.8.0     | BSD License                                            | https://github.com/giampaolo/psutil              |
 | pyparsing        | 2.4.7     | MIT License                                            | https://github.com/pyparsing/pyparsing/          |
 | python-dateutil  | 2.8.2     | Apache Software License; BSD License                   | https://github.com/dateutil/dateutil             |
 | pytz             | 2021.1    | MIT License                                            | http://pythonhosted.org/pytz                     |
