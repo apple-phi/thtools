@@ -37,7 +37,7 @@ class iGEMError(Exception):
 
 class FParser:
     """
-    A basic FASTA parser with `miRBase <https://www.mirbase.org>`_ built in.
+    A basic FASTA parser with `miRBase <https://www.mirbase.org>`__ built in.
 
     Extracts main FASTA sub-components. Supports slice syntax and summation.
 

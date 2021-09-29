@@ -19,7 +19,7 @@ The example used is team City of London UK (2021)'s switch for hsa-miR-210-3p:
    rbs = "AGAGGAGA"
 
 Then load the RNA sequences you want test against your toehold switch.
-We'll use the a subsection of the *Homo sapiens* mature `miRNA database <https://www.mirbase.org>`_,
+We'll use the a subsection of the *Homo sapiens* mature miRNA entries in `miRBase`_,
 which ships pre-packaged with ToeholdTools and sorted by species:
 
 .. code-block:: python

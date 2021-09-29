@@ -51,4 +51,4 @@ This app is identical to the demo mentioned above, except that it embeds an inst
 so that no programming experience is necessary.
 
 If you open the app you and get a message saying that it cannot be verified for lack of malware,
-`right click` and click `open` to force your operating system to launch it.
+:code:`right-click` and click :code:`open` to force your operating system to launch it.
