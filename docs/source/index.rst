@@ -3,7 +3,7 @@ Welcome to ToeholdTools!
 
 .. toctree::
    :hidden:
-   :caption: Basic usage
+   :caption: Getting started
    :glob:
 
    basic/*
