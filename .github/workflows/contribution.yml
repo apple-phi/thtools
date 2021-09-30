@@ -6,6 +6,7 @@ jobs:
   run_contrib:
     name: Test the toeholds of ${{ matrix.team }}
     runs-on: self-hosted
+    timeout-minutes: 4320
     strategy:
       matrix:
         team: ["2017_CLSB_UK", "2019_SASTRA_Thanjavur", "2020_CSMU_Taiwan"]

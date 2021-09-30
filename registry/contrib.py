@@ -8,8 +8,11 @@ import sys
 
 import tomli
 import tqdm
+import nupack
 
 import thtools as tt
+
+nupack.config.cache = 8  # GB
 
 HOME = os.path.dirname(os.path.abspath(__file__))
 URLLIB_RETRIES = 10
