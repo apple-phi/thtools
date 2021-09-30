@@ -23,7 +23,7 @@ To access this table from inside the app, click the button labelled `Legal` in t
 | future           | 0.18.2    | MIT License                                            | https://python-future.org                        |
 | gevent           | 21.8.0    | MIT License                                            | http://www.gevent.org/                           |
 | gevent-websocket | 0.10.1    | Copyright 2011-2017 Jeffrey Gelens <jeffrey@noppo.pro> | https://www.gitlab.com/noppo/gevent-websocket    |
-| greenlet         | 1.1.1     | MIT License                                            | https://greenlet.readthedocs.io/                 |
+| greenlet         | 1.1.2     | MIT License                                            | https://greenlet.readthedocs.io/                 |
 | multiprocess     | 0.70.12.2 | BSD License                                            | https://github.com/uqfoundation/multiprocess     |
 | numpy            | 1.21.2    | BSD License                                            | https://www.numpy.org                            |
 | nupack           | 4.0.0.23  | UNKNOWN                                                | www.nupack.org                                   |
