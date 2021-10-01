@@ -1,0 +1,15 @@
+rbs = "AGAGGAGA"
+species = "Homo sapiens"
+celsius = 37
+
+[hsa-miR-146a-5p]
+toeholds = [
+    "BBa_K3431011",
+    "BBa_K3431035",
+    "BBa_K3431012",
+    "BBa_K3431036",
+    "BBa_K3431013",
+    "BBa_K3431037",
+    "BBa_K3431014",
+    "BBa_K3431038"
+]

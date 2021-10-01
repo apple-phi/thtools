@@ -5,6 +5,7 @@ import math
 import decimal
 import gc
 import sys
+import glob
 
 import tomli
 import tqdm
@@ -268,5 +269,6 @@ if __name__ == "__main__":
     assert (
         len(sys.argv) > 1
     ), "make sure to run the program specifying the team config TOML file!"
-    for team in sys.argv[1:]:
-        Contribution(os.path.join(HOME, team))
+    for path in sys.argv[1:]:
+        for file in glob.glob(path):
+            Contribution(file)

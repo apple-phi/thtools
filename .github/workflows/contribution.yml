@@ -5,11 +5,11 @@ on:
 jobs:
   run_contrib:
     name: Test the toeholds of ${{ matrix.team }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     timeout-minutes: 4320
     strategy:
       matrix:
-        team: ["2017_CLSB_UK", "2019_SASTRA_Thanjavur", "2020_CSMU_Taiwan"]
+        team: ["2017_CLSB_UK", "2019_SASTRA_Thanjavur", "2020_CSMU_Taiwan-0", "2020_CSMU_Taiwan-1", "2020_CSMU_Taiwan-2"]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -32,7 +32,7 @@ jobs:
         run: pip install -r registry/requirements.txt
 
       - name: Run contribution for ${{ matrix.team }}
-        run: python3 registry/contrib.py ${{ matrix.team }}.toml
+        run: python3 registry/contrib.py registry/config/${{ matrix.team }}.toml
 
       - uses: actions/upload-artifact@v2
         with:
