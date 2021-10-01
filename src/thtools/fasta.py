@@ -1,5 +1,5 @@
 """
-Parse FASTA files, with built-in access to the mature section of `miRBase <http://mirbase.org/>`__.
+Parse FASTA files, with built-in access to the mature section of `miRBase <miRBase_>`_.
 """
 
 # This file is part of ToeholdTools (a library for the analysis of
@@ -37,7 +37,7 @@ class iGEMError(Exception):
 
 class FParser:
     """
-    A basic FASTA parser with `miRBase <http://mirbase.org/>`__ built in.
+    A basic FASTA parser with `miRBase <https://miRBase.org>`_ built in.
 
     Extracts main FASTA sub-components. Supports slice syntax and summation.
 

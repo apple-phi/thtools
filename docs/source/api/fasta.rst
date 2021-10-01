@@ -1,6 +1,8 @@
 FASTA
 =====
 
+.. _miRBase: https://miRBase.org
+
 .. currentmodule:: thtools.fasta
 
 .. automodule:: thtools.fasta
