@@ -5,11 +5,12 @@ on:
 jobs:
   run_contrib:
     name: Test the toeholds of ${{ matrix.team }}
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     timeout-minutes: 4320
     strategy:
+      fail-fast: false
       matrix:
-        team: ["2017_CLSB_UK", "2019_SASTRA_Thanjavur", "2020_CSMU_Taiwan-0", "2020_CSMU_Taiwan-1", "2020_CSMU_Taiwan-2"]
+        team: ["2021_City_of_London_UK-0", "2021_City_of_London_UK-1", "2017_CLSB_UK-0", "2017_CLSB_UK-1", "2019_SASTRA_Thanjavur-0", "2019_SASTRA_Thanjavur-1", "2020_CSMU_Taiwan-0", "2020_CSMU_Taiwan-1", "2020_CSMU_Taiwan-2"]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2

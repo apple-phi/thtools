@@ -74,11 +74,11 @@ We do not recommend this part for future usage.
 """
 
 
-def mkdir(path):
+def mkdir(dirpath):
     try:
-        os.mkdir(path)
+        os.mkdir(dirpath)
     except FileExistsError:
-        pass
+        ...
 
 
 def to_one_sf(x: float) -> decimal.Decimal:
@@ -181,16 +181,10 @@ class Contribution:
                     with tqdm.tqdm(
                         total=len(CELSIUS_RANGE) + 1, desc=toehold_name, leave=None
                     ) as switch_bar:
-                        thtest.run(
-                            max_size=3 + len(antis) + EXTRA_SIZE,
-                            n_nodes=tt.CPU_COUNT - 1,
-                        )
+                        thtest.run(max_size=3 + len(antis) + EXTRA_SIZE)
                         switch_bar.update()
                         crt = tt.CelsiusRangeTest(thtest, CELSIUS_RANGE)
-                        for _ in crt.generate(
-                            max_size=3 + len(antis) + EXTRA_SIZE,
-                            n_nodes=tt.CPU_COUNT - 1,
-                        ):
+                        for _ in crt.generate(max_size=3 + len(antis) + EXTRA_SIZE):
                             switch_bar.update()
                     self.save(mirna, toehold_name, thtest.result, crt.result, team_bar)
                     del thtest

@@ -2,10 +2,6 @@ rbs = "AGAGGAGA"
 species = "Homo sapiens"
 celsius = 37
 
-[hsa-miR-21-5p]
-toeholds = ["BBa_K3154000"]
-antis = ["BBa_K3154002"]
-
 [hsa-miR-20a-5p]
 toeholds = ["BBa_K3154003"]
 antis = ["BBa_K3154005"]

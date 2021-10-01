@@ -1,0 +1,19 @@
+rbs = "AGAGGAGA" # RNA sequence
+species = "Homo sapiens" # miRBase species name
+celsius = 37 # temperature in celsius
+
+[hsa-miR-15b-5p] # miRBase miRNA name
+toeholds = ["BBa_K2206000", "BBa_K2206012"] # list of registry parts
+antis = [
+    false,
+    "BBa_K2206013"
+] # list anti-miRNA parts (optional). Can use `false` to represent absence
+
+[hsa-miR-21-5p]
+toeholds = [
+    "BBa_K3431001",
+    "BBa_K3431005",
+    "BBa_K3431033",
+    "BBa_K3431006",
+    "BBa_K3431034",
+]

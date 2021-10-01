@@ -1,0 +1,7 @@
+rbs = "AGAGGAGA"
+species = "Homo sapiens"
+celsius = 37
+
+[hsa-miR-210-3p]
+toeholds = ["BBa_K3905002", "BBa_K3905005"]
+antis = ["BBa_K3905003", false]

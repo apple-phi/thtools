@@ -1,25 +1,18 @@
 # How to run the iGEM characterization script
 
 This folder contains a script called `contrib.py`.
-This runs the test suite based on a team configuration file.
+This runs the ToeholdTools test suite based on a team configuration file.
 The script autogenerates MediaWiki&ndash;formatted inserts for the Registry of Standard Biological Parts.
 
-See files ending in `.toml` in this folder for examples of the configuration file.
+See the `config-example.toml` and the files in `config/` for examples of how to write the configuration file.
+You may wish to chunk up the configuration file into multiple files, since the number of full tests/part is in the order of 10.
 
 To run the script:
 ```sh
-python3 contrib.py <team name>.toml
+python3 contrib.py <path/to/config/file.toml>
 ```
-This will create a folder with the results at the path `contributions/<team name>`.
+This will create a folder with the results in the `contributions/` folder.
 
-## Running the script on Google Cloud
-We used a Google Cloud virtual machine to run the script.
-See the GitHub Action named `iGEM Contribution` to see our full setup.
+## Running on GitHub Actions
 
-In order to connect GitHub Actions with the virtual machine, run:
-```sh
-mkdir actions-runner && cd actions-runner
-curl -o actions-runner-linux-x64-2.281.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.281.1/actions-runner-linux-x64-2.281.1.tar.gz
-tar xzf ./actions-runner-linux-x64-2.281.1.tar.gz
-```
-Then go your `your GitHub repository -> Settings -> Actions -> Runners -> New self-hosted runner` and follow the instructions after the `Download` step.
+Please see [here](https://github.com/lkn849/thtools/blob/master/.github/workflows/contribution.yml) for our GitHub Action running this script.

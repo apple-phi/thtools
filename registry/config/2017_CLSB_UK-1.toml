@@ -5,7 +5,3 @@ celsius = 37
 [hsa-miR-15b-5p]
 toeholds = ["BBa_K2206000", "BBa_K2206012"]
 antis = [false, "BBa_K2206013"]
-
-[hsa-miR-27b-3p]
-toeholds = ["BBa_K2206001", "BBa_K2206010"]
-antis = [false, "BBa_K2206011"]
