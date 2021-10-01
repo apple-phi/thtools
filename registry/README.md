@@ -20,7 +20,6 @@ In order to connect GitHub Actions with the virtual machine, run:
 ```sh
 mkdir actions-runner && cd actions-runner
 curl -o actions-runner-linux-x64-2.281.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.281.1/actions-runner-linux-x64-2.281.1.tar.gz
-echo "04f6c17235d4b29fc1392d5fae63919a96e7d903d67790f81cffdd69c58cb563  actions-runner-linux-x64-2.281.1.tar.gz" | shasum -a 256 -c
 tar xzf ./actions-runner-linux-x64-2.281.1.tar.gz
 ```
 Then go your `your GitHub repository -> Settings -> Actions -> Runners -> New self-hosted runner` and follow the instructions after the `Download` step.

@@ -12,7 +12,7 @@ import nupack
 
 import thtools as tt
 
-nupack.config.cache = 8  # GB
+nupack.config.cache = 2  # GB
 
 HOME = os.path.dirname(os.path.abspath(__file__))
 URLLIB_RETRIES = 10
