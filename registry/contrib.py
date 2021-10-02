@@ -181,10 +181,10 @@ class Contribution:
                     with tqdm.tqdm(
                         total=len(CELSIUS_RANGE) + 1, desc=toehold_name, leave=None
                     ) as switch_bar:
-                        thtest.run(max_size=3 + bool(anti) + EXTRA_SIZE)
+                        thtest.run(max_size=2 + bool(anti) + EXTRA_SIZE)
                         switch_bar.update()
                         crt = tt.CelsiusRangeTest(thtest, CELSIUS_RANGE)
-                        for _ in crt.generate(max_size=3 + len(antis) + EXTRA_SIZE):
+                        for _ in crt.generate(max_size=2 + bool(anti) + EXTRA_SIZE):
                             switch_bar.update()
                     self.save(mirna, toehold_name, thtest.result, crt.result, team_bar)
                     del thtest
@@ -263,6 +263,6 @@ if __name__ == "__main__":
     assert (
         len(sys.argv) > 1
     ), "make sure to run the program specifying the team config TOML file!"
-    for path in sys.argv[1:]:
-        for file in glob.glob(path):
-            Contribution(file)
+    for globpath in sys.argv[1:]:
+        for filepath in glob.glob(globpath):
+            Contribution(filepath)
