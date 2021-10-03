@@ -34,7 +34,7 @@ To access this table from inside the app, click the button labelled `Legal` in t
 | prettytable      | 2.2.1     | BSD License                                            | https://github.com/jazzband/prettytable          |
 | pyparsing        | 2.4.7     | MIT License                                            | https://github.com/pyparsing/pyparsing/          |
 | python-dateutil  | 2.8.2     | Apache Software License; BSD License                   | https://github.com/dateutil/dateutil             |
-| pytz             | 2021.1    | MIT License                                            | http://pythonhosted.org/pytz                     |
+| pytz             | 2021.3    | MIT License                                            | http://pythonhosted.org/pytz                     |
 | scipy            | 1.7.1     | BSD License                                            | https://www.scipy.org                            |
 | setuptools       | 56.0.0    | MIT License                                            | https://github.com/pypa/setuptools               |
 | six              | 1.16.0    | MIT License                                            | https://github.com/benjaminp/six                 |
