@@ -15,7 +15,7 @@ To access this table from inside the app, click the button labelled `Legal` in t
 | Name             | Version   | License                                                | URL                                              |
 |------------------|-----------|--------------------------------------------------------|--------------------------------------------------|
 | Eel              | 0.14.0    | MIT License                                            | https://github.com/samuelhwilliams/Eel           |
-| Jinja2           | 3.0.1     | BSD License                                            | https://palletsprojects.com/p/jinja/             |
+| Jinja2           | 3.0.2     | BSD License                                            | https://palletsprojects.com/p/jinja/             |
 | MarkupSafe       | 2.0.1     | BSD License                                            | https://palletsprojects.com/p/markupsafe/        |
 | bottle           | 0.12.19   | MIT License                                            | http://bottlepy.org/                             |
 | bottle-websocket | 0.2.9     | MIT License                                            | https://github.com/zeekay/bottle-websocket       |
