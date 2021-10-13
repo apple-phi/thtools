@@ -30,6 +30,7 @@ import nupack
 import numpy as np
 import scipy.interpolate
 import prettytable
+import pandas as pd
 
 try:
     import matplotlib
@@ -368,9 +369,9 @@ class CelsiusRangeResult:
         """
         table = prettytable.PrettyTable()
         table.add_column("Temperature /°C", self.celsius_range)
-        if self.target_names:
+        if self.target_names and None not in self.target_names:
             names = [
-                "+".join(name) if not isinstance(name, str) else name
+                "+".join(name) if hasattr(name, "__iter__") else name
                 for name in self.target_names
             ]
             table.add_column("Target name", names)
@@ -438,6 +439,21 @@ class CelsiusRangeResult:
             Extra arguments to be passed to :mod:`PrettyTable`.
         """
         return self.tabulate(dp).get_json_string(**kwargs)
+
+    def to_df(self, dp: Optional[int] = None, **kwargs) -> pd.DataFrame:
+        """
+        Get the result as a pandas DataFrame.
+
+        Parameters
+        ----------
+        dp : int, optional
+            The decimal places to limit the display to.
+        **kwargs
+            Extra arguments to be passed to the
+            :class:`pandas.DataFrame` instance.
+        """
+        table = self.tabulate(dp)
+        return pd.DataFrame(table._rows, columns=table.field_names, **kwargs)
 
 
 ################################################################################

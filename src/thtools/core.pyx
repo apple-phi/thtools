@@ -35,6 +35,7 @@ import pathos
 import nupack
 import prettytable
 import numpy as np
+import pandas as pd
 
 cimport numpy as np
 cimport cython
@@ -859,6 +860,30 @@ cdef class ToeholdResult:
             :class:`PrettyTable.prettytable` instance.
         """
         return self.tabulate(dp, names, show_unbinding).get_json_string(**kwargs)
+
+    def to_df(self, 
+              dp: Optional[int] = None,
+              names: Collection[Union[str,Collection[str]]] = None,
+              show_unbinding: bool = True,
+              **kwargs) -> pd.DataFrame:
+        """
+        Get the result as a pandas DataFrame.
+        
+        Parameters
+        ----------
+        dp : int, optional
+            The decimal places to limit the display to.
+        names : Collection[str | Collection[str]], optional
+            The names of each trigger set in :attr:`trigger_sets`.
+        show_unbinding : bool, default = True
+            Whether to display the individual unbinding probability
+            of the RBS, start codon and post-start codon region
+        **kwargs
+            Extra arguments to be passed to the
+            :class:`pandas.DataFrame` instance.
+        """
+        table = self.tabulate(dp, names, show_unbinding)
+        return pd.DataFrame(table._rows, columns=table.field_names, **kwargs)
 
 
 @cython.boundscheck(False)  # Deactivate bounds checking

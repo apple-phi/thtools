@@ -24,6 +24,7 @@ exclude_lines =
     def to_csv
     def to_html
     def to_json
+    def to_df
     def __repr__
     def __str__
     except
