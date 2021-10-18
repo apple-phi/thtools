@@ -27,7 +27,7 @@ To access this table from inside the app, click the button labelled `Legal` in t
 | multiprocess     | 0.70.12.2 | BSD License                                            | https://github.com/uqfoundation/multiprocess     |
 | numpy            | 1.21.2    | BSD License                                            | https://www.numpy.org                            |
 | nupack           | 4.0.0.23  | UNKNOWN                                                | www.nupack.org                                   |
-| pandas           | 1.3.3     | BSD License                                            | https://pandas.pydata.org                        |
+| pandas           | 1.3.4     | BSD License                                            | https://pandas.pydata.org                        |
 | pathos           | 0.2.8     | BSD License                                            | https://github.com/uqfoundation/pathos           |
 | pox              | 0.3.0     | BSD License                                            | https://github.com/uqfoundation/pox              |
 | ppft             | 1.6.6.4   | BSD-like                                               | https://github.com/uqfoundation/ppft             |
