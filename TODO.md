@@ -11,6 +11,3 @@
 ## App
 - Form validation using regex for FASTA
 - Form error msgs
-
-## iGEM
-- **Part characterization**

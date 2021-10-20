@@ -13,14 +13,18 @@
 
 A library for the analysis of toehold switch riboregulators created by the iGEM team City of London UK 2021.
 ## What is ToeholdTools?
-ToeholdTools is a Python package designed to facilitate analyzing and designing toehold switches.
+ToeholdTools is a Python package and desktop app designed to facilitate analyzing
+and designing toehold switches, created as part of the 2021 iGEM competition. **As of 2021 this is the *only* software of its kind!**
 It's still in the making, so please leave a feature request
 if there is anything else you would like to see!
 
-It currently provides the ability to:
-- Find the activation level of a toehold switch.
-- Test a switch for how specific it is to the target RNA.
-- Compare switch attributes across temperature ranges.
+## Features
+- An easy-to-use programmatic API for investigating the target RNA specificity of toehold switches.
+- A desktop app complete with a graphical user interface for users who prioritise ease over configuration.
+- Full offline support in both the desktop app and the API, with offline support for the latest release of miRBase as well.
+- Progress–tracking support in both the desktop app and the API.
+- Support for Pandas to allow further data-processing.
+
 
 ## Documentation
 Installation instructions, the full API reference and all available developer notes can be found [here](https://thtools.readthedocs.io/en/stable/).
