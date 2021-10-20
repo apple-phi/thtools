@@ -246,7 +246,6 @@ class Contribution:
                 specificity_se=specificity_se,
                 activation=activation,
                 activation_se=activation_se,
-                team=self.team,
                 species=self.species,
             )
             + caveats
