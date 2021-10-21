@@ -25,7 +25,7 @@ To access this table from inside the app, click the button labelled `Legal` in t
 | gevent-websocket | 0.10.1    | Copyright 2011-2017 Jeffrey Gelens <jeffrey@noppo.pro> | https://www.gitlab.com/noppo/gevent-websocket    |
 | greenlet         | 1.1.2     | MIT License                                            | https://greenlet.readthedocs.io/                 |
 | multiprocess     | 0.70.12.2 | BSD License                                            | https://github.com/uqfoundation/multiprocess     |
-| numpy            | 1.21.2    | BSD License                                            | https://www.numpy.org                            |
+| numpy            | 1.21.3    | BSD License                                            | https://www.numpy.org                            |
 | nupack           | 4.0.0.23  | UNKNOWN                                                | www.nupack.org                                   |
 | pandas           | 1.3.4     | BSD License                                            | https://pandas.pydata.org                        |
 | pathos           | 0.2.8     | BSD License                                            | https://github.com/uqfoundation/pathos           |
