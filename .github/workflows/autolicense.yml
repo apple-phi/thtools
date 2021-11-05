@@ -43,8 +43,8 @@ jobs:
           labels: |
             report
             automated pr
-          assignees: lkn849
-          reviewers: lkn849
+          # assignees: lkn849
+          # reviewers: lkn849
           team-reviewers: |
             owners
             maintainers
