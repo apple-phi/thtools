@@ -31,7 +31,7 @@ import urllib.request
 print("Downloading miRBase...")
 mkdir("src/thtools/miRBase/")
 with urllib.request.urlopen(
-    "ftp://mirbase.org/pub/mirbase/CURRENT/mature.fa.gz"
+    "https://mirbase.org/ftp/CURRENT/mature.fa.gz"
 ) as miRBase_url:
     with gzip.GzipFile(fileobj=miRBase_url, mode="rb") as gzipped_f:
         txt = gzipped_f.read()
