@@ -31,7 +31,7 @@ jobs:
         run: third_party/NOTICES.sh
 
       - name: Create PR
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v4
         with:
           commit-message: ':page_facing_up: Update third_party/NOTICES.md'
           delete-branch: true
