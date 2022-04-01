@@ -28,7 +28,7 @@ jobs:
           - "2020_CSMU_Taiwan-2.1"
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3.1.0
         with:
           python-version: 3.8
 
